@@ -114,14 +114,14 @@ void init() {
 void load(Renderer* rend, Input* inp) {
   renderer = rend;
   input = inp;
-
+  SDL_Log("Creating ascii tileset...\n");
   ascii = new Tileset(renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
-  SDL_Log("Created tileset.\n");
+  SDL_Log("Created ascii tileset.\n");
   input->bindkey(SDLK_r, ACTION_RESET);
   input->bindkey(SDLK_SPACE, ACTION_PAUSE);
   input->bindkey(SDLK_RETURN, ACTION_STEP);
   input->bindkey(SDLK_F1, ACTION_TOGGLE_DEBUG);
-  SDL_Log("Bound keybinds.\n");
+  SDL_Log("Keybinds bound.\n");
   init();
 }
 
