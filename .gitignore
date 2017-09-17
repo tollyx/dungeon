@@ -1,0 +1,28 @@
+# Visual Studio
+.vs
+.vscode
+*.opendb
+*.opensdf
+*.sdf
+*.pdb
+*.sln
+*.vcxproj*
+[Dd]ebug
+[Rr]elease
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# Misc
+*.cfg
+*.log
+imgui.ini
+*.sublime*
