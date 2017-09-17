@@ -260,7 +260,7 @@ Texture * Renderer::LoadTexture(std::string path) {
       return &textures[path];
     }
     else {
-      SDL_Log("Error: Could not load texture \"%s\"\n", path.c_str());
+      SDL_Log("Error: Could not load texture \"%s\"\n\t%s\n", path.c_str(), SDL_GetError());
       return nullptr;
     }
   }
