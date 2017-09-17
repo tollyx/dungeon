@@ -30,7 +30,7 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
     shaderstream.close();
   }
   else {
-    printf("ERROR: Could not open shader file \"%s\".\n", path);
+    SDL_Log("ERROR: Could not open shader file \"%s\".\n", path);
     getchar();
     return 0;
   }
@@ -38,7 +38,7 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
   GLint result = GL_FALSE;
   int infologlength;
 
-  printf("Compiling shader: %s\n", path);
+  SDL_Log("Compiling shader: %s\n", path);
   char const * source = shadersource.c_str();
   glShaderSource(shaderId, 1, &source, NULL);
   glCompileShader(shaderId);
@@ -48,13 +48,14 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
   if (infologlength > 0) {
     std::vector<char> errorlog(infologlength + 1);
     glGetShaderInfoLog(shaderId, infologlength, NULL, &errorlog[0]);
-    printf("Errors in \"%s\":\n%s\n", path, &errorlog[0]);
+    SDL_Log("Errors in \"%s\":\n%s\n", path, &errorlog[0]);
   }
+  SDL_Log("Done.");
   return shaderId;
 }
 
 GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
-  printf("Linking shader program...\n");
+  SDL_Log("Linking shader program...\n");
   GLuint programId = glCreateProgram();
   glAttachShader(programId, vertshader);
   glAttachShader(programId, fragshader);
@@ -68,12 +69,12 @@ GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
   if (infologlength > 0) {
     std::vector<char> errorlog(infologlength + 1);
     glGetShaderInfoLog(programId, infologlength, NULL, &errorlog[0]);
-    printf("Errors when creating shader program:\n%s\n", &errorlog[0]);
+    SDL_Log("Errors when creating shader program:\n%s\n", &errorlog[0]);
   }
 
   glDetachShader(programId, vertshader);
   glDetachShader(programId, fragshader);
-
+  SDL_Log("Done.");
   return programId;
 }
 
@@ -98,6 +99,7 @@ Renderer::~Renderer() {
   SDL_GL_DeleteContext(context);
   SDL_DestroyWindow(window);
   window = nullptr;
+  SDL_Log("Renderer destroyed.");
 }
 
 GLuint shaderProg;
@@ -162,6 +164,7 @@ bool Renderer::Init(std::string title, int width, int height) {
 
   SetWindowSize(width, height);
 
+  SDL_Log("Renderer initialized.\n");
   return true;
 }
 
@@ -190,6 +193,7 @@ void Renderer::SetWindowSize(int width, int height) {
   glm::mat4 view = glm::scale(glm::vec3(widthmult, heightmult, 1)) * glm::translate(glm::vec3(-windowwidth / 2, -windowheight / 2, 0)) * glm::mat4(1);
 
   screenVPmat = projection * view;
+  SDL_Log("Window size set to %dx%d.\n", width, height);
 }
 
 void Renderer::SetClearColor(float r, float g, float b, float a) {
@@ -257,6 +261,7 @@ Texture * Renderer::LoadTexture(std::string path) {
 
       SDL_FreeSurface(surface);
       textures.insert(std::pair<std::string, Texture>(path, t));
+      SDL_Log("Loaded texture \"%s\"\n", path.c_str());
       return &textures[path];
     }
     else {

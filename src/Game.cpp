@@ -70,6 +70,7 @@ void init() {
     hero = nullptr;
   }
 
+  SDL_Log("Creating tilemap...\n");
   tilemap = new Tilemap(32, 32);
   int y = 0;
   int x = 0;
@@ -104,19 +105,23 @@ void init() {
     }
     x++;
   }
+  SDL_Log("Done.\n");
+  SDL_Log("Calculating initial FOV...\n");
   hero->CalcFOV();
+  SDL_Log("Done.\n");
 }
 
 void load(Renderer* rend, Input* inp) {
   renderer = rend;
   input = inp;
 
-  ascii = new Tileset(renderer, "assets/12x12.bmp", 192, 192, 12, 12);
-  //testsprite = renderer->CreateSprite("assets/12x12.bmp", 0, 0, 192, 192);
+  ascii = new Tileset(renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
+  SDL_Log("Created tileset.\n");
   input->bindkey(SDLK_r, ACTION_RESET);
   input->bindkey(SDLK_SPACE, ACTION_PAUSE);
   input->bindkey(SDLK_RETURN, ACTION_STEP);
   input->bindkey(SDLK_F1, ACTION_TOGGLE_DEBUG);
+  SDL_Log("Bound keybinds.\n");
   init();
 }
 

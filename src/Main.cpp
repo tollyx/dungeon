@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
     SDL_Quit();
     return 1;
   }
+  SDL_Log("SDL initialized.\n");
 
   renderer = new Renderer();
   if (!renderer->Init("Dungeon", windowWidth, windowHeight)) {
@@ -126,6 +127,7 @@ int main(int argc, char* argv[]) {
   }
   delete renderer;
   SDL_Quit();
+  SDL_Log("Quit.");
   return 0;
 }
 
