@@ -250,6 +250,11 @@ Texture * Renderer::LoadTexture(std::string path) {
         mode = GL_RGBA;
       }
 
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+      glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+      glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
       glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
