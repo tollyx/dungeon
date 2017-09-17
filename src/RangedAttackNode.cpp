@@ -17,7 +17,7 @@ BehaviourTreeStatus RangedAttackNode::tick(BTTick * tick) {
 
   auto actors = tick->target->map->GetActorList();
   std::vector<Actor*> enemies;
-  for each (auto actor in *actors) {
+  for (auto actor : *actors) {
     if (actor == tick->target) continue;
 
     if (actor->isTypeOf(ACT_HERO) != ishero) {
@@ -34,7 +34,7 @@ BehaviourTreeStatus RangedAttackNode::tick(BTTick * tick) {
 
   Actor* lowestHpActor = nullptr;
   int lowestHp;
-  for each (Actor* actor in enemies) {
+  for (Actor* actor : enemies) {
     if (lowestHpActor == nullptr || actor->health < lowestHp) {
       lowestHpActor = actor;
       lowestHp = actor->health;

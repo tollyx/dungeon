@@ -3,13 +3,13 @@
 #include <map>
 
 class Config {
-  char* path;
+  std::string path;
   std::map<std::string, std::string> strings;
   std::map<std::string, float> floats;
   std::map<std::string, int> ints;
   std::map<std::string, bool> bools;
 public:
-  Config(char* path);
+  Config(std::string path);
   void load();
   void save();
   void deleteValue(std::string key);

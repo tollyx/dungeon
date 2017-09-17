@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "FleeNode.h"
 #include "Pathfinder.h"
 #include "BehaviourTree.h"
@@ -16,7 +17,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   std::vector<vec2i> enemyPos;
   bool ishero = tick->target->isTypeOf(ACT_HERO);
   auto actors = tick->target->map->GetActorList();
-  for each (Actor* actor in *actors) {
+  for (Actor* actor : *actors) {
     if (actor->isTypeOf(ACT_HERO) != ishero) {
       vec2i pos = actor->getPosition();
       if (tick->target->CanSee(pos.x, pos.y)) {
@@ -48,7 +49,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   std::vector<vec2i> neigh = map->getNeighbours(pos.x, pos.y);
   std::vector<vec2i> options;
   float lowestval = 999999;
-  for each (vec2i npos in neigh) {
+  for (vec2i npos : neigh) {
     float val = dijkstra.getValue(npos.x, npos.y);
     if (val < lowestval) {
       lowestval = val;

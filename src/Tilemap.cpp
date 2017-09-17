@@ -17,7 +17,7 @@ Tilemap::Tilemap(int width, int height)
 Tilemap::~Tilemap() 
 {
   delete tilemap;
-  for each (auto var in actors) {
+  for (auto var : actors) {
     delete var;
   }
 }
@@ -82,7 +82,7 @@ bool Tilemap::IsBlocked(int x, int y)
     if (tilemap[GetIndex(x,y)] == '#') { // TODO: Replace hardcoded tiles
       return true;
     }
-    for each (Actor* var in actors) {
+    for (Actor* var : actors) {
       vec2i pos = var->getPosition();
       if (var->IsAlive() && pos.x == x && pos.y == y) {
         return true;
@@ -94,7 +94,7 @@ bool Tilemap::IsBlocked(int x, int y)
 }
 
 void Tilemap::AddActor(Actor * actor) {
-  for each (Actor* var in actors) {
+  for (Actor* var : actors) {
     if (var == actor) {
       return;
     }
@@ -113,7 +113,7 @@ void Tilemap::RemoveActor(Actor * actor) {
 
 Actor * Tilemap::GetActor(int x, int y, Actors type) {
   vec2i pos = { x,y };
-  for each (Actor* act in actors) {
+  for (Actor* act : actors) {
     if (act->isTypeOf(type)) {
       vec2i apos = act->getPosition();
       if (apos == pos) {
@@ -127,8 +127,8 @@ Actor * Tilemap::GetActor(int x, int y, Actors type) {
 std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
   std::vector<Actor*> found;
   std::vector<vec2i> neigh = getNeighbours(x, y, range);
-  for each (Actor* act in actors) {
-    for each (vec2i pos in neigh) {
+  for (Actor* act : actors) {
+    for (vec2i pos : neigh) {
       if (act->isTypeOf(type)) {
         vec2i apos = act->getPosition();
         if (apos == pos) {

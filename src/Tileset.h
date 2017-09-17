@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Renderer;
 struct Sprite;
@@ -8,7 +9,7 @@ class Tileset {
   Sprite* sprites;
   int amount;
 public:
-  Tileset(Renderer* renderer, char* imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight);
+  Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight);
   ~Tileset();
   int GetAmount();
   Sprite* GetSprite(int tileId);

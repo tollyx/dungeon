@@ -106,6 +106,7 @@
 #include <KHR/khrplatform.h>
 #include <EGL/eglplatform.h>
 
+#define GLEW_STATIC
 #include "glew.h"
 
 #ifdef __cplusplus

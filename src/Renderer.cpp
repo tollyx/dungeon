@@ -106,13 +106,13 @@ GLuint spriteVertArrayId;
 GLuint colorUniform;
 GLuint mvpUniform;
 
-bool Renderer::Init(char* title, int width, int height) {
+bool Renderer::Init(std::string title, int width, int height) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+  window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
   if (window == NULL) {
     return false;
   }
@@ -268,24 +268,26 @@ Texture * Renderer::LoadTexture(std::string path) {
     // Texture already loaded, no need to load it again
     return &it->second;
   }
-  return nullptr;
 }
 
 
 Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
   Sprite sprite;
-  sprite.region = {x, y, w, h};
+  sprite.region.x = x;
+  sprite.region.y = y;
+  sprite.region.w = w;
+  sprite.region.h = h;
   sprite.texture = LoadTexture(path);
   if (sprite.texture != nullptr) {
-    float tw = sprite.texture->w;
-    float th = sprite.texture->h;
+    float tw = (float)sprite.texture->w;
+    float th = (float)sprite.texture->h;
     const float uvs[] = {
       x / tw, y / th,
       (x + w) / tw, y / th,
       x / tw, (y + h) / th,
       (x + w) / tw, (y + h) / th,
     };
-    
+
     
     glCreateBuffers(1, &sprite.uvBuf);
     glBindBuffer(GL_ARRAY_BUFFER, sprite.uvBuf);

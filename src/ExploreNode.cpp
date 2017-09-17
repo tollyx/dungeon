@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "ExploreNode.h"
 #include "Pathfinder.h"
 #include "BehaviourTree.h"
@@ -26,7 +27,7 @@ BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
   std::vector<vec2i> neigh = map->getNeighbours(pos.x, pos.y);
   std::vector<vec2i> options;
   float lowestval = 999999;
-  for each (vec2i npos in neigh) {
+  for (vec2i npos : neigh) {
     float val = dijkstra.getValue(npos.x, npos.y);
     if (val < lowestval) {
       lowestval = val;
@@ -41,7 +42,7 @@ BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
     return BT_FAILED;
   }
   while (options.size() > 0) {
-    int i = rand() % options.size();
+    int i = std::rand() % options.size();
     vec2i next = options[i];
     vec2i dp = next - pos;
     if (tick->target->Move(dp.x, dp.y)) {

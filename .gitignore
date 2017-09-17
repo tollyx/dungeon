@@ -10,6 +10,11 @@
 [Dd]ebug
 [Rr]elease
 
+# CLion idea
+.idea
+cmake-build-debug
+cmake-build-release
+
 # CMake
 CMakeCache.txt
 CMakeFiles

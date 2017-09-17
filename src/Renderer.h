@@ -45,7 +45,7 @@ class Renderer
 public:
   Renderer();
   ~Renderer();
-  bool Init(char* title, int width, int height);
+  bool Init(std::string title, int width, int height);
   void SetColor(float r, float g, float b, float a);
   void SetColor(Color col);
   void SetTitle(const char* title);

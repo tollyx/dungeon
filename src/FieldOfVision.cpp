@@ -1,3 +1,4 @@
+#include <cmath>
 #include "FieldOfVision.h"
 #include "Tilemap.h"
 
@@ -18,7 +19,7 @@ namespace FOV {
 
   void CastLight(Tilemap* map, Tilemap* vision, int visioncounter, int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY, float radius) {
     float newStart = 0.0f;
-    if (start < end) {
+      if (start < end) {
       return;
     }
     bool blocked = false;

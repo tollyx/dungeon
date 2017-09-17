@@ -140,7 +140,7 @@ void update(double dt) {
       timer = 0;
 
       auto actors = tilemap->GetActorList();
-      for each (Actor* var in *actors) {
+      for (Actor* var : *actors) {
         var->Update();
       }
       for (int i = (int)actors->size() - 1; i >= 0; i--) {
@@ -200,7 +200,7 @@ void draw(double alpha) {
     }
   }
   auto actors = tilemap->GetActorList();
-  for each (Actor* var in *actors) {
+  for (Actor* var : *actors) {
     vec2i pos = var->getPosition();
     if (hero == nullptr || hero->CanSee(pos.x, pos.y)) {
       renderer->SetColor(0, 0, 0, 255);

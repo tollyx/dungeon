@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Pathfinder.h"
 #include "Tilemap.h"
 
@@ -38,7 +39,7 @@ namespace Pathfinder
       //map->SetTile(current->pos.x, current->pos.y, TILE_CLOSED);
 
       auto neighbours = map->getNeighbours(current->pos.x, current->pos.y);
-      for each (auto pos in neighbours)
+      for (auto pos : neighbours)
       {
         if (map->GetTile(pos.x, pos.y) == '#')
         {
@@ -64,11 +65,11 @@ namespace Pathfinder
             path.push_back(current->pos);
             current = current->from;
           }
-          for each (AStarNode* var in open)
+          for (AStarNode* var : open)
           {
             delete var;
           }
-          for each (AStarNode* var in closed)
+          for (AStarNode* var : closed)
           {
             delete var;
           }
@@ -137,11 +138,11 @@ namespace Pathfinder
         }
       }
     }
-    for each (AStarNode* var in open)
+    for (AStarNode* var : open)
     {
       delete var;
     }
-    for each (AStarNode* var in closed)
+    for (AStarNode* var : closed)
     {
       delete var;
     }
@@ -158,15 +159,15 @@ namespace Pathfinder
     }
     out->height = map->GetHeight();
     out->width = map->GetWidth();
-    for each (vec2i pos in *goals) {
+    for (vec2i pos : *goals) {
       out->setValue(pos.x, pos.y, 0);
     }
 
     std::vector<vec2i> queue;
 
-    for each (vec2i pos in *goals) {
+    for (vec2i pos : *goals) {
       auto neigh = map->getNeighbours(pos.x, pos.y);
-      for each (vec2i npos in neigh) {
+      for (vec2i npos : neigh) {
         int val = out->getValue(npos.x, npos.y);
         if (map->GetTile(npos.x, npos.y) != '#' && val > 1) {
           if (npos.x != 0 && npos.y != 0) {

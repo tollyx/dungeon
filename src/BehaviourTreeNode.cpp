@@ -10,7 +10,7 @@ BehaviourTreeNode::BehaviourTreeNode(BehaviourTreeNode* parent) {
 }
 
 BehaviourTreeNode::~BehaviourTreeNode() {
-  for each (BehaviourTreeNode* child in children) {
+  for (BehaviourTreeNode* child : children) {
     delete child;
   }
 }

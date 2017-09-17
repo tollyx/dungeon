@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "WanderNode.h"
 #include "BehaviourTree.h"
 #include "Actor.h"
@@ -19,7 +20,7 @@ BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
     int i = rand() % neighbours.size();
     vec2i dp = neighbours[i] - pos;
     bool valid = true;
-    for each (vec2i var in previous) {
+    for (vec2i var : previous) {
       if (var == neighbours[i]) {
         valid = false;
         break;

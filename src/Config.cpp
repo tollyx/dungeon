@@ -44,7 +44,7 @@ static inline void trim(string &s) {
 
 
 
-Config::Config(char* path) {
+Config::Config(string path) {
   this->path = path;
 }
 
@@ -99,13 +99,13 @@ void Config::save() {
   ofstream conf(path, ios::trunc);
   if (conf.is_open()) {
     vector<string> vec;
-    for each (auto it in ints) {
+    for (auto it : ints) {
       vec.push_back(it.first + " = " + to_string(it.second));
     }
-    for each (auto it in floats) {
+    for (auto it : floats) {
       vec.push_back(it.first + " = " + to_string(it.second));
     }
-    for each (auto it in bools) {
+    for (auto it : bools) {
       string b;
       if (it.second) {
         b = "true";
@@ -115,11 +115,11 @@ void Config::save() {
       }
       vec.push_back(it.first + " = " + b);
     }
-    for each (auto it in strings) {
+    for (auto it : strings) {
       vec.push_back(it.first + " = " + it.second);
     }
     sort(vec.begin(), vec.end());
-    for each (auto it in vec) {
+    for (auto it : vec) {
       conf << it << "\n";
     }
     conf.close();

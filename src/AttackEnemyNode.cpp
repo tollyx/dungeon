@@ -14,7 +14,7 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
   auto actors = tick->target->map->GetActorList();
   std::vector<Actor*> visibleEnemies;
 
-  for each (auto actor in *actors) {
+  for (auto actor : *actors) {
     if (actor == tick->target) continue;
 
     if (actor->isTypeOf(ACT_HERO) != ishero) {
@@ -31,7 +31,7 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
 
   Actor* closestActor = nullptr;
   float closestDist;
-  for each (Actor* actor in visibleEnemies) {
+  for (Actor* actor : visibleEnemies) {
     float dist = Pathfinder::distance(tick->target->getPosition(), actor->getPosition());
     if (closestActor == nullptr ||
          dist < closestDist) {

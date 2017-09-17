@@ -1,7 +1,7 @@
 #include "Tileset.h"
 #include "Renderer.h"
 
-Tileset::Tileset(Renderer* renderer, char * imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight) {
+Tileset::Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight) {
   int tilesX = imgWidth / tileWidth;
   int tilesY = imgHeight / tileHeight;
   amount = tilesX*tilesY;

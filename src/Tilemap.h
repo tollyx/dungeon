@@ -1,10 +1,8 @@
 #pragma once
 #include <vector>
+#include "Actor.h"
 
 struct vec2i;
-
-class Actor;
-enum Actors;
 
 class Tilemap {
   unsigned int* tilemap;

@@ -1,5 +1,6 @@
 #include "World.h"
 #include <time.h>
+#include <cstdlib>
 
 World::World() {
   World(0);
@@ -38,7 +39,7 @@ Tilemap* World::GetMap(unsigned int level) {
 
 World::~World() {
   seeds.clear();
-  for each (Tilemap* map in maps) {
+  for (Tilemap* map : maps) {
     if (map != nullptr) {
       delete map;
     }

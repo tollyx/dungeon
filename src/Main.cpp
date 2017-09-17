@@ -1,7 +1,6 @@
 //#define _ALLOW_ITERATOR_DEBUG_LEVEL_MISMATCH
 //#define _ITERATOR_DEBUG_LEVEL 0  
 
-#include "Renderer.h"
 
 #include <SDL.h>
 #include <stdio.h>
@@ -9,6 +8,7 @@
 #include <string>
 #include <time.h>
 
+#include "Renderer.h"
 #include "Input.h"
 #include "Config.h"
 #include "Game.h"
@@ -19,6 +19,7 @@ Uint64 perfFreq;
 
 double currTime();
 
+#undef main
 int main(int argc, char* argv[]) {
   Renderer* renderer;
   Input* input;

@@ -16,7 +16,7 @@ BehaviourTreeStatus IfSeeFriendNode::tick(BTTick * tick) {
   bool ishero = tick->target->isTypeOf(ACT_HERO);
 
   auto actors = tick->target->map->GetActorList();
-  for each (auto actor in *actors) {
+  for (auto actor : *actors) {
     if (actor == tick->target) continue;
 
     if (actor->isTypeOf(ACT_HERO) == ishero) {
