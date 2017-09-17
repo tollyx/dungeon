@@ -235,12 +235,12 @@ void Renderer::ImguiNewFrame() {
   ImGui_ImplSdlGL3_NewFrame(window);
 }
 Texture * Renderer::LoadTexture(std::string path) {
-  SDL_Log("Loading texture: %s\n", path);
   auto it = textures.find(path);
   if (it == textures.end()) {
+    SDL_Log("Loading texture: %s\n", path.c_str());
     // Texture not loaded, let's load it.
     SDL_Surface* surface = SDL_LoadBMP(path.c_str());
-    if (surface != NULL) {      
+    if (surface != NULL) {
       GLuint textureId;
       glGenTextures(1, &textureId);
       glBindTexture(GL_TEXTURE_2D, textureId);
