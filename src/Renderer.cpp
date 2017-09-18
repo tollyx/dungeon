@@ -253,7 +253,7 @@ Texture * Renderer::LoadTexture(std::string path) {
         mode = GL_RGBA;
       }
 
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
       glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
       glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
       glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);

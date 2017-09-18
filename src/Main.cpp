@@ -24,8 +24,7 @@ int main(int argc, char* argv[]) {
   Renderer* renderer;
   Input* input;
 
-  setenv("MESA_DEBUG", "", 0);
-  SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+  //setenv("MESA_DEBUG", "", 0);
 
   Config cfg = Config("dungeon.cfg");
   cfg.load();
@@ -39,13 +38,14 @@ int main(int argc, char* argv[]) {
 
   int err = 0;
   err = SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
+  SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
   if (err != 0) {
     const char* error = SDL_GetError();
     SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "%s", error);
     SDL_Quit();
     return 1;
   }
-  SDL_Log("SDL initialized.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM,"SDL initialized.\n");
 
   renderer = new Renderer();
   if (!renderer->Init("Dungeon", windowWidth, windowHeight)) {
