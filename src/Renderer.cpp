@@ -30,7 +30,7 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
     shaderstream.close();
   }
   else {
-    SDL_Log("ERROR: Could not open shader file \"%s\".\n", path);
+    SDL_LogError(SDL_LOG_CATEGORY_RENDER, "ERROR: Could not open shader file \"%s\".\n", path);
     getchar();
     return 0;
   }
@@ -48,14 +48,14 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
   if (infologlength > 0) {
     std::vector<char> errorlog(infologlength + 1);
     glGetShaderInfoLog(shaderId, infologlength, NULL, &errorlog[0]);
-    SDL_Log("Errors in \"%s\":\n%s\n", path, &errorlog[0]);
+    SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Errors in \"%s\":\n%s\n", path, &errorlog[0]);
   }
-  SDL_Log("Done.");
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Done.");
   return shaderId;
 }
 
 GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
-  SDL_Log("Linking shader program...\n");
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Linking shader program...\n");
   GLuint programId = glCreateProgram();
   glAttachShader(programId, vertshader);
   glAttachShader(programId, fragshader);
@@ -69,12 +69,12 @@ GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
   if (infologlength > 0) {
     std::vector<char> errorlog(infologlength + 1);
     glGetShaderInfoLog(programId, infologlength, NULL, &errorlog[0]);
-    SDL_Log("Errors when creating shader program:\n%s\n", &errorlog[0]);
+    SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "Errors when creating shader program:\n%s\n", &errorlog[0]);
   }
 
   glDetachShader(programId, vertshader);
   glDetachShader(programId, fragshader);
-  SDL_Log("Done.");
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Done.");
   return programId;
 }
 
@@ -99,7 +99,7 @@ Renderer::~Renderer() {
   SDL_GL_DeleteContext(context);
   SDL_DestroyWindow(window);
   window = nullptr;
-  SDL_Log("Renderer destroyed.");
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer destroyed.");
 }
 
 GLuint shaderProg;
@@ -116,22 +116,24 @@ bool Renderer::Init(std::string title, int width, int height) {
 
   window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
   if (window == NULL) {
+    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"Failed to create a window!\n");
     return false;
   }
   
   context = SDL_GL_CreateContext(window);
   if (context == NULL) {
+    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"Failed to create OpenGL context!\n");
     return false;
   }
 
   GLenum err = glewInit();
   if (err != GLEW_OK) {
-    fprintf(stderr, "failed to initialize OpenGl: %s\n", glewGetErrorString(err));
+    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER, "Failed to initialize OpenGl: %s\n", glewGetErrorString(err));
     return false;
   }
 
   if (!GLEW_VERSION_3_2) {
-    fprintf(stderr, "OpenGl 3.2 is not supported, please try updating your drivers!\n");
+    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"OpenGl 3.2 is not supported, please try updating your drivers!\n");
     return false;
   }
 
@@ -164,7 +166,7 @@ bool Renderer::Init(std::string title, int width, int height) {
 
   SetWindowSize(width, height);
 
-  SDL_Log("Renderer initialized.\n");
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer initialized.\n");
   return true;
 }
 
@@ -193,7 +195,7 @@ void Renderer::SetWindowSize(int width, int height) {
   glm::mat4 view = glm::scale(glm::vec3(widthmult, heightmult, 1)) * glm::translate(glm::vec3(-windowwidth / 2, -windowheight / 2, 0)) * glm::mat4(1);
 
   screenVPmat = projection * view;
-  SDL_Log("Window size set to %dx%d.\n", width, height);
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Window size set to %dx%d.\n", width, height);
 }
 
 void Renderer::SetClearColor(float r, float g, float b, float a) {
@@ -237,7 +239,7 @@ void Renderer::ImguiNewFrame() {
 Texture * Renderer::LoadTexture(std::string path) {
   auto it = textures.find(path);
   if (it == textures.end()) {
-    SDL_Log("Loading texture: %s\n", path.c_str());
+    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loading texture: %s\n", path.c_str());
     // Texture not loaded, let's load it.
     SDL_Surface* surface = SDL_LoadBMP(path.c_str());
     SDL_Log("Loaded surface.");
@@ -256,9 +258,9 @@ Texture * Renderer::LoadTexture(std::string path) {
       glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
       glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
-      SDL_Log("Sending %dx%d texture to GPU...", surface->w, surface->h);
+      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Sending %dx%d texture to GPU...", surface->w, surface->h);
       glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
-      SDL_Log("Loaded texture to GPU.");
+      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded texture to GPU.");
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -269,13 +271,13 @@ Texture * Renderer::LoadTexture(std::string path) {
       t.h = surface->h;
 
       SDL_FreeSurface(surface);
-      SDL_Log("Freed surface.");
+      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Freed surface.");
       textures.insert(std::pair<std::string, Texture>(path, t));
-      SDL_Log("Loaded texture \"%s\"\n", path.c_str());
+      SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Loaded texture \"%s\"\n", path.c_str());
       return &textures[path];
     }
     else {
-      SDL_Log("Error: Could not load texture \"%s\"\n\t%s\n", path.c_str(), SDL_GetError());
+      SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Could not load texture \"%s\"\n\t%s\n", path.c_str(), SDL_GetError());
       return nullptr;
     }
   }

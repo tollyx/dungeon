@@ -24,6 +24,8 @@ int main(int argc, char* argv[]) {
   Renderer* renderer;
   Input* input;
 
+  SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
+
   Config cfg = Config("dungeon.cfg");
   cfg.load();
 
@@ -38,7 +40,7 @@ int main(int argc, char* argv[]) {
   err = SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
   if (err != 0) {
     const char* error = SDL_GetError();
-    SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "Error: %s", error);
+    SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "%s", error);
     SDL_Quit();
     return 1;
   }
@@ -47,7 +49,7 @@ int main(int argc, char* argv[]) {
   renderer = new Renderer();
   if (!renderer->Init("Dungeon", windowWidth, windowHeight)) {
     const char* error = SDL_GetError();
-    SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "Error: %s", error);
+    SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "%s", error);
     SDL_ShowSimpleMessageBox(0, "Error", error, nullptr);
     SDL_Quit();
     return 1;
@@ -127,7 +129,7 @@ int main(int argc, char* argv[]) {
   }
   delete renderer;
   SDL_Quit();
-  SDL_Log("Quit.");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Quit.");
   return 0;
 }
 

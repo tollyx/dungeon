@@ -70,7 +70,7 @@ void init() {
     hero = nullptr;
   }
 
-  SDL_Log("Creating tilemap...\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
   tilemap = new Tilemap(32, 32);
   int y = 0;
   int x = 0;
@@ -105,23 +105,23 @@ void init() {
     }
     x++;
   }
-  SDL_Log("Done.\n");
-  SDL_Log("Calculating initial FOV...\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
   hero->CalcFOV();
-  SDL_Log("Done.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
 }
 
 void load(Renderer* rend, Input* inp) {
   renderer = rend;
   input = inp;
-  SDL_Log("Creating ascii tileset...\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating ascii tileset...\n");
   ascii = new Tileset(renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
-  SDL_Log("Created ascii tileset.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Created ascii tileset.\n");
   input->bindkey(SDLK_r, ACTION_RESET);
   input->bindkey(SDLK_SPACE, ACTION_PAUSE);
   input->bindkey(SDLK_RETURN, ACTION_STEP);
   input->bindkey(SDLK_F1, ACTION_TOGGLE_DEBUG);
-  SDL_Log("Keybinds bound.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Keybinds bound.\n");
   init();
 }
 
