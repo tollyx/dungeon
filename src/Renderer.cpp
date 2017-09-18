@@ -240,6 +240,7 @@ Texture * Renderer::LoadTexture(std::string path) {
     SDL_Log("Loading texture: %s\n", path.c_str());
     // Texture not loaded, let's load it.
     SDL_Surface* surface = SDL_LoadBMP(path.c_str());
+    SDL_Log("Loaded surface.");
     if (surface != NULL) {
       GLuint textureId;
       glGenTextures(1, &textureId);
@@ -255,7 +256,9 @@ Texture * Renderer::LoadTexture(std::string path) {
       glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
       glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
 
+      SDL_Log("Sending %dx%d texture to GPU...", surface->w, surface->h);
       glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+      SDL_Log("Loaded texture to GPU.");
 
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -266,6 +269,7 @@ Texture * Renderer::LoadTexture(std::string path) {
       t.h = surface->h;
 
       SDL_FreeSurface(surface);
+      SDL_Log("Freed surface.");
       textures.insert(std::pair<std::string, Texture>(path, t));
       SDL_Log("Loaded texture \"%s\"\n", path.c_str());
       return &textures[path];
