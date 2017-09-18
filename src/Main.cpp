@@ -24,6 +24,7 @@ int main(int argc, char* argv[]) {
   Renderer* renderer;
   Input* input;
 
+  setenv("MESA_DEBUG", "", 0);
   SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
 
   Config cfg = Config("dungeon.cfg");
