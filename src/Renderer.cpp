@@ -242,7 +242,7 @@ Texture * Renderer::LoadTexture(std::string path) {
     SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loading texture: %s\n", path.c_str());
     // Texture not loaded, let's load it.
     SDL_Surface* surface = SDL_LoadBMP(path.c_str());
-    SDL_Log("Loaded surface.");
+    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded surface.");
     if (surface != NULL) {
       GLuint textureId;
       glGenTextures(1, &textureId);
