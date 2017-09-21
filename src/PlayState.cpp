@@ -131,7 +131,6 @@ void PlayState::new_game() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
   fov = new FieldOfView(tilemap);
   fov->calc(hero->getPosition(), 6);
-  fov->seen->debug_print();
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
 }
 
