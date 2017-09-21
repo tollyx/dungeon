@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "Tilemap.h"
 #include "Pathfinder.h"
+#include "FieldOfView.h"
 
 AttackEnemyNode::AttackEnemyNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent){}
 
@@ -19,7 +20,7 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
 
     if (actor->isTypeOf(ACT_HERO) != ishero) {
       vec2i pos = actor->getPosition();
-      if (tick->target->CanSee(pos.x, pos.y)) {
+      if (line_of_sight(tick->target->map, tick->target->getPosition(), pos)) {
         visibleEnemies.push_back(actor);
       }
     }

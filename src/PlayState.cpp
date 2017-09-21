@@ -9,6 +9,7 @@
 #include "App.h"
 #include "Tilemap.h"
 #include "Tileset.h"
+#include "FieldOfView.h"
 #include "imgui.h"
 #include "Hero.h"
 #include "Goblin.h"
@@ -72,6 +73,68 @@ void PlayState::load() {
   new_game();
 }
 
+void PlayState::new_game() {
+  paused = true;
+
+  if (tilemap != nullptr) {
+    delete tilemap;
+    tilemap = nullptr;
+    hero = nullptr;
+  }
+
+  if (hero != nullptr) {
+    delete hero;
+    hero = nullptr;
+  }
+
+  if (fov != nullptr) {
+    delete fov;
+    fov = nullptr;
+  }
+
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
+  tilemap = new Tilemap(32, 32);
+  int y = 0;
+  int x = 0;
+  for (int i = 0; i < map.length(); i++) {
+
+    if (y >= 32) {
+      break;
+    }
+    if (x >= mapwidth) {
+      y++;
+      x = 0;
+    }
+    if (map[i] == ' ' || map[i] == '\t' || map[i] == '\n') {
+      continue;
+    }
+
+    if (map[i] == '@') {
+      hero = new Hero(tilemap, vec2i(x, y));
+      tilemap->AddActor(hero);
+      tilemap->SetTile(x, y, '.');
+    }
+    else if (map[i] == 'g') {
+      tilemap->AddActor(new Goblin(tilemap, vec2i(x, y)));
+      tilemap->SetTile(x, y, '.');
+    }
+    else if (map[i] == 's') {
+      tilemap->AddActor(new Shaman(tilemap, vec2i(x, y)));
+      tilemap->SetTile(x, y, '.');
+    }
+    else {
+      tilemap->SetTile(x, y, map[i]);
+    }
+    x++;
+  }
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
+  fov = new FieldOfView(tilemap);
+  fov->calc(hero->getPosition(), 6);
+  fov->seen->debug_print();
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
+}
+
 Gamestate *PlayState::update(double delta) {
   timer += delta;
   if (!paused) {
@@ -91,6 +154,7 @@ Gamestate *PlayState::update(double delta) {
           actors->erase(actors->begin() + i);
         }
       }
+      fov->calc(hero->getPosition(), 6);
     }
   }
   return nullptr;
@@ -131,22 +195,12 @@ void PlayState::draw(double delta) {
   offset.x -= heropos.x * 12;
   offset.y -= heropos.y * 12;
 
-  for (int x = 0; x < 32; x++) {
-    for (int y = 0; y < 32; y++) {
-      if (hero == nullptr || hero->HasSeen(x, y)) {
-        app->renderer->SetColor(1, 1, 1, 1);
-        app->renderer->DrawSprite(ascii->GetSprite(tilemap->GetTile(x, y)), offset.x + x * 12, offset.y + y * 12);
-        if (hero != nullptr && !hero->CanSee(x, y)) {
-          app->renderer->SetColor(0, 0, 0, .5f);
-          app->renderer->DrawSprite(ascii->GetSprite(219), offset.x + x * 12, offset.y + y * 12);
-        }
-      }
-    }
-  }
+  tilemap->draw(app->renderer, ascii, offset.x, offset.y, fov);
+
   auto actors = tilemap->GetActorList();
   for (Actor* var : *actors) {
     vec2i pos = var->getPosition();
-    if (hero == nullptr || hero->CanSee(pos.x, pos.y)) {
+    if (fov == nullptr || fov->can_see(pos)) {
       app->renderer->SetColor(0, 0, 0, 255);
       app->renderer->DrawSprite(ascii->GetSprite(219), offset.x + pos.x * 12, offset.y + pos.y * 12);
 
@@ -208,7 +262,7 @@ void PlayState::quit() {
 }
 
 void PlayState::inputevent(InputEvent *event) {
-  if (event->pressed) {
+  if (event->type == INPUT_KEY_EVENT && event->pressed) {
     switch (event->action) {
       case ACTION_TOGGLE_DEBUG: debug = !debug; break;
       case ACTION_ESCAPE_MENU: paused = !paused; break;
@@ -216,59 +270,4 @@ void PlayState::inputevent(InputEvent *event) {
       default: break;
     }
   }
-}
-
-void PlayState::new_game() {
-  paused = true;
-
-  if (tilemap != nullptr) {
-    delete tilemap;
-    tilemap = nullptr;
-    hero = nullptr;
-  }
-
-  if (hero != nullptr) {
-    delete hero;
-    hero = nullptr;
-  }
-
-  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
-  tilemap = new Tilemap(32, 32);
-  int y = 0;
-  int x = 0;
-  for (int i = 0; i < map.length(); i++) {
-
-    if (y >= 32) {
-      break;
-    }
-    if (x >= mapwidth) {
-      y++;
-      x = 0;
-    }
-    if (map[i] == ' ' || map[i] == '\t' || map[i] == '\n') {
-      continue;
-    }
-
-    if (map[i] == '@') {
-      hero = new Hero(tilemap, vec2i(x, y));
-      tilemap->AddActor(hero);
-      tilemap->SetTile(x, y, '.');
-    }
-    else if (map[i] == 'g') {
-      tilemap->AddActor(new Goblin(tilemap, vec2i(x, y)));
-      tilemap->SetTile(x, y, '.');
-    }
-    else if (map[i] == 's') {
-      tilemap->AddActor(new Shaman(tilemap, vec2i(x, y)));
-      tilemap->SetTile(x, y, '.');
-    }
-    else {
-      tilemap->SetTile(x, y, map[i]);
-    }
-    x++;
-  }
-  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
-  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
-  hero->CalcFOV();
-  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
 }

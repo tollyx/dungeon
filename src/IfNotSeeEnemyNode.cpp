@@ -2,6 +2,7 @@
 #include "BehaviourTree.h"
 #include "Actor.h"
 #include "Tilemap.h"
+#include "FieldOfView.h"
 
 
 IfNotSeeEnemyNode::IfNotSeeEnemyNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent) {}
@@ -20,7 +21,7 @@ BehaviourTreeStatus IfNotSeeEnemyNode::tick(BTTick * tick) {
 
     if (actor->isTypeOf(ACT_HERO) != ishero) {
       vec2i pos = actor->getPosition();
-      if (tick->target->CanSee(pos.x, pos.y)) {
+      if (line_of_sight(tick->target->map, tick->target->getPosition(), pos)) {
         return BT_FAILED;
       }
     }

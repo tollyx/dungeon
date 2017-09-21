@@ -1,16 +1,10 @@
 #include "Actor.h"
 #include "Tilemap.h"
 #include "BehaviourTree.h"
-#include "FieldOfVision.h"
-
-void Actor::CalcFOV() {
-  FOV::DoFOV(map, vision, ++visioncounter, position.x, position.y, 6);
-}
 
 Actor::Actor(Tilemap * map, vec2i pos) {
   this->map = map;
   position = pos;
-  vision = new Tilemap(map->GetWidth(), map->GetHeight());
 }
 
 const vec2i Actor::getPosition() {
@@ -32,7 +26,6 @@ void Actor::Update() {
 
   if (bt) {
     bt->tick(this);
-    CalcFOV();
   }
   if (health < maxhealth) {
     if (healcounter <= 0) {
@@ -45,14 +38,6 @@ void Actor::Update() {
   if (health <= 0) {
     Kill();
   }
-}
-
-bool Actor::HasSeen(int x, int y) {
-  return vision->GetTile(x,y) != 0;
-}
-
-bool Actor::CanSee(int x, int y) {
-  return vision->GetTile(x,y) == visioncounter;
 }
 
 Actor::~Actor() {

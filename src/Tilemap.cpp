@@ -1,6 +1,10 @@
 #include "Tilemap.h"
 #include "vec2i.h"
 #include "Actor.h"
+#include "Renderer.h"
+#include "Tileset.h"
+#include "FieldOfView.h"
+#include <SDL.h>
 
 int Tilemap::GetIndex(int x, int y) 
 {
@@ -143,4 +147,29 @@ std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
 
 std::vector<Actor*>* Tilemap::GetActorList() {
   return &actors;
+}
+
+void Tilemap::draw(Renderer *renderer, Tileset* tileset, int ox, int oy, FieldOfView* view) {
+  for (int x = 0; x < 32; x++) {
+    for (int y = 0; y < 32; y++) {
+      if (view == nullptr || view->has_seen({x, y})) {
+        renderer->SetColor(1, 1, 1, 1);
+        renderer->DrawSprite(tileset->GetSprite(GetTile(x, y)), ox + x * 12, oy + y * 12);
+
+        if (view != nullptr && !view->can_see({x, y})) {
+          renderer->SetColor(0, 0, 0, .5f);
+          renderer->DrawSprite(tileset->GetSprite(219), ox + x * 12, oy + y * 12);
+        }
+      }
+    }
+  }
+}
+
+void Tilemap::debug_print() {
+  for (int y = 0; y < height; ++y) {
+    for (int x = 0; x < width; ++x) {
+      printf("\t%d", GetTile(x, y));
+    }
+    printf("\n");
+  }
 }

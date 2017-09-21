@@ -20,8 +20,6 @@ protected:
   BehaviourTree* bt;
 public:
   Tilemap* map;
-  Tilemap* vision;
-  int visioncounter;
   bool alive;
   int health;
   int maxhealth;
@@ -35,9 +33,6 @@ public:
   int GetHealth() { return health; }
   void Kill() { alive = false; health = 0; };
   void Update();
-  void CalcFOV();
-  bool HasSeen(int x, int y);
-  bool CanSee(int x, int y);
   virtual bool isTypeOf(Actors actor){ return actor == ACT_BASE; };
   virtual Actors Type() { return ACT_BASE; };
   ~Actor();

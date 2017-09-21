@@ -11,12 +11,13 @@
 class Tileset;
 class Tilemap;
 class Actor;
+class FieldOfView;
 
 class PlayState : public Gamestate {
   Tileset* ascii;
   Tilemap* tilemap;
   Actor * hero;
-
+  FieldOfView *fov;
   float delay = .5;
   double timer;
 

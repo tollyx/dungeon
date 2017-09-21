@@ -22,7 +22,7 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
 
     new AttackEnemyNode(root);
     new RestNode(root);
-    new ExploreNode(root);
+    //new ExploreNode(root);
     new WanderNode(root);
   }
 }

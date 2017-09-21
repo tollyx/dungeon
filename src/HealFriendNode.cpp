@@ -2,6 +2,7 @@
 #include "BehaviourTree.h"
 #include "Actor.h"
 #include "Tilemap.h"
+#include "FieldOfView.h"
 
 
 HealFriendNode::HealFriendNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent){}
@@ -18,7 +19,7 @@ BehaviourTreeStatus HealFriendNode::tick(BTTick * tick) {
 
     if (actor->isTypeOf(ACT_HERO) == ishero && actor->health < actor->maxhealth-1) {
       vec2i pos = actor->getPosition();
-      if (tick->target->CanSee(pos.x, pos.y)) {
+      if (line_of_sight(tick->target->map, tick->target->getPosition(), pos)) {
         friends.push_back(actor);
       }
     }

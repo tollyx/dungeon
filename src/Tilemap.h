@@ -1,8 +1,11 @@
 #pragma once
 #include <vector>
 #include "Actor.h"
+#include "Tileset.h"
 
 struct vec2i;
+class Renderer;
+class FieldOfView;
 
 class Tilemap {
   unsigned int* tilemap;
@@ -21,8 +24,13 @@ public:
   int GetTile(int x, int y);
   bool IsBlocked(int x, int y); // Checks if there is an actor blocking the tile.
 
+  void draw(Renderer *renderer, Tileset *tileset, int x, int y, FieldOfView* view);
+
   void AddActor(Actor* actor);
   void RemoveActor(Actor* actor);
+
+  void debug_print();
+
   Actor* GetActor(int x, int y, Actors type);
   std::vector<Actor*> GetActors(int x, int y, int range, Actors type);
   std::vector<Actor*>* GetActorList();

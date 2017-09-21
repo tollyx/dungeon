@@ -4,12 +4,16 @@
 #include "BehaviourTree.h"
 #include "Actor.h"
 #include "Tilemap.h"
+#include <SDL.h>
 
 ExploreNode::ExploreNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent){}
 
 ExploreNode::~ExploreNode() {}
 
 BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
+  SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Tried to use disabled AutoExplore BehaviourTree node!");
+  return BT_FAILED;
+  /*
   Pathfinder::DijkstraMap dijkstra;
   Tilemap * map = tick->target->map;
   std::vector<vec2i> unexplored;
@@ -55,4 +59,5 @@ BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
     }
   }
   return BT_FAILED;
+   */
 }

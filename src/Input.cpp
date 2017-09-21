@@ -25,8 +25,9 @@ void Input::newframe() {
 
 InputEvent Input::setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed)
 {
-  InputEvent event;
+  InputEvent event{};
   event.type = INPUT_KEY_EVENT;
+  event.action = ACTION_NONE;
   event.key_press_event.key = key;
   event.key_press_event.mod = mod;
   event.pressed = pressed;
@@ -82,7 +83,8 @@ InputEvent Input::set_mouse_pos(int x, int y, int dx, int dy) {
   mouse_x = x;
   mouse_y = y;
 
-  InputEvent event;
+  InputEvent event{};
+  event.action = ACTION_NONE;
   event.type = INPUT_MOUSE_MOVE_EVENT;
   event.mouse_move_event.x = x;
   event.mouse_move_event.y = y;
@@ -95,7 +97,8 @@ InputEvent Input::set_mouse_button(int button, int x, int y, bool pressed) {
   mouse_x = x;
   mouse_y = y;
 
-  InputEvent event;
+  InputEvent event{};
+  event.action = ACTION_NONE;
   event.type = INPUT_MOUSE_CLICK_EVENT;
   event.action = ACTION_NONE;
   event.pressed = pressed;
