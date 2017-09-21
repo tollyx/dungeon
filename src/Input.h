@@ -5,10 +5,17 @@
 
 enum InputAction {
   ACTION_NONE,
-  ACTION_PAUSE,
+  ACTION_ESCAPE_MENU,
   ACTION_RESET,
-  ACTION_STEP,
   ACTION_TOGGLE_DEBUG,
+  ACTION_MOVE_NORTH,
+  ACTION_MOVE_NORTHWEST,
+  ACTION_MOVE_NORTHEAST,
+  ACTION_MOVE_WEST,
+  ACTION_MOVE_EAST,
+  ACTION_MOVE_SOUTH,
+  ACTION_MOVE_SOUTHWEST,
+  ACTION_MOVE_SOUTHEAST,
   INPUTACTION_END // Used to get the length of the enum. Must be the final entry.
 };
 
@@ -24,17 +31,55 @@ struct Bind {
   }
 };
 
+enum InputEventType {
+  INPUT_MOUSE_MOVE_EVENT,
+  INPUT_MOUSE_CLICK_EVENT,
+  INPUT_KEY_EVENT,
+};
+struct InputEvent {
+  InputEventType type;
+  InputAction action;
+  bool pressed;
+
+  struct MouseMoveEvent { // mouse click;
+    int x;
+    int y;
+    int dx;
+    int dy;
+  };
+  struct MouseClickEvent { // mouse click;
+    int x;
+    int y;
+    int button;
+  };
+  struct KeyPressEvent { // key
+    SDL_Keycode key;
+    SDL_Keymod mod;
+    bool echo;
+  };
+
+  union {
+    MouseMoveEvent mouse_move_event;
+    MouseClickEvent mouse_click_event;
+    KeyPressEvent key_press_event;
+  };
+
+};
+
 class Input
 {
   std::map<Bind, InputAction> binds;
   bool ispressed[INPUTACTION_END];
   bool justpressed[INPUTACTION_END];
   bool justreleased[INPUTACTION_END];
+  int mouse_x, mouse_y;
 public:
   Input();
   ~Input();
   void newframe();
-  void setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed);
+  InputEvent setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed);
+  InputEvent set_mouse_pos(int x, int y, int dx, int dy);
+  InputEvent set_mouse_button(int button, int x, int y, bool pressed);
   void bindkey(SDL_Keycode key, InputAction action, SDL_Keymod mod = KMOD_NONE);
   void unbindkey(SDL_Keycode key, SDL_Keymod mod);
   bool isPressed(InputAction action);

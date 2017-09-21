@@ -32,3 +32,4 @@ build
 *.log
 imgui.ini
 *.sublime*
+*.dll
