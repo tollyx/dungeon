@@ -17,11 +17,11 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   Tilemap * map = tick->target->map;
   std::vector<vec2i> enemyPos;
   bool ishero = tick->target->isTypeOf(ACT_HERO);
-  auto actors = tick->target->map->GetActorList();
+  auto actors = tick->target->map->get_actor_list();
   for (Actor* actor : *actors) {
     if (actor->isTypeOf(ACT_HERO) != ishero) {
-      vec2i pos = actor->getPosition();
-      if (line_of_sight(tick->target->map, tick->target->getPosition(), pos)) {
+      vec2i pos = actor->get_position();
+      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
         enemyPos.push_back(pos);
       }
     }
@@ -45,7 +45,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
 
   Pathfinder::calcDijkstraMap(map, &safety, &dijkstra);
 
-  vec2i pos = tick->target->getPosition();
+  vec2i pos = tick->target->get_position();
 
   std::vector<vec2i> neigh = map->getNeighbours(pos.x, pos.y);
   std::vector<vec2i> options;

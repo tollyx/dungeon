@@ -170,12 +170,12 @@ bool Renderer::Init(std::string title, int width, int height) {
   return true;
 }
 
-void Renderer::SetColor(float r, float g, float b, float a) {
+void Renderer::set_color(float r, float g, float b, float a) {
   currentcolor = { r, g, b, a };
 }
 
 void Renderer::SetColor(Color col) {
-  SetColor(col.r, col.g, col.b, col.a);
+  set_color(col.r, col.g, col.b, col.a);
 }
 
 void Renderer::SetTitle(const char * title) {
@@ -206,27 +206,27 @@ void Renderer::SetClearColor(Color col) {
   glClearColor(col.r, col.g, col.b, col.a);
 }
 
-void Renderer::SetVSyncEnabled(bool enabled) {
+void Renderer::set_vsync_enabled(bool enabled) {
   SDL_GL_SetSwapInterval(enabled ? 1 : 0);
 }
 
-bool Renderer::IsVSyncEnabled() {
+bool Renderer::is_vsync_enabled() {
   return SDL_GL_GetSwapInterval() == 1;
 }
 
-void Renderer::SetWireframesEnabled(bool enabled) {
+void Renderer::set_wireframes_enabled(bool enabled) {
   wireframe = enabled;
 }
 
-bool Renderer::IsWireframesEnabled() {
+bool Renderer::is_wireframes_enabled() {
   return wireframe;
 }
 
-int Renderer::GetRendererWidth() {
+int Renderer::get_renderer_width() {
   return windowwidth;
 }
 
-int Renderer::GetRendererHeight() {
+int Renderer::get_renderer_height() {
   return windowheight;
 }
 
@@ -314,7 +314,7 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
 }
 
 
-void Renderer::DrawSprite(Sprite * sprite, int x, int y, float sx, float sy) {
+void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
 
   glm::mat4 model = glm::translate(glm::vec3(x, y, 0)) * glm::scale(glm::vec3(sprite->region.w * sx, sprite->region.h * sy, 1)) * glm::mat4(1);
 

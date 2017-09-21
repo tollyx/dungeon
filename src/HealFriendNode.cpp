@@ -12,14 +12,14 @@ HealFriendNode::~HealFriendNode() {}
 BehaviourTreeStatus HealFriendNode::tick(BTTick * tick) {
   bool ishero = tick->target->isTypeOf(ACT_HERO);
 
-  auto actors = tick->target->map->GetActorList();
+  auto actors = tick->target->map->get_actor_list();
   std::vector<Actor*> friends;
   for (auto actor : *actors) {
     if (actor == tick->target) continue;
 
     if (actor->isTypeOf(ACT_HERO) == ishero && actor->health < actor->maxhealth-1) {
-      vec2i pos = actor->getPosition();
-      if (line_of_sight(tick->target->map, tick->target->getPosition(), pos)) {
+      vec2i pos = actor->get_position();
+      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
         friends.push_back(actor);
       }
     }

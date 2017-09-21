@@ -20,19 +20,19 @@ public:
   int GetIndex(int x, int y); // Converts [x,y] to a 1D index.
   bool IsInsideBounds(int x, int y);
   std::vector<vec2i> getNeighbours(int x, int y, int range = 1);
-  void SetTile(int x, int y, int tile); // "Tile" is inteded for tile ids, but can be anything really.
+  void set_tile(int x, int y, int tile); // "Tile" is inteded for tile ids, but can be anything really.
   int GetTile(int x, int y);
   bool IsBlocked(int x, int y); // Checks if there is an actor blocking the tile.
 
   void draw(Renderer *renderer, Tileset *tileset, int x, int y, FieldOfView* view);
 
-  void AddActor(Actor* actor);
+  void add_actor(Actor *actor);
   void RemoveActor(Actor* actor);
 
   void debug_print();
 
   Actor* GetActor(int x, int y, Actors type);
   std::vector<Actor*> GetActors(int x, int y, int range, Actors type);
-  std::vector<Actor*>* GetActorList();
+  std::vector<Actor*>* get_actor_list();
 };
 

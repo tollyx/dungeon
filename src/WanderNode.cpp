@@ -10,7 +10,7 @@ WanderNode::WanderNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent){}
 WanderNode::~WanderNode() {}
 
 BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
-  vec2i pos = tick->target->getPosition();
+  vec2i pos = tick->target->get_position();
   std::vector<vec2i> neighbours = tick->target->map->getNeighbours(pos.x, pos.y);
   while (true) {
     if (neighbours.size() <= 0) {

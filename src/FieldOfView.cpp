@@ -18,7 +18,7 @@ FieldOfView::~FieldOfView() {
 
 void FieldOfView::calc(vec2i pos, float range) {
   counter++;
-  seen->SetTile(pos.x, pos.y, counter);
+  seen->set_tile(pos.x, pos.y, counter);
   // Once for each octant
   cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
   cast_light(1, 1.0f, 0.0f, -1, 0, 0, -1, pos.x, pos.y, range);
@@ -61,7 +61,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       }
 
       if (sqrt(deltaX*deltaX + deltaY*deltaY) <= radius) {
-        seen->SetTile(currentX, currentY, counter);
+        seen->set_tile(currentX, currentY, counter);
       }
 
       if (blocked) {

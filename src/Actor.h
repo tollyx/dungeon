@@ -27,12 +27,12 @@ public:
 
 
   Actor(Tilemap* map, vec2i pos);
-  const vec2i getPosition();
+  const vec2i get_position();
   bool IsAlive(){ return alive; };
   bool Move(int dx, int dy);
   int GetHealth() { return health; }
   void Kill() { alive = false; health = 0; };
-  void Update();
+  void update();
   virtual bool isTypeOf(Actors actor){ return actor == ACT_BASE; };
   virtual Actors Type() { return ACT_BASE; };
   ~Actor();

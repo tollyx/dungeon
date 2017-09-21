@@ -12,6 +12,6 @@ public:
   Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight);
   ~Tileset();
   int GetAmount();
-  Sprite* GetSprite(int tileId);
+  Sprite* get_sprite(int tileId);
 };
 

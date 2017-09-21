@@ -50,8 +50,8 @@ bool App::init() {
     return false;
   }
 
-  renderer->SetVSyncEnabled(vsync);
-  renderer->SetWireframesEnabled(wireframe);
+  renderer->set_vsync_enabled(vsync);
+  renderer->set_wireframes_enabled(wireframe);
 
   input = new Input();
   srand(static_cast<unsigned int>(time(nullptr)));
@@ -124,13 +124,13 @@ int App::start() {
           break;
         case SDL_KEYDOWN:
           if (!io.WantCaptureKeyboard) {
-            InputEvent inputEvent = input->setkey(ev.key.keysym.sym, (SDL_Keymod)ev.key.keysym.mod, true);
+            InputEvent inputEvent = input->set_key(ev.key.keysym.sym, (SDL_Keymod) ev.key.keysym.mod, true);
             current->inputevent(&inputEvent);
           }
           break;
         case SDL_KEYUP:
           if (!io.WantCaptureKeyboard){
-            InputEvent inputEvent = input->setkey(ev.key.keysym.sym, (SDL_Keymod)ev.key.keysym.mod, false);
+            InputEvent inputEvent = input->set_key(ev.key.keysym.sym, (SDL_Keymod) ev.key.keysym.mod, false);
             current->inputevent(&inputEvent);
           }
           break;
@@ -143,7 +143,7 @@ int App::start() {
     }
     while (running && accumulator >= dt) {
       nextstate = current->update(dt);
-      input->newframe();
+      input->new_frame();
 
       accumulator -= dt;
     }

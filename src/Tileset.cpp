@@ -26,7 +26,7 @@ int Tileset::GetAmount() {
   return amount;
 }
 
-Sprite * Tileset::GetSprite(int tileId) {
+Sprite * Tileset::get_sprite(int tileId) {
   if (tileId >= 0 && tileId < amount) {
     return &sprites[tileId];
   }

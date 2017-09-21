@@ -16,14 +16,14 @@ Input::~Input()
 {
 }
 
-void Input::newframe() {
+void Input::new_frame() {
   for(int i = 0; i < INPUTACTION_END; i++) {
     justpressed[i] = false;
     justreleased[i] = false;
   }
 }
 
-InputEvent Input::setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed)
+InputEvent Input::set_key(SDL_Keycode key, SDL_Keymod mod, bool pressed)
 {
   InputEvent event{};
   event.type = INPUT_KEY_EVENT;
@@ -57,25 +57,25 @@ InputEvent Input::setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed)
   return event;
 }
 
-void Input::bindkey(SDL_Keycode key, InputAction action, SDL_Keymod mod) {
+void Input::bind_key(SDL_Keycode key, InputAction action, SDL_Keymod mod) {
   Bind bind = { key, mod };
   binds[bind] = action;
 }
 
-void Input::unbindkey(SDL_Keycode key, SDL_Keymod mod) {
+void Input::unbind_key(SDL_Keycode key, SDL_Keymod mod) {
   Bind bind = { key, mod };
   binds.erase(bind);
 }
 
-bool Input::isPressed(InputAction action) {
+bool Input::is_pressed(InputAction action) {
   return ispressed[action];
 }
 
-bool Input::wasJustPressed(InputAction action) {
+bool Input::was_just_pressed(InputAction action) {
   return justpressed[action];
 }
 
-bool Input::wasJustReleased(InputAction action) {
+bool Input::was_just_released(InputAction action) {
   return justreleased[action];
 }
 
@@ -106,4 +106,8 @@ InputEvent Input::set_mouse_button(int button, int x, int y, bool pressed) {
   event.mouse_click_event.x = x;
   event.mouse_click_event.y = y;
   return event;
+}
+
+vec2i Input::get_mouse_pos() {
+  return {mouse_x, mouse_y};
 }

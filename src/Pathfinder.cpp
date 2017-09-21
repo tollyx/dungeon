@@ -36,7 +36,7 @@ namespace Pathfinder
       }
       open.erase(open.begin()+currentindex);
       closed.push_back(current);
-      //map->SetTile(current->pos.x, current->pos.y, TILE_CLOSED);
+      //map->set_tile(current->pos.x, current->pos.y, TILE_CLOSED);
 
       auto neighbours = map->getNeighbours(current->pos.x, current->pos.y);
       for (auto pos : neighbours)
@@ -89,7 +89,7 @@ namespace Pathfinder
               closed.erase(it);
               delete (*it);
               open.push_back(neighbour);
-              //map->SetTile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+              //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
               isClosed = false;
             }
             break;
@@ -111,7 +111,7 @@ namespace Pathfinder
                 open.erase(it);
                 delete (*it);
                 open.push_back(neighbour);
-                //map->SetTile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+                //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
               }
               break;
             }
@@ -120,7 +120,7 @@ namespace Pathfinder
           if (!isOpened)
           {
             open.push_back(neighbour);
-            //map->SetTile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+            //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
           }
         }
         else

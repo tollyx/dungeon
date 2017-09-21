@@ -26,7 +26,7 @@ BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
   }
   Pathfinder::calcDijkstraMap(map, &unexplored, &dijkstra, 99999);
 
-  vec2i pos = tick->target->getPosition();
+  vec2i pos = tick->target->get_position();
 
   std::vector<vec2i> neigh = map->getNeighbours(pos.x, pos.y);
   std::vector<vec2i> options;

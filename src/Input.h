@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <map>
+#include "vec2i.h"
 
 enum InputAction {
   ACTION_NONE,
@@ -16,6 +17,7 @@ enum InputAction {
   ACTION_MOVE_SOUTH,
   ACTION_MOVE_SOUTHWEST,
   ACTION_MOVE_SOUTHEAST,
+  ACTION_WAIT,
   INPUTACTION_END // Used to get the length of the enum. Must be the final entry.
 };
 
@@ -76,14 +78,15 @@ class Input
 public:
   Input();
   ~Input();
-  void newframe();
-  InputEvent setkey(SDL_Keycode key, SDL_Keymod mod, bool pressed);
+  void new_frame();
+  InputEvent set_key(SDL_Keycode key, SDL_Keymod mod, bool pressed);
   InputEvent set_mouse_pos(int x, int y, int dx, int dy);
   InputEvent set_mouse_button(int button, int x, int y, bool pressed);
-  void bindkey(SDL_Keycode key, InputAction action, SDL_Keymod mod = KMOD_NONE);
-  void unbindkey(SDL_Keycode key, SDL_Keymod mod);
-  bool isPressed(InputAction action);
-  bool wasJustPressed(InputAction action);
-  bool wasJustReleased(InputAction action);
+  void bind_key(SDL_Keycode key, InputAction action, SDL_Keymod mod = KMOD_NONE);
+  void unbind_key(SDL_Keycode key, SDL_Keymod mod);
+  bool is_pressed(InputAction action);
+  bool was_just_pressed(InputAction action);
+  bool was_just_released(InputAction action);
+  vec2i get_mouse_pos();
 };
 

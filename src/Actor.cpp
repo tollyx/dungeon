@@ -7,7 +7,7 @@ Actor::Actor(Tilemap * map, vec2i pos) {
   position = pos;
 }
 
-const vec2i Actor::getPosition() {
+const vec2i Actor::get_position() {
   return position;
 }
 
@@ -21,7 +21,7 @@ bool Actor::Move(int dx, int dy) {
   return false;
 }
 
-void Actor::Update() {
+void Actor::update() {
   if (!alive) return;
 
   if (bt) {

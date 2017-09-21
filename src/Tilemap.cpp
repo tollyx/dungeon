@@ -62,7 +62,7 @@ std::vector<vec2i> Tilemap::getNeighbours(int x, int y, int range)
   return neigh;
 }
 
-void Tilemap::SetTile(int x, int y, int tile) 
+void Tilemap::set_tile(int x, int y, int tile)
 {
   if (IsInsideBounds(x, y)) 
   {
@@ -87,7 +87,7 @@ bool Tilemap::IsBlocked(int x, int y)
       return true;
     }
     for (Actor* var : actors) {
-      vec2i pos = var->getPosition();
+      vec2i pos = var->get_position();
       if (var->IsAlive() && pos.x == x && pos.y == y) {
         return true;
       }
@@ -97,7 +97,7 @@ bool Tilemap::IsBlocked(int x, int y)
   return true;
 }
 
-void Tilemap::AddActor(Actor * actor) {
+void Tilemap::add_actor(Actor *actor) {
   for (Actor* var : actors) {
     if (var == actor) {
       return;
@@ -119,7 +119,7 @@ Actor * Tilemap::GetActor(int x, int y, Actors type) {
   vec2i pos = { x,y };
   for (Actor* act : actors) {
     if (act->isTypeOf(type)) {
-      vec2i apos = act->getPosition();
+      vec2i apos = act->get_position();
       if (apos == pos) {
         return act;
       }
@@ -134,7 +134,7 @@ std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
   for (Actor* act : actors) {
     for (vec2i pos : neigh) {
       if (act->isTypeOf(type)) {
-        vec2i apos = act->getPosition();
+        vec2i apos = act->get_position();
         if (apos == pos) {
           found.push_back(act);
           break;
@@ -145,7 +145,7 @@ std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
   return found;
 }
 
-std::vector<Actor*>* Tilemap::GetActorList() {
+std::vector<Actor*>* Tilemap::get_actor_list() {
   return &actors;
 }
 
@@ -153,12 +153,12 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int ox, int oy, FieldOf
   for (int x = 0; x < 32; x++) {
     for (int y = 0; y < 32; y++) {
       if (view == nullptr || view->has_seen({x, y})) {
-        renderer->SetColor(1, 1, 1, 1);
-        renderer->DrawSprite(tileset->GetSprite(GetTile(x, y)), ox + x * 12, oy + y * 12);
+        renderer->set_color(1, 1, 1, 1);
+        renderer->draw_sprite(tileset->get_sprite(GetTile(x, y)), ox + x * 12, oy + y * 12);
 
         if (view != nullptr && !view->can_see({x, y})) {
-          renderer->SetColor(0, 0, 0, .5f);
-          renderer->DrawSprite(tileset->GetSprite(219), ox + x * 12, oy + y * 12);
+          renderer->set_color(0, 0, 0, .5f);
+          renderer->draw_sprite(tileset->get_sprite(219), ox + x * 12, oy + y * 12);
         }
       }
     }
