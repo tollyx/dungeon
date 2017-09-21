@@ -124,15 +124,21 @@ void PlayState::draw(double delta) {
     ImGui::SliderFloat("turndelay", &delay, .01f, 1);
   }
 
+  vec2i offset;
+  offset.x = app->renderer->GetRendererWidth() / 2;
+  offset.y = app->renderer->GetRendererHeight() / 2;
+  vec2i heropos = hero->getPosition();
+  offset.x -= heropos.x * 12;
+  offset.y -= heropos.y * 12;
 
   for (int x = 0; x < 32; x++) {
     for (int y = 0; y < 32; y++) {
       if (hero == nullptr || hero->HasSeen(x, y)) {
         app->renderer->SetColor(1, 1, 1, 1);
-        app->renderer->DrawSprite(ascii->GetSprite(tilemap->GetTile(x, y)), x * 12, y * 12);
+        app->renderer->DrawSprite(ascii->GetSprite(tilemap->GetTile(x, y)), offset.x + x * 12, offset.y + y * 12);
         if (hero != nullptr && !hero->CanSee(x, y)) {
           app->renderer->SetColor(0, 0, 0, .5f);
-          app->renderer->DrawSprite(ascii->GetSprite(219), x * 12, y * 12);
+          app->renderer->DrawSprite(ascii->GetSprite(219), offset.x + x * 12, offset.y + y * 12);
         }
       }
     }
@@ -142,7 +148,7 @@ void PlayState::draw(double delta) {
     vec2i pos = var->getPosition();
     if (hero == nullptr || hero->CanSee(pos.x, pos.y)) {
       app->renderer->SetColor(0, 0, 0, 255);
-      app->renderer->DrawSprite(ascii->GetSprite(219), pos.x * 12, pos.y * 12);
+      app->renderer->DrawSprite(ascii->GetSprite(219), offset.x + pos.x * 12, offset.y + pos.y * 12);
 
       int sprite;
       switch (var->Type()) {
@@ -163,7 +169,7 @@ void PlayState::draw(double delta) {
           sprite = 2;
           break;
       }
-      app->renderer->DrawSprite(ascii->GetSprite(sprite), pos.x * 12, pos.y * 12);
+      app->renderer->DrawSprite(ascii->GetSprite(sprite), offset.x + pos.x * 12, offset.y + pos.y * 12);
     }
   }
   if (hero != nullptr) {
