@@ -9,26 +9,31 @@
 #include "FleeNode.h"
 
 
+BehaviourTree* shamtree = nullptr;
+
 Shaman::Shaman(Tilemap* map, vec2i pos) : Actor(map, pos) {
   alive = true;
   health = 2;
   maxhealth = 2;
   strength = 1;
 
-  BehaviourTreeSelector* root = new BehaviourTreeSelector(nullptr);
-  bt = new BehaviourTree(root);
-  {
-    IfSeeFriendNode* seefriend = new IfSeeFriendNode(root);
-    BehaviourTreeSelector* fsel = new BehaviourTreeSelector(seefriend);
+  if (shamtree == nullptr) {
+    auto * root = new BehaviourTreeSelector(nullptr);
+    shamtree = new BehaviourTree(root);
     {
-      new HealFriendNode(fsel);
-      //new RangedAttackNode(fsel);
-    }
+      auto * seefriend = new IfSeeFriendNode(root);
+      auto * fsel = new BehaviourTreeSelector(seefriend);
+      {
+        new HealFriendNode(fsel);
+        //new RangedAttackNode(fsel);
+      }
 
-    new FleeNode(root);
-    new WanderNode(root);
+      new FleeNode(root);
+      new WanderNode(root);
+    }
   }
+  bt = shamtree;
 }
 
 
-Shaman::~Shaman() {}
+Shaman::~Shaman() = default;

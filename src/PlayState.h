@@ -18,8 +18,6 @@ class PlayState : public Gamestate {
   Tilemap* tilemap;
   Actor * hero;
   FieldOfView *fov;
-  float delay = .5;
-  double timer;
 
   bool debug;
 public:

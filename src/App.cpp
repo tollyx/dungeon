@@ -23,8 +23,8 @@ bool App::init() {
   Config cfg = Config("dungeon.cfg");
   cfg.load();
 
-  int windowWidth = cfg.getInt("ResolutionX", 1280);
-  int windowHeight = cfg.getInt("ResolutionY", 720);
+  int windowWidth = cfg.getInt("ResolutionX", 792);
+  int windowHeight = cfg.getInt("ResolutionY", 600);
   bool vsync = cfg.getBool("VSync", false);
   bool wireframe = cfg.getBool("Wireframes", false);
 

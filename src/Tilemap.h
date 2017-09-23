@@ -24,7 +24,7 @@ public:
   int GetTile(int x, int y);
   bool IsBlocked(int x, int y); // Checks if there is an actor blocking the tile.
 
-  void draw(Renderer *renderer, Tileset *tileset, int x, int y, FieldOfView* view);
+  void draw(Renderer *renderer, Tileset *tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view);
 
   void add_actor(Actor *actor);
   void RemoveActor(Actor* actor);

@@ -5,22 +5,24 @@
 #include "WanderNode.h"
 #include "RestNode.h"
 
+BehaviourTree* gobtree = nullptr;
+
 Goblin::Goblin(Tilemap* map, vec2i pos) : Actor(map, pos) {
   alive = true;
   health = 4;
   maxhealth = 4;
   strength = 1;
-
-  BehaviourTreeSelector* root = new BehaviourTreeSelector(nullptr);
-  bt = new BehaviourTree(root);
-  {
-
-
-    new AttackEnemyNode(root);
-    new RestNode(root);
-    new WanderNode(root);
+  if (gobtree == nullptr) {
+    auto * root = new BehaviourTreeSelector(nullptr);
+    gobtree = new BehaviourTree(root);
+    {
+      new AttackEnemyNode(root);
+      new RestNode(root);
+      new WanderNode(root);
+    }
   }
+  bt = gobtree;
 }
 
 
-Goblin::~Goblin() {}
+Goblin::~Goblin() = default;

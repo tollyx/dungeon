@@ -138,7 +138,6 @@ void PlayState::new_game() {
 }
 
 Gamestate *PlayState::update(double delta) {
-  timer += delta;
   if (action != ACTION_NONE) {
     if (hero) {
       vec2i dir;
@@ -184,7 +183,9 @@ Gamestate *PlayState::update(double delta) {
         actors->erase(actors->begin() + i);
       }
     }
-    fov->calc(hero->get_position(), 6);
+    if (hero) {
+      fov->calc(hero->get_position(), 6);
+    }
     action = ACTION_NONE;
   }
   return nullptr;
@@ -214,25 +215,37 @@ void PlayState::draw(double delta) {
     }
 
     ImGui::EndMainMenuBar();
-
-    ImGui::SliderFloat("turndelay", &delay, .01f, 1);
   }
 
-  vec2i offset;
-  offset.x = app->renderer->get_renderer_width() / 2;
-  offset.y = app->renderer->get_renderer_height() / 2;
-  vec2i heropos = hero->get_position();
-  offset.x -= heropos.x * 12;
-  offset.y -= heropos.y * 12;
+  vec2i asciisize = {
+      ascii->get_tile_width(),
+      ascii->get_tile_height(),
+  };
+  vec2i tilesize = {
+      app->renderer->get_renderer_width() / ascii->get_tile_width(),
+      app->renderer->get_renderer_height() / ascii->get_tile_height(),
+  };
+  vec2i margin = {
+      (app->renderer->get_renderer_width() - tilesize.x * asciisize.x)/2,
+      (app->renderer->get_renderer_height() - tilesize.y * asciisize.y)/2,
+  };
+  vec2i heropos = {0,0};
+  if (hero) {
+    heropos = hero->get_position();
+  }
+  vec2i offset = {
+      (tilesize.x/2-heropos.x),
+      (tilesize.y/2-heropos.y),
+  };
 
-  tilemap->draw(app->renderer, ascii, offset.x, offset.y, fov);
+  tilemap->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, fov);
 
   auto actors = tilemap->get_actor_list();
   for (Actor* var : *actors) {
     vec2i pos = var->get_position();
     if (fov == nullptr || fov->can_see(pos)) {
       app->renderer->set_color(0, 0, 0, 255);
-      app->renderer->draw_sprite(ascii->get_sprite(219), offset.x + pos.x * 12, offset.y + pos.y * 12);
+      app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
 
       int sprite;
       switch (var->Type()) {
@@ -253,16 +266,16 @@ void PlayState::draw(double delta) {
           sprite = 2;
           break;
       }
-      app->renderer->draw_sprite(ascii->get_sprite(sprite), offset.x + pos.x * 12, offset.y + pos.y * 12);
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
   if (hero != nullptr) {
     app->renderer->set_color(155, 5, 5, 255);
     for (int i = 0; i < hero->health; i++) {
       app->renderer->set_color(0, 0, 0, 255);
-      app->renderer->draw_sprite(ascii->get_sprite(219), i * 12, 0);
+      app->renderer->draw_sprite(ascii->get_sprite(219), (i+1) * asciisize.x, asciisize.y);
       app->renderer->set_color(255, 0, 0, 255);
-      app->renderer->draw_sprite(ascii->get_sprite(3), i * 12, 0);
+      app->renderer->draw_sprite(ascii->get_sprite(3), (i+1) * asciisize.x, asciisize.y);
     }
   }
 }

@@ -4,6 +4,8 @@
 Tileset::Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight) {
   int tilesX = imgWidth / tileWidth;
   int tilesY = imgHeight / tileHeight;
+  tile_width = tileWidth;
+  tile_height = tileHeight;
   amount = tilesX*tilesY;
   sprites = new Sprite[amount];
   if (renderer->LoadTexture(imgPath) != nullptr) {
@@ -22,7 +24,7 @@ Tileset::~Tileset() {
   delete sprites;
 }
 
-int Tileset::GetAmount() {
+int Tileset::get_amount() {
   return amount;
 }
 
@@ -31,4 +33,12 @@ Sprite * Tileset::get_sprite(int tileId) {
     return &sprites[tileId];
   }
   return nullptr;
+}
+
+int Tileset::get_tile_width() {
+  return tile_width;
+}
+
+int Tileset::get_tile_height() {
+  return tile_height;
 }

@@ -5,6 +5,7 @@
 Actor::Actor(Tilemap * map, vec2i pos) {
   this->map = map;
   position = pos;
+  bt = nullptr;
 }
 
 const vec2i Actor::get_position() {
@@ -24,7 +25,7 @@ bool Actor::Move(int dx, int dy) {
 void Actor::update() {
   if (!alive) return;
 
-  if (bt) {
+  if (bt != nullptr) {
     bt->tick(this);
   }
   if (health < maxhealth) {
@@ -40,9 +41,4 @@ void Actor::update() {
   }
 }
 
-Actor::~Actor() {
-  if (bt != nullptr) {
-    delete bt;
-    bt = nullptr;
-  }
-}
+Actor::~Actor() = default;

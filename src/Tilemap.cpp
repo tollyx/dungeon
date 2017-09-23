@@ -149,16 +149,22 @@ std::vector<Actor*>* Tilemap::get_actor_list() {
   return &actors;
 }
 
-void Tilemap::draw(Renderer *renderer, Tileset* tileset, int ox, int oy, FieldOfView* view) {
-  for (int x = 0; x < 32; x++) {
-    for (int y = 0; y < 32; y++) {
-      if (view == nullptr || view->has_seen({x, y})) {
-        renderer->set_color(1, 1, 1, 1);
-        renderer->draw_sprite(tileset->get_sprite(GetTile(x, y)), ox + x * 12, oy + y * 12);
+void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
+  int w = tileset->get_tile_width();
+  int h = tileset->get_tile_height();
+  for (int ix = 0; ix < tw; ix++) {
+    for (int iy = 0; iy < th; iy++) {
+      int ax = tx + ix;
+      int ay = ty + iy;
+      if (IsInsideBounds(ax, ay)) {
+        if (view == nullptr || view->has_seen({ax, ay})) {
+          renderer->set_color(1, 1, 1, 1);
+          renderer->draw_sprite(tileset->get_sprite(GetTile(ax, ay)), x + ix * w, y + iy * h);
 
-        if (view != nullptr && !view->can_see({x, y})) {
-          renderer->set_color(0, 0, 0, .6f);
-          renderer->draw_sprite(tileset->get_sprite(219), ox + x * 12, oy + y * 12);
+          if (view != nullptr && !view->can_see({ax, ay})) {
+            renderer->set_color(0, 0, 0, .6f);
+            renderer->draw_sprite(tileset->get_sprite(219), x + ix * w, y + iy * h);
+          }
         }
       }
     }
