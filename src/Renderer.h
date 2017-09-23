@@ -47,11 +47,11 @@ public:
   ~Renderer();
   bool Init(std::string title, int width, int height);
   void set_color(float r, float g, float b, float a);
-  void SetColor(Color col);
-  void SetTitle(const char* title);
-  void SetWindowSize(int width, int height);
-  void SetClearColor(float r, float g, float b, float a);
-  void SetClearColor(Color col);
+  void set_color(Color col);
+  void set_title(const char *title);
+  void set_window_size(int width, int height);
+  void set_clear_color(float r, float g, float b, float a);
+  void set_clear_color(Color col);
   void set_vsync_enabled(bool enabled);
   bool is_vsync_enabled();
   void set_wireframes_enabled(bool enabled);

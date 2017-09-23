@@ -2,7 +2,11 @@
 #include "Tilemap.h"
 #include "BehaviourTree.h"
 
+int idcounter = 0;
+
 Actor::Actor(Tilemap * map, vec2i pos) {
+  id = idcounter++;
+  name = "Actor";
   this->map = map;
   position = pos;
   bt = nullptr;

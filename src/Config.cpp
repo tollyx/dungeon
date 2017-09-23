@@ -3,12 +3,13 @@
 #include <functional>
 #include <fstream>
 #include <sstream>
+#include <utility>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
-bool isFloat(string myString) {
+bool isFloat(const string &myString) {
   istringstream iss(myString);
   float f;
   iss >> noskipws >> f; // noskipws considers leading whitespace invalid
@@ -16,7 +17,7 @@ bool isFloat(string myString) {
   return iss.eof() && !iss.fail();
 }
 
-bool isInt(string myString) {
+bool isInt(const string &myString) {
   istringstream iss(myString);
   int i;
   iss >> noskipws >> i; // noskipws considers leading whitespace invalid
@@ -45,7 +46,7 @@ static inline void trim(string &s) {
 
 
 Config::Config(string path) {
-  this->path = path;
+  this->path = std::move(path);
 }
 
 void Config::load() {
@@ -57,7 +58,7 @@ void Config::load() {
   if (conf.is_open()) {
     string line;
     while (getline(conf, line)) {
-      int pos = line.find("=");
+      unsigned int pos = line.find('=');
       if (pos > 0) {
         string key = line.substr(0, pos);
         string value = line.substr(pos + 1, line.length());
@@ -182,5 +183,24 @@ bool Config::getBool(std::string key, bool defaultvalue) {
 }
 
 
-Config::~Config() {
+Config::~Config() = default;
+
+void Config::setString(std::string key, std::string value) {
+  deleteValue(key);
+  strings.insert(pair<string, string>{key, value});
+}
+
+void Config::setInt(std::string key, int value) {
+  deleteValue(key);
+  ints.insert(pair<string, int>{key, value});
+}
+
+void Config::setFloat(std::string key, float value) {
+  deleteValue(key);
+  floats.insert(pair<string, float>{key, value});
+}
+
+void Config::setBool(std::string key, bool value) {
+  deleteValue(key);
+  bools.insert(pair<string, bool>{key, value});
 }

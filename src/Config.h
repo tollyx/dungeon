@@ -17,6 +17,10 @@ public:
   int getInt(std::string key, int defaultvalue);
   float getFloat(std::string key, float defaultvalue);
   bool getBool(std::string key, bool defaultvalue);
+  void setString(std::string key, std::string value);
+  void setInt(std::string key, int value);
+  void setFloat(std::string key, float value);
+  void setBool(std::string key, bool value);
   ~Config();
 };
 

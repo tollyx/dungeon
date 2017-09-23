@@ -9,21 +9,22 @@
 #include "imgui_impl_sdl_gl3.h"
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
+#include <utility>
 
 const GLfloat rectVertData[]{
   0,0,0, 1,0,0, 0,1,0, 1,1,0
 };
 
 glm::mat4 screenVPmat;
-float widthmult;
-float heightmult;
+double widthmult;
+double heightmult;
 
 GLuint LoadShader(const char* path, GLenum shadertype) {
   GLuint shaderId = glCreateShader(shadertype);
   std::string shadersource;
   std::ifstream shaderstream(path, std::ios::in);
   if (shaderstream.is_open()) {
-    std::string line = "";
+    std::string line;
     while (getline(shaderstream, line)) {
       shadersource += line + "\n";
     }
@@ -105,8 +106,8 @@ Renderer::~Renderer() {
 GLuint shaderProg;
 GLuint wireShaderProg;
 GLuint spriteVertArrayId;
-GLuint colorUniform;
-GLuint mvpUniform;
+GLint colorUniform;
+GLint mvpUniform;
 
 bool Renderer::Init(std::string title, int width, int height) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -114,7 +115,7 @@ bool Renderer::Init(std::string title, int width, int height) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+  window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL /* | SDL_WINDOW_RESIZABLE */);
   if (window == NULL) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"Failed to create a window!\n");
     return false;
@@ -164,7 +165,7 @@ bool Renderer::Init(std::string title, int width, int height) {
   colorUniform = glGetUniformLocation(shaderProg, "colortint");
   mvpUniform = glGetUniformLocation(shaderProg, "MVP");
 
-  SetWindowSize(width, height);
+  set_window_size(width, height);
 
   SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer initialized.\n");
   return true;
@@ -174,35 +175,35 @@ void Renderer::set_color(float r, float g, float b, float a) {
   currentcolor = { r, g, b, a };
 }
 
-void Renderer::SetColor(Color col) {
+void Renderer::set_color(Color col) {
   set_color(col.r, col.g, col.b, col.a);
 }
 
-void Renderer::SetTitle(const char * title) {
+void Renderer::set_title(const char *title) {
   SDL_SetWindowTitle(window, title);
 }
 
-void Renderer::SetWindowSize(int width, int height) {
+void Renderer::set_window_size(int width, int height) {
   SDL_SetWindowSize(window, width, height);
 
   windowwidth = width;
   windowheight = height;
 
-  widthmult = 1.f / windowwidth * 2;
-  heightmult = 1.f / windowheight * 2;
+  widthmult = 1. / windowwidth * 2;
+  heightmult = 1. / windowheight * 2;
 
   glm::mat4 projection = glm::ortho(-1, 1, 1, -1);
   glm::mat4 view = glm::scale(glm::vec3(widthmult, heightmult, 1)) * glm::translate(glm::vec3(-windowwidth / 2, -windowheight / 2, 0)) * glm::mat4(1);
 
   screenVPmat = projection * view;
-  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Window size set to %dx%d.\n", width, height);
+  SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Window size set to %dx%d.\n", windowwidth, windowheight);
 }
 
-void Renderer::SetClearColor(float r, float g, float b, float a) {
+void Renderer::set_clear_color(float r, float g, float b, float a) {
   glClearColor(r, g, b, a);
 }
 
-void Renderer::SetClearColor(Color col) {
+void Renderer::set_clear_color(Color col) {
   glClearColor(col.r, col.g, col.b, col.a);
 }
 
@@ -265,7 +266,7 @@ Texture * Renderer::LoadTexture(std::string path) {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-      Texture t;
+      Texture t{};
       t.id = textureId;
       t.w = surface->w;
       t.h = surface->h;
@@ -294,10 +295,10 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
   sprite.region.y = y;
   sprite.region.w = w;
   sprite.region.h = h;
-  sprite.texture = LoadTexture(path);
+  sprite.texture = LoadTexture(std::move(path));
   if (sprite.texture != nullptr) {
-    float tw = (float)sprite.texture->w;
-    float th = (float)sprite.texture->h;
+    auto tw = (float)sprite.texture->w;
+    auto th = (float)sprite.texture->h;
     const float uvs[] = {
       x / tw, y / th,
       (x + w) / tw, y / th,
@@ -319,7 +320,6 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
   glm::mat4 model = glm::translate(glm::vec3(x, y, 0)) * glm::scale(glm::vec3(sprite->region.w * sx, sprite->region.h * sy, 1)) * glm::mat4(1);
 
   glm::mat4 mvp = screenVPmat * model;
-
     
   glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -337,9 +337,9 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
   glBindBuffer(GL_ARRAY_BUFFER, spriteVBuf);
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
   glBindBuffer(GL_ARRAY_BUFFER, sprite->uvBuf);
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -353,9 +353,9 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, spriteVBuf);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glBindBuffer(GL_ARRAY_BUFFER, sprite->uvBuf);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
   }

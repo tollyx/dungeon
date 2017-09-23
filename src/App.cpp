@@ -100,6 +100,9 @@ int App::start() {
             case SDL_WINDOWEVENT_CLOSE:
               running = false;
               break;
+            case SDL_WINDOWEVENT_RESIZED:
+              renderer->set_window_size(ev.window.data1, ev.window.data2);
+              break;
             default:
               break;
           }
@@ -154,7 +157,9 @@ int App::start() {
     SDL_Delay(1);
   }
   delete renderer;
+  ImGui::Shutdown();
   SDL_Quit();
+
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Quit.");
   return 0;
 }

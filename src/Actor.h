@@ -1,5 +1,6 @@
 #pragma once
 #include "vec2i.h"
+#include <string>
 
 class BehaviourTree;
 
@@ -19,6 +20,8 @@ class Actor {
 protected:
   BehaviourTree* bt;
 public:
+  int id;
+  std::string name;
   Tilemap* map;
   bool alive;
   int health;

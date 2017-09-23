@@ -99,7 +99,7 @@ void PlayState::new_game() {
   tilemap = new Tilemap(32, 32);
   int y = 0;
   int x = 0;
-  for (int i = 0; i < map.length(); i++) {
+  for (char i : map) {
 
     if (y >= 32) {
       break;
@@ -108,25 +108,25 @@ void PlayState::new_game() {
       y++;
       x = 0;
     }
-    if (map[i] == ' ' || map[i] == '\t' || map[i] == '\n') {
+    if (i == ' ' || i == '\t' || i == '\n') {
       continue;
     }
 
-    if (map[i] == '@') {
+    if (i == '@') {
       hero = new Hero(tilemap, vec2i(x, y));
       tilemap->add_actor(hero);
       tilemap->set_tile(x, y, '.');
     }
-    else if (map[i] == 'g') {
+    else if (i == 'g') {
       tilemap->add_actor(new Goblin(tilemap, vec2i(x, y)));
       tilemap->set_tile(x, y, '.');
     }
-    else if (map[i] == 's') {
+    else if (i == 's') {
       tilemap->add_actor(new Shaman(tilemap, vec2i(x, y)));
       tilemap->set_tile(x, y, '.');
     }
     else {
-      tilemap->set_tile(x, y, map[i]);
+      tilemap->set_tile(x, y, i);
     }
     x++;
   }
@@ -168,10 +168,13 @@ Gamestate *PlayState::update(double delta) {
           }
         }
       }
+      hero->update();
+      fov->calc(hero->get_position(), 6);
     }
 
     auto actors = tilemap->get_actor_list();
     for (Actor* var : *actors) {
+      if (var == hero) continue;
       var->update();
     }
     for (int i = (int)actors->size() - 1; i >= 0; i--) {
@@ -183,38 +186,57 @@ Gamestate *PlayState::update(double delta) {
         actors->erase(actors->begin() + i);
       }
     }
-    if (hero) {
-      fov->calc(hero->get_position(), 6);
-    }
     action = ACTION_NONE;
   }
   return nullptr;
 }
 
+bool debug_actors = false;
+bool debug_settings = false;
+
 void PlayState::draw(double delta) {
   if (debug) {
-    bool wireframe = app->renderer->is_wireframes_enabled();
-    ImGui::Checkbox("Wireframes", &wireframe);
-    app->renderer->set_wireframes_enabled(wireframe);
-    bool vsync = app->renderer->is_vsync_enabled();
-    ImGui::Checkbox("VSync", &vsync);
-    app->renderer->set_vsync_enabled(vsync);
+    {
+      ImGui::BeginMainMenuBar();
 
-    ImGui::BeginMainMenuBar();
+      if (ImGui::BeginMenu("View")) {
+        ImGui::MenuItem("Settings", nullptr, &debug_settings);
+        ImGui::MenuItem("Actors", nullptr, &debug_actors);
+        ImGui::EndMenu();
+      }
 
-    if (ImGui::BeginMenu("File")) {
-      ImGui::EndMenu();
+      ImGui::EndMainMenuBar();
     }
+    if (debug_settings) {
+      ImGui::Begin("Settings", &debug_settings);
 
-    if (ImGui::BeginMenu("Edit")) {
-      ImGui::EndMenu();
+      bool wireframe = app->renderer->is_wireframes_enabled();
+      ImGui::Checkbox("Wireframes", &wireframe);
+      app->renderer->set_wireframes_enabled(wireframe);
+      bool vsync = app->renderer->is_vsync_enabled();
+      ImGui::Checkbox("VSync", &vsync);
+      app->renderer->set_vsync_enabled(vsync);
+
+      ImGui::End();
     }
+    if (debug_actors) {
+      ImGui::Begin("Actors", &debug_actors);
 
-    if (ImGui::BeginMenu("View")) {
-      ImGui::EndMenu();
+      auto actors = tilemap->get_actor_list();
+      const char* headers[] {
+          "id", "name", "health"
+      };
+      static float widths[3]{0.2f, 0.5f, 0.3f};
+      ImGui::BeginTable("ActorColumns", headers, widths, 3);
+      for (Actor* act : *actors) {
+        ImGui::Text("%d", act->id); ImGui::NextColumn();
+        ImGui::Text(act->name.c_str()); ImGui::NextColumn();
+        ImGui::Text("%d/%d", act->health, act->maxhealth); ImGui::NextColumn();
+      }
+      ImGui::EndTable();
+
+      ImGui::End();
     }
-
-    ImGui::EndMainMenuBar();
   }
 
   vec2i asciisize = {
