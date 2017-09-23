@@ -13,7 +13,7 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
   health = 6;
   maxhealth = 6;
   strength = 2;
-
+  /*
   BehaviourTreeSelector* root = new BehaviourTreeSelector(nullptr);
   bt = new BehaviourTree(root);
   {
@@ -25,6 +25,7 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
     //new ExploreNode(root);
     new WanderNode(root);
   }
+   */
 }
 
 

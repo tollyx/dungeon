@@ -51,6 +51,8 @@ const std::string map =
     "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
     "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #";
 
+InputAction action;
+
 void PlayState::load() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating ascii tileset...\n");
   ascii = new Tileset(app->renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
@@ -65,6 +67,7 @@ void PlayState::load() {
   app->input->bind_key(SDLK_KP_2, ACTION_MOVE_SOUTH);
   app->input->bind_key(SDLK_KP_1, ACTION_MOVE_SOUTHWEST);
   app->input->bind_key(SDLK_KP_3, ACTION_MOVE_SOUTHEAST);
+  app->input->bind_key(SDLK_KP_5, ACTION_WAIT);
   app->input->bind_key(SDLK_F1, ACTION_TOGGLE_DEBUG);
 
   app->input->bind_key(SDLK_r, ACTION_RESET);
@@ -74,7 +77,7 @@ void PlayState::load() {
 }
 
 void PlayState::new_game() {
-  paused = true;
+  action = ACTION_NONE;
 
   if (tilemap != nullptr) {
     delete tilemap;
@@ -136,25 +139,53 @@ void PlayState::new_game() {
 
 Gamestate *PlayState::update(double delta) {
   timer += delta;
-  if (!paused) {
-    if (timer >= delay) {
-      timer = 0;
-
-      auto actors = tilemap->get_actor_list();
-      for (Actor* var : *actors) {
-        var->update();
+  if (action != ACTION_NONE) {
+    if (hero) {
+      vec2i dir;
+      switch (action) {
+        case ACTION_MOVE_NORTH: dir = {0, -1}; break;
+        case ACTION_MOVE_NORTHWEST: dir = {-1, -1}; break;
+        case ACTION_MOVE_NORTHEAST: dir = {1, -1}; break;
+        case ACTION_MOVE_WEST: dir = {-1, 0}; break;
+        case ACTION_MOVE_EAST: dir = {1, 0}; break;
+        case ACTION_MOVE_SOUTH: dir = {0, 1}; break;
+        case ACTION_MOVE_SOUTHWEST: dir = {-1, 1}; break;
+        case ACTION_MOVE_SOUTHEAST: dir = {1, 1}; break;
+        case ACTION_WAIT: dir = {0, 0}; break;
+        default: action = ACTION_NONE; return nullptr; // abort turn
       }
-      for (int i = (int)actors->size() - 1; i >= 0; i--) {
-        if (!actors->at(i)->alive) {
-          if (actors->at(i) == hero) {
-            hero = nullptr;
+      if (dir != vec2i(0,0)) {
+        if (!hero->Move(dir.x, dir.y)) {
+          vec2i heropos = hero->get_position();
+          Actor* act = tilemap->GetActor(heropos.x + dir.x, heropos.y + dir.y, ACT_BASE);
+          if (act) {
+            act->health -= hero->strength;
+            if (act->health <= 0) {
+              act->Kill();
+            }
           }
-          delete actors->at(i);
-          actors->erase(actors->begin() + i);
+          else {
+            return nullptr; // abort turn
+          }
         }
       }
-      fov->calc(hero->get_position(), 6);
     }
+
+    auto actors = tilemap->get_actor_list();
+    for (Actor* var : *actors) {
+      var->update();
+    }
+    for (int i = (int)actors->size() - 1; i >= 0; i--) {
+      if (!actors->at(i)->alive) {
+        if (actors->at(i) == hero) {
+          hero = nullptr;
+        }
+        delete actors->at(i);
+        actors->erase(actors->begin() + i);
+      }
+    }
+    fov->calc(hero->get_position(), 6);
+    action = ACTION_NONE;
   }
   return nullptr;
 }
@@ -234,26 +265,6 @@ void PlayState::draw(double delta) {
       app->renderer->draw_sprite(ascii->get_sprite(3), i * 12, 0);
     }
   }
-  if (paused) {
-    app->renderer->set_color(255, 0, 0, 255);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 0, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 1, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 2, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 3, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 4, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 5, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 6, 0);
-    app->renderer->draw_sprite(ascii->get_sprite(219), 12 * 7, 0);
-    app->renderer->set_color(0, 0, 0, 255);
-    app->renderer->draw_sprite(ascii->get_sprite('-'), 12 * 0, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('P'), 12 * 1, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('A'), 12 * 2, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('U'), 12 * 3, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('S'), 12 * 4, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('E'), 12 * 5, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('D'), 12 * 6, 0);
-    app->renderer->draw_sprite(ascii->get_sprite('-'), 12 * 7, 0);
-  }
 }
 
 void PlayState::quit() {
@@ -264,9 +275,10 @@ void PlayState::inputevent(InputEvent *event) {
   if (event->type == INPUT_KEY_EVENT && event->pressed) {
     switch (event->action) {
       case ACTION_TOGGLE_DEBUG: debug = !debug; break;
-      case ACTION_ESCAPE_MENU: paused = !paused; break;
       case ACTION_RESET: new_game(); break;
-      default: break;
+      case ACTION_ESCAPE_MENU: break; // TODO
+      case ACTION_NONE: break;
+      default: action = event->action; break;
     }
   }
 }

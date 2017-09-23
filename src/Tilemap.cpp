@@ -157,7 +157,7 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int ox, int oy, FieldOf
         renderer->draw_sprite(tileset->get_sprite(GetTile(x, y)), ox + x * 12, oy + y * 12);
 
         if (view != nullptr && !view->can_see({x, y})) {
-          renderer->set_color(0, 0, 0, .5f);
+          renderer->set_color(0, 0, 0, .6f);
           renderer->draw_sprite(tileset->get_sprite(219), ox + x * 12, oy + y * 12);
         }
       }

@@ -21,7 +21,6 @@ class PlayState : public Gamestate {
   float delay = .5;
   double timer;
 
-  bool paused;
   bool debug;
 public:
   void new_game();
