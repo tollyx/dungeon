@@ -177,7 +177,8 @@ Gamestate *PlayState::update(double delta) {
       if (var == hero) continue;
       var->update();
     }
-    for (int i = (int)actors->size() - 1; i >= 0; i--) {
+    unsigned int actor_size = actors->size();
+    for (unsigned int i = actor_size - 1; i <= actor_size; i--) { // Woo unsigned int underflow abuse!
       if (!actors->at(i)->alive) {
         if (actors->at(i) == hero) {
           hero = nullptr;
@@ -224,14 +225,15 @@ void PlayState::draw(double delta) {
 
       auto actors = tilemap->get_actor_list();
       const char* headers[] {
-          "id", "name", "health"
+          "id", "name", "health", "strength"
       };
-      static float widths[3]{0.2f, 0.5f, 0.3f};
-      ImGui::BeginTable("ActorColumns", headers, widths, 3);
+      static float widths[4]{};
+      ImGui::BeginTable("ActorColumns", headers, widths, 4);
       for (Actor* act : *actors) {
         ImGui::Text("%d", act->id); ImGui::NextColumn();
         ImGui::Text(act->name.c_str()); ImGui::NextColumn();
         ImGui::Text("%d/%d", act->health, act->maxhealth); ImGui::NextColumn();
+        ImGui::Text("%d", act->strength); ImGui::NextColumn();
       }
       ImGui::EndTable();
 
