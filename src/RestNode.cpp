@@ -5,10 +5,10 @@
 
 RestNode::RestNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent) {}
 
-RestNode::~RestNode() {}
+RestNode::~RestNode() = default;
 
 BehaviourTreeStatus RestNode::tick(BTTick * tick) {
-  if (tick->target->health < tick->target->maxhealth) {
+  if (tick->target->get_health() < tick->target->get_health_max()) {
     return BT_SUCCEEDED;
   }
   return BT_FAILED;

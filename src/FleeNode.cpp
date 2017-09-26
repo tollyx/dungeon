@@ -10,23 +10,25 @@
 FleeNode::FleeNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent) {}
 
 
-FleeNode::~FleeNode() {}
+FleeNode::~FleeNode() = default;
 
 BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   Pathfinder::DijkstraMap dijkstra;
-  Tilemap * map = tick->target->map;
+  Tilemap * map = tick->target->get_map();
   std::vector<vec2i> enemyPos;
-  bool ishero = tick->target->isTypeOf(ACT_HERO);
-  auto actors = tick->target->map->get_actor_list();
-  for (Actor* actor : *actors) {
-    if (actor->isTypeOf(ACT_HERO) != ishero) {
+  bool ishero = tick->target->is_type_of(ACT_HERO);
+  vec2i targetpos = tick->target->get_position();
+  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
+  for (auto ent : actors) {
+    auto actor = (Actor*)ent;
+    if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
+      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
         enemyPos.push_back(pos);
       }
     }
   }
-  if (enemyPos.size() <= 0) {
+  if (enemyPos.empty()) {
     return BT_FAILED;
   }
   Pathfinder::calcDijkstraMap(map, &enemyPos, &dijkstra, 16);
@@ -38,7 +40,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   for (int x = 0; x < dijkstra.width; x++) {
     for (int y = 0; y < dijkstra.height; y++) {
       if (dijkstra.getValue(x,y) <= 0 && dijkstra.getValue(x, y) >= -10) {
-        safety.push_back(vec2i(x, y));
+        safety.emplace_back(x, y);
       }
     }
   }
@@ -65,16 +67,16 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
     //printf("FLEEING SUCCESS\n");
     return BT_FAILED;
   }
-  while (options.size() > 0) {
+  while (!options.empty()) {
     int i = rand() % options.size();
     vec2i next = options[i];
     vec2i dp = next - pos;
-    if (tick->target->Move(dp.x, dp.y)) {
+    if (tick->target->move(dp.x, dp.y)) {
       //printf("FLEEING val:%f\t(%i,%i)\n", lowestval, next.x, next.y);
       return BT_RUNNING;
     }
     options.erase(options.begin() + i);
-    if (options.size() == 0) {
+    if (options.empty()) {
       return BT_FAILED;
     }
   }

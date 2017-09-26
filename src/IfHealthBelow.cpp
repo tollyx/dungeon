@@ -6,11 +6,11 @@ IfHealthBelow::IfHealthBelow(BehaviourTreeNode * root, int healthBelow) : Behavi
   this->healthBelow = healthBelow;
 }
 
-IfHealthBelow::~IfHealthBelow() {}
+IfHealthBelow::~IfHealthBelow() = default;
 
 BehaviourTreeStatus IfHealthBelow::tick(BTTick * tick) {
-  if (children.size() == 0) return BT_ERROR;
-  if (tick->target->health < healthBelow) {
+  if (children.empty()) return BT_ERROR;
+  if (tick->target->get_health() < healthBelow) {
     return children[0]->execute(tick);
   }
   return BT_FAILED;

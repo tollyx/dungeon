@@ -12,8 +12,10 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
   name = "Hero";
   alive = true;
   health = 6;
-  maxhealth = 6;
+  health_max = 6;
   strength = 2;
+  sprite_id = '@';
+  team = TEAM_PLAYER;
   /*
   BehaviourTreeSelector* root = new BehaviourTreeSelector(nullptr);
   bt = new BehaviourTree(root);

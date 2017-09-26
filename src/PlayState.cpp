@@ -7,8 +7,8 @@
 #include "Renderer.h"
 #include "Actor.h"
 #include "App.h"
-#include "Tilemap.h"
 #include "Tileset.h"
+#include "Tilemap.h"
 #include "FieldOfView.h"
 #include "imgui.h"
 #include "Hero.h"
@@ -16,40 +16,6 @@
 #include "Shaman.h"
 
 const int mapwidth = 32;
-const std::string map =
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# @ . . . # # # # # # # # . . . . . . . . . . . . . . . . . # #"
-    "# . . . . . . . . # # # # . # # . # # # # # # . # # # # # . # #"
-    "# . . . . # # # . . . . . . # . g . # # # # # . # # # . . g . #"
-    "# . . . . # # # # # # # # . # . . . # # . . . . . . . . . . . #"
-    "# # # . # # # # # # # # # . . . . g # # . # # # . # # . . g . #"
-    "# . . . . . . . . . . . . . # # # # # . . . # # . # # # # # # #"
-    "# . # # # # # # # # . # # . # # # # # . g . # # . # . . g . . #"
-    "# . . . . g # # . . . # . . . # # # # . . . # # . # . . . . . #"
-    "# . . g . . # # . # # # . s . . . # # # # # # # . . . . s . . #"
-    "# . . . . . # # . . . # . . . # . . . . . . . . . # . g . . . #"
-    "# # . # # # # # . # . # # # # # # # # # . # # # # # # # # . # #"
-    "# . . . . . . . . # . . . . . . . . . . . . . . . . . . . . . #"
-    "# . # # # # # # # # # # . # . # # # # # # # # # # . # # # # . #"
-    "# . . . . . . . . . . . . # . # . . . . # . . . . . # # # . . #"
-    "# # # # # # . # # # . # # # . # . . . . # . . . # . # # # . # #"
-    "# . . . . # . # . . . . . # . . . . . . . . . . # . # # . . . #"
-    "# . . . . # . # . . . . . # . # . . . . # # # # # . . . . . . #"
-    "# . . . . . . # . . . . . # . # # # # # # . . . . . # # . . . #"
-    "# . . . . # . # # # # # # # . . . . . . . . # # # # # # # # # #"
-    "# . . . . # . . . . . . . . . # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-    "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #";
 
 InputAction action;
 
@@ -68,6 +34,10 @@ void PlayState::load() {
   app->input->bind_key(SDLK_KP_1, ACTION_MOVE_SOUTHWEST);
   app->input->bind_key(SDLK_KP_3, ACTION_MOVE_SOUTHEAST);
   app->input->bind_key(SDLK_KP_5, ACTION_WAIT);
+  app->input->bind_key(SDLK_UP, ACTION_MOVE_NORTH);
+  app->input->bind_key(SDLK_DOWN, ACTION_MOVE_SOUTH);
+  app->input->bind_key(SDLK_LEFT, ACTION_MOVE_WEST);
+  app->input->bind_key(SDLK_RIGHT, ACTION_MOVE_EAST);
   app->input->bind_key(SDLK_F1, ACTION_TOGGLE_DEBUG);
 
   app->input->bind_key(SDLK_r, ACTION_RESET);
@@ -95,6 +65,41 @@ void PlayState::new_game() {
     fov = nullptr;
   }
 
+  std::string map =
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# @ . . . # # # # # # # # . . . . . . . . . . . . . . . . . # #"
+      "# . . . . . . . . # # # # . # # . # # # # # # . # # # # # . # #"
+      "# . . . . # # # . . . . . . # . g . # # # # # . # # # . . g . #"
+      "# . . . . # # # # # # # # . # . . . # # . . . . . . . . . . . #"
+      "# # # . # # # # # # # # # . . . . g # # . # # # . # # . . g . #"
+      "# . . . . . . . . . . . . . # # # # # . . . # # . # # # # # # #"
+      "# . # # # # # # # # . # # . # # # # # . g . # # . # . . g . . #"
+      "# . . . . g # # . . . # . . . # # # # . . . # # . # . . . . . #"
+      "# . . g . . # # . # # # . s . . . # # # # # # # . . . . s . . #"
+      "# . . . . . # # . . . # . . . # . . . . . . . . . # . g . . . #"
+      "# # . # # # # # . # . # # # # # # # # # . # # # # # # # # . # #"
+      "# . . . . . . . . # . . . . . . . . . . . . . . . . . . . . . #"
+      "# . # # # # # # # # # # . # . # # # # # # # # # # . # # # # . #"
+      "# . . . . . . . . . . . . # . # . . . . # . . . . . # # # . . #"
+      "# # # # # # . # # # . # # # . # . . . . # . . . # . # # # . # #"
+      "# . . . . # . # . . . . . # . . . . . . . . . . # . # # . . . #"
+      "# . . . . # . # . . . . . # . # . . . . # # # # # . . . . . . #"
+      "# . . . . . . # . . . . . # . # # # # # # . . . . . # # . . . #"
+      "# . . . . # . # # # # # # # . . . . . . . . # # # # # # # # # #"
+      "# . . . . # . . . . . . . . . # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
+      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #";
+
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
   tilemap = new Tilemap(32, 32);
   int y = 0;
@@ -114,15 +119,15 @@ void PlayState::new_game() {
 
     if (i == '@') {
       hero = new Hero(tilemap, vec2i(x, y));
-      tilemap->add_actor(hero);
+      tilemap->add_entity(hero);
       tilemap->set_tile(x, y, '.');
     }
     else if (i == 'g') {
-      tilemap->add_actor(new Goblin(tilemap, vec2i(x, y)));
+      tilemap->add_entity(new Goblin(tilemap, vec2i(x, y)));
       tilemap->set_tile(x, y, '.');
     }
     else if (i == 's') {
-      tilemap->add_actor(new Shaman(tilemap, vec2i(x, y)));
+      tilemap->add_entity(new Shaman(tilemap, vec2i(x, y)));
       tilemap->set_tile(x, y, '.');
     }
     else {
@@ -139,7 +144,7 @@ void PlayState::new_game() {
 
 Gamestate *PlayState::update(double delta) {
   if (action != ACTION_NONE) {
-    if (hero) {
+    if (hero && hero->is_alive()) {
       vec2i dir;
       switch (action) {
         case ACTION_MOVE_NORTH: dir = {0, -1}; break;
@@ -154,17 +159,18 @@ Gamestate *PlayState::update(double delta) {
         default: action = ACTION_NONE; return nullptr; // abort turn
       }
       if (dir != vec2i(0,0)) {
-        if (!hero->Move(dir.x, dir.y)) {
+        if (!hero->move(dir.x, dir.y)) {
           vec2i heropos = hero->get_position();
-          Actor* act = tilemap->GetActor(heropos.x + dir.x, heropos.y + dir.y, ACT_BASE);
-          if (act) {
-            act->health -= hero->strength;
-            if (act->health <= 0) {
-              act->Kill();
-            }
+          auto acts = tilemap->get_entities(heropos.x + dir.x, heropos.y + dir.y, 0, ENTITY_ACTOR);
+          if(acts.empty()) {
+            return nullptr; // unable to move and nothing to attack == abort turn
           }
-          else {
-            return nullptr; // abort turn
+          for (auto ent : acts) {
+            auto act = (Actor*)ent;
+            if (act->is_alive() && act->get_actor_team() != hero->get_actor_team()) {
+              hero->attack(act);
+              break;
+            }
           }
         }
       }
@@ -172,14 +178,17 @@ Gamestate *PlayState::update(double delta) {
       fov->calc(hero->get_position(), 6);
     }
 
-    auto actors = tilemap->get_actor_list();
-    for (Actor* var : *actors) {
+    auto actors = tilemap->get_entity_list();
+    for (Entity* var : *actors) {
       if (var == hero) continue;
-      var->update();
+      if (var->entity_type() == ENTITY_ACTOR) {
+        ((Actor*)var)->update();
+      }
     }
+    /* // We got enough memory, we can leave the corpses on the field.
     unsigned int actor_size = actors->size();
     for (unsigned int i = actor_size - 1; i <= actor_size; i--) { // Woo unsigned int underflow abuse!
-      if (!actors->at(i)->alive) {
+      if (!actors->at(i)->is_alive()) {
         if (actors->at(i) == hero) {
           hero = nullptr;
         }
@@ -187,6 +196,7 @@ Gamestate *PlayState::update(double delta) {
         actors->erase(actors->begin() + i);
       }
     }
+     */
     action = ACTION_NONE;
   }
   return nullptr;
@@ -223,17 +233,20 @@ void PlayState::draw(double delta) {
     if (debug_actors) {
       ImGui::Begin("Actors", &debug_actors);
 
-      auto actors = tilemap->get_actor_list();
+      auto actors = tilemap->get_entity_list();
       const char* headers[] {
           "id", "name", "health", "strength"
       };
       static float widths[4]{};
       ImGui::BeginTable("ActorColumns", headers, widths, 4);
-      for (Actor* act : *actors) {
-        ImGui::Text("%d", act->id); ImGui::NextColumn();
-        ImGui::Text(act->name.c_str()); ImGui::NextColumn();
-        ImGui::Text("%d/%d", act->health, act->maxhealth); ImGui::NextColumn();
-        ImGui::Text("%d", act->strength); ImGui::NextColumn();
+      for (Entity* ent : *actors) {
+        if (ent->entity_type() == ENTITY_ACTOR) {
+          auto act = (Actor*) ent;
+          ImGui::Text("%d", act->id); ImGui::NextColumn();
+          ImGui::Text(act->name.c_str()); ImGui::NextColumn();
+          ImGui::Text("%d/%d", act->get_health(), act->get_health_max()); ImGui::NextColumn();
+          ImGui::Text("%d", act->get_strength()); ImGui::NextColumn();
+        }
       }
       ImGui::EndTable();
 
@@ -264,38 +277,22 @@ void PlayState::draw(double delta) {
 
   tilemap->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, fov);
 
-  auto actors = tilemap->get_actor_list();
-  for (Actor* var : *actors) {
+  auto entities = tilemap->get_entity_list();
+  for (Entity* var : *entities) {
     vec2i pos = var->get_position();
     if (fov == nullptr || fov->can_see(pos)) {
       app->renderer->set_color(0, 0, 0, 255);
       app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
 
-      int sprite;
-      switch (var->Type()) {
-        case ACT_HERO:
-          app->renderer->set_color(.2f, .6f, 1, 1);
-          sprite = '@';
-          break;
-        case ACT_GOBLIN:
-          app->renderer->set_color(.6f, 1, .2f, 1);
-          sprite = 'g';
-          break;
-        case ACT_SHAMAN:
-          app->renderer->set_color(.2f, 1, .6f, 1);
-          sprite = 's';
-          break;
-        default:
-          app->renderer->set_color(1, 1, 1, 1);
-          sprite = 2;
-          break;
-      }
+      int sprite = var->get_sprite_id();
+      app->renderer->set_color(1, 1, 1, 1);
+
       app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
   if (hero != nullptr) {
     app->renderer->set_color(155, 5, 5, 255);
-    for (int i = 0; i < hero->health; i++) {
+    for (int i = 0; i < hero->get_health(); i++) {
       app->renderer->set_color(0, 0, 0, 255);
       app->renderer->draw_sprite(ascii->get_sprite(219), (i+1) * asciisize.x, asciisize.y);
       app->renderer->set_color(255, 0, 0, 255);
@@ -305,7 +302,21 @@ void PlayState::draw(double delta) {
 }
 
 void PlayState::quit() {
+  if (tilemap != nullptr) {
+    delete tilemap;
+    tilemap = nullptr;
+    hero = nullptr;
+  }
 
+  if (hero != nullptr) {
+    delete hero;
+    hero = nullptr;
+  }
+
+  if (fov != nullptr) {
+    delete fov;
+    fov = nullptr;
+  }
 }
 
 void PlayState::inputevent(InputEvent *event) {

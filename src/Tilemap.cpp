@@ -21,7 +21,7 @@ Tilemap::Tilemap(int width, int height)
 Tilemap::~Tilemap() 
 {
   delete tilemap;
-  for (auto var : actors) {
+  for (auto var : entities) {
     delete var;
   }
 }
@@ -46,7 +46,7 @@ std::vector<vec2i> Tilemap::getNeighbours(int x, int y, int range)
   std::vector<vec2i> neigh;
   if (range == 0) 
   {
-    neigh.push_back({x,y});
+    neigh.emplace_back(x,y);
     return neigh;
   }
   for (int dx = -range; dx <= range; dx++) 
@@ -55,14 +55,14 @@ std::vector<vec2i> Tilemap::getNeighbours(int x, int y, int range)
     {
       if ((dx != 0 || dy != 0) && IsInsideBounds(x + dx, y + dy)) 
       {
-        neigh.push_back({x+dx,y+dy});
+        neigh.emplace_back(x+dx,y+dy);
       }
     }
   }
   return neigh;
 }
 
-void Tilemap::set_tile(int x, int y, int tile)
+void Tilemap::set_tile(int x, int y, unsigned int tile)
 {
   if (IsInsideBounds(x, y)) 
   {
@@ -86,57 +86,56 @@ bool Tilemap::IsBlocked(int x, int y)
     if (tilemap[GetIndex(x,y)] == '#') { // TODO: Replace hardcoded tiles
       return true;
     }
-    for (Actor* var : actors) {
+    for (Entity* var : entities) {
       vec2i pos = var->get_position();
-      if (var->IsAlive() && pos.x == x && pos.y == y) {
+      if (var->has_collision() && pos == vec2i(x, y))
         return true;
-      }
     }
     return false;
   }
   return true;
 }
 
-void Tilemap::add_actor(Actor *actor) {
-  for (Actor* var : actors) {
+void Tilemap::add_entity(Entity *actor) {
+  for (Entity* var : entities) {
     if (var == actor) {
       return;
     }
   }
-  actors.push_back(actor);
+  entities.push_back(actor);
 }
 
-void Tilemap::RemoveActor(Actor * actor) {
-  for (auto it = actors.begin(); it != actors.end(); it++) {
+void Tilemap::remove_entity(Entity * actor) {
+  for (auto it = entities.begin(); it != entities.end(); it++) {
     if ((*it) == actor) {
-      actors.erase(it);
+      entities.erase(it);
       return;
     }
   }
 }
 
-Actor * Tilemap::GetActor(int x, int y, Actors type) {
+Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
   vec2i pos = { x,y };
-  for (Actor* act : actors) {
-    if (act->isTypeOf(type)) {
-      vec2i apos = act->get_position();
+  for (Entity* ent : entities) {
+    if (ent->entity_type() == type) {
+      vec2i apos = ent->get_position();
       if (apos == pos) {
-        return act;
+        return ent;
       }
     }
   }
   return nullptr;
 }
 
-std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
-  std::vector<Actor*> found;
+std::vector<Entity*> Tilemap::get_entities(int x, int y, int range, EntityTypes type) {
+  std::vector<Entity*> found;
   std::vector<vec2i> neigh = getNeighbours(x, y, range);
-  for (Actor* act : actors) {
+  for (Entity* ent : entities) {
     for (vec2i pos : neigh) {
-      if (act->isTypeOf(type)) {
-        vec2i apos = act->get_position();
+      if (ent->entity_type() == type) {
+        vec2i apos = ent->get_position();
         if (apos == pos) {
-          found.push_back(act);
+          found.emplace_back(ent);
           break;
         }
       }
@@ -145,8 +144,8 @@ std::vector<Actor*> Tilemap::GetActors(int x, int y, int range, Actors type) {
   return found;
 }
 
-std::vector<Actor*>* Tilemap::get_actor_list() {
-  return &actors;
+std::vector<Entity*>* Tilemap::get_entity_list() {
+  return &entities;
 }
 
 void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {

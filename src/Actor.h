@@ -1,5 +1,6 @@
 #pragma once
 #include "vec2i.h"
+#include "Entity.h"
 #include <string>
 
 class BehaviourTree;
@@ -11,32 +12,44 @@ enum Actors {
   ACT_SHAMAN
 };
 
+enum ActorTeams {
+  TEAM_NONE,
+  TEAM_PLAYER,
+  TEAM_GOBS
+};
+
 class Tilemap;
 
-class Actor {
-  vec2i position;
+class Actor : public Entity {
   int healcounter;
 
 protected:
   BehaviourTree* bt;
+  int health;
+  int health_max;
+  int strength;
+  float range;
+  bool alive;
+  ActorTeams team;
 public:
   int id;
   std::string name;
-  Tilemap* map;
-  bool alive;
-  int health;
-  int maxhealth;
-  int strength;
 
-
-  Actor(Tilemap* map, vec2i pos);
-  const vec2i get_position();
-  bool IsAlive(){ return alive; };
-  bool Move(int dx, int dy);
-  int GetHealth() { return health; }
-  void Kill() { alive = false; health = 0; };
+  Actor(Tilemap *map, vec2i pos);
+  bool is_alive(){ return alive; };
+  void attack(vec2i dpos); // basic melee attack
+  void attack(Actor* act);
+  void heal(int amount);
+  void damage(int strength);
+  int get_strength() { return strength; }
+  int get_health() { return health; }
+  int get_health_max() { return health_max; }
+  ActorTeams get_actor_team() { return team; }
+  float get_range() { return range; }
+  void kill() { alive = false; health = 0; collision = false; };
   void update();
-  virtual bool isTypeOf(Actors actor){ return actor == ACT_BASE; };
-  virtual Actors Type() { return ACT_BASE; };
+  virtual bool is_type_of(Actors actor){ return actor == ACT_BASE; };
+  virtual Actors type() { return ACT_BASE; };
+  EntityTypes entity_type() override { return ENTITY_ACTOR; };
   ~Actor();
 };

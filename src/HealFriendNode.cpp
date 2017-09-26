@@ -7,37 +7,39 @@
 
 HealFriendNode::HealFriendNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent){}
 
-HealFriendNode::~HealFriendNode() {}
+HealFriendNode::~HealFriendNode() = default;
 
 BehaviourTreeStatus HealFriendNode::tick(BTTick * tick) {
-  bool ishero = tick->target->isTypeOf(ACT_HERO);
+  bool ishero = tick->target->is_type_of(ACT_HERO);
+  vec2i targetpos = tick->target->get_position();
 
-  auto actors = tick->target->map->get_actor_list();
+  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
   std::vector<Actor*> friends;
-  for (auto actor : *actors) {
+  for (auto ent : actors) {
+    auto actor = (Actor*)ent;
     if (actor == tick->target) continue;
 
-    if (actor->isTypeOf(ACT_HERO) == ishero && actor->health < actor->maxhealth-1) {
+    if (actor->is_type_of(ACT_HERO) == ishero && actor->get_health() < actor->get_health_max()) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
+      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
         friends.push_back(actor);
       }
     }
   }
 
-  if (friends.size() == 0) {
+  if (friends.empty()) {
     return BT_FAILED;
   }
 
   Actor* lowestHpActor = nullptr;
   int lowestHp;
   for (Actor* actor : friends) {
-    if (lowestHpActor == nullptr || actor->health < lowestHp) {
+    if (lowestHpActor == nullptr || actor->get_health() < lowestHp) {
       lowestHpActor = actor;
-      lowestHp = actor->health;
+      lowestHp = actor->get_health();
     }
   }
 
-  lowestHpActor->health += 1;
+  lowestHpActor->heal(1);
   return BT_SUCCEEDED;
 }

@@ -6,7 +6,7 @@ class Goblin :
 public:
   Goblin(Tilemap* map, vec2i pos);
   ~Goblin();
-  bool isTypeOf(Actors actor) { return actor == ACT_GOBLIN || Actor::isTypeOf(actor); };
-  Actors Type() { return ACT_GOBLIN; }
+  bool is_type_of(Actors actor) { return actor == ACT_GOBLIN || Actor::is_type_of(actor); };
+  Actors type() { return ACT_GOBLIN; }
 };
 

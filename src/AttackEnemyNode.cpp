@@ -7,31 +7,34 @@
 
 AttackEnemyNode::AttackEnemyNode(BehaviourTreeNode * parent) : BehaviourTreeNode(parent){}
 
-AttackEnemyNode::~AttackEnemyNode() {}
+AttackEnemyNode::~AttackEnemyNode() = default;
 
 BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
-  bool ishero = tick->target->isTypeOf(ACT_HERO);
+  bool ishero = tick->target->is_type_of(ACT_HERO);
+  vec2i targetpos = tick->target->get_position();
 
-  auto actors = tick->target->map->get_actor_list();
+  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
   std::vector<Actor*> visibleEnemies;
 
-  for (auto actor : *actors) {
+  for (auto ent : actors) {
+    auto actor = (Actor*)ent;
     if (actor == tick->target) continue;
 
-    if (actor->isTypeOf(ACT_HERO) != ishero) {
+
+    if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
+      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
         visibleEnemies.push_back(actor);
       }
     }
   }
 
-  if (visibleEnemies.size() == 0) {
+  if (visibleEnemies.empty()) {
     return BT_FAILED;
   }
 
   Actor* closestActor = nullptr;
-  float closestDist;
+  float closestDist = tick->target->get_range();
   for (Actor* actor : visibleEnemies) {
     float dist = Pathfinder::distance(tick->target->get_position(), actor->get_position());
     if (closestActor == nullptr ||
@@ -41,10 +44,9 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
     }
   }
 
-  if (closestDist < 1.5f) {
-    closestActor->health -= tick->target->strength;
-    if (closestActor->health <= 0) {
-      closestActor->Kill();
+  if (closestDist < tick->target->get_range()) {
+    tick->target->attack(closestActor);
+    if (!closestActor->is_alive()) {
       return BT_SUCCEEDED;
     }
     return BT_RUNNING;
@@ -52,11 +54,11 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
   else {
     vec2i pos = tick->target->get_position();
     vec2i goal = closestActor->get_position();
-    auto path = Pathfinder::aStar(tick->target->map, pos, goal);
-    if (path.size() > 0) {
+    auto path = Pathfinder::aStar(tick->target->get_map(), pos, goal);
+    if (!path.empty()) {
       //path.pop_back();
       vec2i dpos = path.back() - pos;
-      if (tick->target->Move(dpos.x, dpos.y)) {
+      if (tick->target->move(dpos.x, dpos.y)) {
         return BT_RUNNING;
       }
     }

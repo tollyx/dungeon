@@ -5,7 +5,7 @@ class Shaman :
 public:
   Shaman(Tilemap* map, vec2i pos);
   ~Shaman();
-  bool isTypeOf(Actors actor) { return actor == ACT_SHAMAN || Actor::isTypeOf(actor); };
-  Actors Type() { return ACT_SHAMAN; }
+  bool is_type_of(Actors actor) override { return actor == ACT_SHAMAN || Actor::is_type_of(actor); };
+  Actors type() override { return ACT_SHAMAN; }
 };
 

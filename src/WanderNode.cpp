@@ -7,13 +7,13 @@
 WanderNode::WanderNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent){}
 
 
-WanderNode::~WanderNode() {}
+WanderNode::~WanderNode() = default;
 
 BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
   vec2i pos = tick->target->get_position();
-  std::vector<vec2i> neighbours = tick->target->map->getNeighbours(pos.x, pos.y);
+  std::vector<vec2i> neighbours = tick->target->get_map()->getNeighbours(pos.x, pos.y);
   while (true) {
-    if (neighbours.size() <= 0) {
+    if (neighbours.empty()) {
       previous.clear();
       return BT_FAILED;
     }
@@ -26,7 +26,7 @@ BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
         break;
       }
     }
-    if (valid && tick->target->Move(dp.x, dp.y)) {
+    if (valid && tick->target->move(dp.x, dp.y)) {
       previous.push_back(neighbours[i]);
       if (previous.size() > 5) {
         previous.erase(previous.begin());

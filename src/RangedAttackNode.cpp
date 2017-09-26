@@ -8,43 +8,39 @@
 RangedAttackNode::RangedAttackNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent) {}
 
 
-RangedAttackNode::~RangedAttackNode() {}
+RangedAttackNode::~RangedAttackNode() = default;
 
 BehaviourTreeStatus RangedAttackNode::tick(BTTick * tick) {
-  if (children.size() <= 0) {
-    return BT_ERROR;
-  }
-  bool ishero = tick->target->isTypeOf(ACT_HERO);
+  bool ishero = tick->target->is_type_of(ACT_HERO);
+  vec2i targetpos = tick->target->get_position();
 
-  auto actors = tick->target->map->get_actor_list();
+  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
   std::vector<Actor*> enemies;
-  for (auto actor : *actors) {
+  for (auto ent : actors) {
+    auto actor = (Actor*)ent;
     if (actor == tick->target) continue;
 
-    if (actor->isTypeOf(ACT_HERO) != ishero) {
+    if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->map, tick->target->get_position(), pos)) {
+      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
         enemies.push_back(actor);
       }
     }
   }
 
-  if (enemies.size() == 0) {
+  if (enemies.empty()) {
     return BT_FAILED;
   }
 
   Actor* lowestHpActor = nullptr;
   int lowestHp;
   for (Actor* actor : enemies) {
-    if (lowestHpActor == nullptr || actor->health < lowestHp) {
+    if (lowestHpActor == nullptr || actor->get_health() < lowestHp) {
       lowestHpActor = actor;
-      lowestHp = actor->health;
+      lowestHp = actor->get_health();
     }
   }
 
-  lowestHpActor->health -= tick->target->strength;
-  if (lowestHpActor->health <= 0) {
-    lowestHpActor->Kill();
-  }
+  tick->target->attack(lowestHpActor);
   return BT_SUCCEEDED;
 }

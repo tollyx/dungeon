@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 struct vec2i {
   int x, y;
 
@@ -11,6 +13,14 @@ struct vec2i {
   vec2i(int x, int y) {
     this->x = x;
     this->y = y;
+  }
+
+  double dist() {
+    return sqrt(dist_squared());
+  }
+
+  int dist_squared() {
+    return x*x + y*y;
   }
 
   bool operator==(vec2i a) {

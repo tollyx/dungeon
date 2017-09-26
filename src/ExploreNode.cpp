@@ -49,7 +49,7 @@ BehaviourTreeStatus ExploreNode::tick(BTTick * tick) {
     int i = std::rand() % options.size();
     vec2i next = options[i];
     vec2i dp = next - pos;
-    if (tick->target->Move(dp.x, dp.y)) {
+    if (tick->target->move(dp.x, dp.y)) {
       //printf("EXPLORE %f\n", lowestval);
       return BT_RUNNING;
     }
