@@ -6,19 +6,16 @@ A work-in-progress, cross-platform roguelike written in C++ using SDL2 and OpenG
 
 ### Linux
 
-* Install SDL2 and its dev-headers using your distro's package manager
+* Install SDL2, Lua53 and GLEW using your distro's package manager
 * Create a directory named  "build" and run `cmake .. && make` inside it
 * Move either the resulting binary to the root folder of the repository or copy the assets folder into the build directory
 * You can now run the binary
 
 ### Windows
 
-* Download the [SDL2 windows development libraries](https://www.libsdl.org/download-2.0.php) and put them somewhere safe
-* Edit the `SDL2_PATH` variable in `build.bat`
-* Run `build.bat`
-* Open up the resulting solution file and build it using visual studio.
+I really need to fix a hassle-free way to build this shit on windows.
 
-You can probably get it to build using mingw or similar but I haven't tried it yet.
+Currently, you need to import the source as a new project in visual studio and set up the dependencies yourself. (SDL2, Lua53, GLEW, OpenGL)
 
 ## Future plans
 
