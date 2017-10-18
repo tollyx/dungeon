@@ -15,7 +15,8 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
   health_max = 6;
   strength = 2;
   sprite_id = '@';
-  team = TEAM_PLAYER;
+  faction = FACTION_PLAYER;
+  sprite_color = Color(0.1f, 0.4f, 0.9f, 1);
   /*
   BehaviourTreeSelector* root = new BehaviourTreeSelector(nullptr);
   bt = new BehaviourTree(root);
@@ -32,4 +33,4 @@ Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
 }
 
 
-Hero::~Hero() {}
+Hero::~Hero() = default;

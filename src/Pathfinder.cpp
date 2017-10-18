@@ -20,29 +20,23 @@ namespace Pathfinder
 
     AStarNode* st = new AStarNode();
     st->pos = start;
-    open.push_back(st);
+    open.emplace_back(st);
 
-    while (open.size() != 0)
-    {
+    while (open.size() != 0) {
       AStarNode* current = nullptr;
       int currentindex = -1;
-      for (int i = 0; i < open.size(); i++)
-      {
-        if (current == nullptr || current->f > open[i]->f)
-        {
+      for (int i = 0; i < open.size(); i++) {
+        if (current == nullptr || current->f > open[i]->f) {
           current = open[i];
           currentindex = i;
         }
       }
       open.erase(open.begin()+currentindex);
-      closed.push_back(current);
-      //map->set_tile(current->pos.x, current->pos.y, TILE_CLOSED);
+      closed.emplace_back(current);
 
-      auto neighbours = map->getNeighbours(current->pos.x, current->pos.y);
-      for (auto pos : neighbours)
-      {
-        if (map->GetTile(pos.x, pos.y) == '#')
-        {
+      auto neighbours = map->get_neighbours(current->pos.x, current->pos.y);
+      for (auto pos : neighbours) {
+        if (map->get_tile(pos.x, pos.y) == '#') {
           continue;
         }
         AStarNode* neighbour = new AStarNode();
@@ -59,10 +53,10 @@ namespace Pathfinder
         if (neighbour->pos == goal)
         {
           delete neighbour;
-          path.push_back(goal);
+          path.emplace_back(goal);
           while (current->from != nullptr)
           {
-            path.push_back(current->pos);
+            path.emplace_back(current->pos);
             current = current->from;
           }
           for (AStarNode* var : open)
@@ -88,8 +82,7 @@ namespace Pathfinder
             {
               closed.erase(it);
               delete (*it);
-              open.push_back(neighbour);
-              //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+              open.emplace_back(neighbour);
               isClosed = false;
             }
             break;
@@ -110,8 +103,7 @@ namespace Pathfinder
               {
                 open.erase(it);
                 delete (*it);
-                open.push_back(neighbour);
-                //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+                open.emplace_back(neighbour);
               }
               break;
             }
@@ -119,8 +111,7 @@ namespace Pathfinder
 
           if (!isOpened)
           {
-            open.push_back(neighbour);
-            //map->set_tile(neighbour->pos.x, neighbour->pos.y, TILE_OPENED);
+            open.emplace_back(neighbour);
           }
         }
         else
@@ -166,10 +157,10 @@ namespace Pathfinder
     std::vector<vec2i> queue;
 
     for (vec2i pos : *goals) {
-      auto neigh = map->getNeighbours(pos.x, pos.y);
+      auto neigh = map->get_neighbours(pos.x, pos.y);
       for (vec2i npos : neigh) {
         int val = out->getValue(npos.x, npos.y);
-        if (map->GetTile(npos.x, npos.y) != '#' && val > 1) {
+        if (map->get_tile(npos.x, npos.y) != '#' && val > 1) {
           if (npos.x != 0 && npos.y != 0) {
             out->setValue(npos.x, npos.y, 1.4f);
           }
@@ -185,7 +176,7 @@ namespace Pathfinder
       vec2i current = queue.back();
       queue.pop_back();
       
-      std::vector<vec2i> neigh = map->getNeighbours(current.x, current.y);
+      std::vector<vec2i> neigh = map->get_neighbours(current.x, current.y);
       for (int i = 0; i < neigh.size(); i++) {
         float val = out->getValue(current.x, current.y) + 1;
         vec2i npos = neigh[i];
@@ -193,7 +184,7 @@ namespace Pathfinder
         if (dp.x != 0 && dp.y != 0) {
           val += .4f;
         }
-        if (map->GetTile(npos.x, npos.y) != '#' && out->getValue(npos.x, npos.y) > val) { // TODO: Remove hardcoded tile
+        if (map->get_tile(npos.x, npos.y) != '#' && out->getValue(npos.x, npos.y) > val) { // TODO: Remove hardcoded tile
           out->setValue(npos.x, npos.y, val);
           queue.push_back(neigh[i]);
         }

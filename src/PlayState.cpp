@@ -38,10 +38,19 @@ void PlayState::load() {
   app->input->bind_key(SDLK_DOWN, ACTION_MOVE_SOUTH);
   app->input->bind_key(SDLK_LEFT, ACTION_MOVE_WEST);
   app->input->bind_key(SDLK_RIGHT, ACTION_MOVE_EAST);
+
+  app->input->bind_key(SDLK_k, ACTION_MOVE_NORTH);
+  app->input->bind_key(SDLK_y, ACTION_MOVE_NORTHWEST);
+  app->input->bind_key(SDLK_u, ACTION_MOVE_NORTHEAST);
+  app->input->bind_key(SDLK_h, ACTION_MOVE_WEST);
+  app->input->bind_key(SDLK_l, ACTION_MOVE_EAST);
+  app->input->bind_key(SDLK_j, ACTION_MOVE_SOUTH);
+  app->input->bind_key(SDLK_n, ACTION_MOVE_SOUTHWEST);
+  app->input->bind_key(SDLK_m, ACTION_MOVE_SOUTHEAST);
+
   app->input->bind_key(SDLK_F1, ACTION_TOGGLE_DEBUG);
 
   app->input->bind_key(SDLK_r, ACTION_RESET);
-
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Keybinds bound.\n");
   new_game();
 }
@@ -167,7 +176,7 @@ Gamestate *PlayState::update(double delta) {
           }
           for (auto ent : acts) {
             auto act = (Actor*)ent;
-            if (act->is_alive() && act->get_actor_team() != hero->get_actor_team()) {
+            if (act->is_alive() && act->get_actor_faction() != hero->get_actor_faction()) {
               hero->attack(act);
               break;
             }
@@ -278,14 +287,38 @@ void PlayState::draw(double delta) {
   tilemap->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, fov);
 
   auto entities = tilemap->get_entity_list();
+
+  // Draw dead actors
   for (Entity* var : *entities) {
+    if (var->entity_type() == ENTITY_ACTOR && ((Actor*)var)->is_alive()) continue;
+
     vec2i pos = var->get_position();
-    if (fov == nullptr || fov->can_see(pos)) {
-      app->renderer->set_color(0, 0, 0, 255);
+    if ((fov == nullptr || fov->can_see(pos))) {
+
+      app->renderer->set_color(0, 0, 0, 1);
       app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
 
       int sprite = var->get_sprite_id();
-      app->renderer->set_color(1, 1, 1, 1);
+
+      app->renderer->set_color(var->get_sprite_color()*0.35f);
+
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+    }
+  }
+
+  // Draw the rest of the entities
+  for (Entity* var : *entities) {
+    if (var->entity_type() == ENTITY_ACTOR && !((Actor*)var)->is_alive()) continue;
+
+    vec2i pos = var->get_position();
+    if ((fov == nullptr || fov->can_see(pos))) {
+    
+      app->renderer->set_color(0, 0, 0, 1);
+      app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+
+      int sprite = var->get_sprite_id();
+      
+      app->renderer->set_color(var->get_sprite_color());
 
       app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }

@@ -7,6 +7,7 @@
 
 
 #include "vec2i.h"
+#include "Color.h"
 
 class Tilemap;
 
@@ -21,6 +22,7 @@ class Entity {
   Tilemap* map;
 protected:
   unsigned int sprite_id;
+  Color sprite_color;
   bool collision;
 public:
   Entity(Tilemap* map, vec2i pos);
@@ -32,6 +34,7 @@ public:
   bool move(vec2i dpos);
   void set_position(vec2i pos);
   unsigned int get_sprite_id() { return sprite_id; };
+  Color get_sprite_color() { return sprite_color; };
   virtual EntityTypes entity_type() { return ENTITY_BASE; };
 };
 

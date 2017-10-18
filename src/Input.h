@@ -31,6 +31,15 @@ struct Bind {
     }
     return key < o.key;
   }
+
+  std::string get_name() {
+    std::string bindname = "";
+    if (modifier & KMOD_CTRL) bindname += "CTRL+";
+    if (modifier & KMOD_ALT) bindname += "ALT+";
+    if (modifier & KMOD_SHIFT) bindname += "SHIFT+";
+    bindname += SDL_GetKeyName(key);
+    return bindname;
+  }
 };
 
 enum InputEventType {
@@ -43,29 +52,26 @@ struct InputEvent {
   InputAction action;
   bool pressed;
 
-  struct MouseMoveEvent { // mouse click;
-    int x;
-    int y;
-    int dx;
-    int dy;
-  };
-  struct MouseClickEvent { // mouse click;
-    int x;
-    int y;
-    int button;
-  };
-  struct KeyPressEvent { // key
-    SDL_Keycode key;
-    SDL_Keymod mod;
-    bool echo;
-  };
-
   union {
-    MouseMoveEvent mouse_move_event;
-    MouseClickEvent mouse_click_event;
-    KeyPressEvent key_press_event;
-  };
+    struct MouseMoveEvent { // mouse click;
+      int x;
+      int y;
+      int dx;
+      int dy;
+    } mouse_move_event;
 
+    struct MouseClickEvent { // mouse click;
+      int x;
+      int y;
+      int button;
+    } mouse_click_event;
+
+    struct KeyPressEvent { // key
+      SDL_Keycode key;
+      SDL_Keymod mod;
+      bool echo;
+    } key_press_event;
+  };
 };
 
 class Input

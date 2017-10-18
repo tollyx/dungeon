@@ -59,6 +59,9 @@ InputEvent Input::set_key(SDL_Keycode key, SDL_Keymod mod, bool pressed)
 
 void Input::bind_key(SDL_Keycode key, InputAction action, SDL_Keymod mod) {
   Bind bind = { key, mod };
+  if (binds.find(bind) != binds.end()) {
+    SDL_LogWarn(SDL_LOG_CATEGORY_INPUT, "Overriding existing bind! (bind: %s)", bind.get_name().c_str());
+  }
   binds[bind] = action;
 }
 

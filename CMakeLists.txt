@@ -6,12 +6,30 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
 
+if(MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Za")	
+endif(MSVC)
+
 project(dungeon)
 
 find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(Lua REQUIRED)
 find_package(SDL2 REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIR} ${SDL2_INCLUDE_DIR} "libs/glm")
-link_libraries(${OPENGL_LIBRARIES} ${SDL2_LIBRARY})
+include_directories(
+	${OPENGL_INCLUDE_DIR} 
+	${SDL2_INCLUDE_DIR} 
+	${GLEW_INCLUDE_DIRS} 
+	${LUA_INCLUDE_DIR} 
+	"libs/glm"
+	"libs/kaguya-1.3.2/include"
+)
+link_libraries(
+	${OPENGL_LIBRARIES} 
+	${SDL2_LIBRARY}
+	${GLEW_LIBRARIES}
+	${LUA_LIBRARIES}
+)
 
 file(GLOB SOURCES "src/*.cpp" "src/*.c" "src/*.h")
 add_executable(dungeon ${SOURCES})

@@ -21,8 +21,7 @@ bool Entity::move(vec2i dpos) {
 }
 
 bool Entity::move(int dx, int dy) {
-  vec2i newpos = position + vec2i(dx, dy); //GoTo({0,0}, {dx,dy});
-  //dir = ParseDir(dx, dy);
+  vec2i newpos = position + vec2i(dx, dy);
   if (!collision || !map->IsBlocked(newpos.x, newpos.y)) {
     position = newpos;
     return true;

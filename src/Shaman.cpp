@@ -19,7 +19,8 @@ Shaman::Shaman(Tilemap* map, vec2i pos) : Actor(map, pos) {
   strength = 1;
   range = 6;
   sprite_id = 's';
-  team = TEAM_GOBS;
+  faction = FACTION_GOBS;
+  sprite_color = Color(0.2, 0.7, 0.6, 1);
 
   if (shamtree == nullptr) {
     auto * root = new BehaviourTreeSelector(nullptr);
@@ -38,6 +39,5 @@ Shaman::Shaman(Tilemap* map, vec2i pos) : Actor(map, pos) {
   }
   bt = shamtree;
 }
-
 
 Shaman::~Shaman() = default;

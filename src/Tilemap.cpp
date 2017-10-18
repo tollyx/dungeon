@@ -41,7 +41,7 @@ bool Tilemap::IsInsideBounds(int x, int y)
   return x >= 0 && x < width && y >= 0 && y < height;
 }
 
-std::vector<vec2i> Tilemap::getNeighbours(int x, int y, int range) 
+std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) 
 {
   std::vector<vec2i> neigh;
   if (range == 0) 
@@ -70,7 +70,7 @@ void Tilemap::set_tile(int x, int y, unsigned int tile)
   }
 }
 
-int Tilemap::GetTile(int x, int y) 
+int Tilemap::get_tile(int x, int y) 
 {
   if (IsInsideBounds(x, y)) 
   {
@@ -129,7 +129,7 @@ Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
 
 std::vector<Entity*> Tilemap::get_entities(int x, int y, int range, EntityTypes type) {
   std::vector<Entity*> found;
-  std::vector<vec2i> neigh = getNeighbours(x, y, range);
+  std::vector<vec2i> neigh = get_neighbours(x, y, range);
   for (Entity* ent : entities) {
     for (vec2i pos : neigh) {
       if (ent->entity_type() == type) {
@@ -158,7 +158,7 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, i
       if (IsInsideBounds(ax, ay)) {
         if (view == nullptr || view->has_seen({ax, ay})) {
           renderer->set_color(1, 1, 1, 1);
-          renderer->draw_sprite(tileset->get_sprite(GetTile(ax, ay)), x + ix * w, y + iy * h);
+          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), x + ix * w, y + iy * h);
 
           if (view != nullptr && !view->can_see({ax, ay})) {
             renderer->set_color(0, 0, 0, .6f);
@@ -173,7 +173,7 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, i
 void Tilemap::debug_print() {
   for (int y = 0; y < height; ++y) {
     for (int x = 0; x < width; ++x) {
-      printf("\t%d", GetTile(x, y));
+      printf("\t%d", get_tile(x, y));
     }
     printf("\n");
   }

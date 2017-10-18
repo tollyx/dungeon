@@ -2,19 +2,12 @@
 #include <vector>
 #include <map>
 #include <string>
+#include "Color.h"
 
 struct SDL_Window;
 struct SDL_Texture;
 union SDL_Event;
 typedef void *SDL_GLContext;
-
-struct Color 
-{
-  float r; 
-  float g;
-  float b;
-  float a;
-};
 
 struct Rect {
   int x = 0, y = 0, w = 0, h = 0;

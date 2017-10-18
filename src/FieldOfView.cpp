@@ -31,11 +31,11 @@ void FieldOfView::calc(vec2i pos, float range) {
 }
 
 bool FieldOfView::can_see(vec2i pos) {
-  return seen->GetTile(pos.x, pos.y) >= counter;
+  return seen->get_tile(pos.x, pos.y) >= counter;
 }
 
 bool FieldOfView::has_seen(vec2i pos) {
-  return seen->GetTile(pos.x, pos.y) > 0;
+  return seen->get_tile(pos.x, pos.y) > 0;
 }
 
 void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY,
@@ -65,7 +65,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       }
 
       if (blocked) {
-        if (map->GetTile(currentX, currentY) == '#') { // TODO: Stop hardcoding tiles
+        if (map->get_tile(currentX, currentY) == '#') { // TODO: Stop hardcoding tiles
           newStart = rightSlope;
           continue;
         }
@@ -75,7 +75,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
         }
       }
       else {
-        if (map->GetTile(currentX, currentY) == '#' && distance < radius) { // TODO: Get rid of hardcoded tiles
+        if (map->get_tile(currentX, currentY) == '#' && distance < radius) { // TODO: Get rid of hardcoded tiles
           blocked = true;
           cast_light(distance + 1, start, leftSlope, xx, xy, yx, yy, startX, startY, radius);
           newStart = rightSlope;
@@ -98,7 +98,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.y - (delta.x >> 1));
 
-    while (start.x != end.x && map->GetTile(start.x, start.y) != '#') // TODO: Hardcoded tiles
+    while (start.x != end.x && map->get_tile(start.x, start.y) != '#') // TODO: Hardcoded tiles
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (ix > 0)))
@@ -117,7 +117,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.x - (delta.y >> 1));
 
-    while (start.y != end.y && map->GetTile(start.x, start.y) != '#') // TODO: Stop hardcoding tiles
+    while (start.y != end.y && map->get_tile(start.x, start.y) != '#') // TODO: Stop hardcoding tiles
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (iy > 0)))

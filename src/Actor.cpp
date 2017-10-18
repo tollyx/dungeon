@@ -10,7 +10,7 @@ Actor::Actor(Tilemap *map, vec2i pos) : Entity(map, pos) {
   range = 1.5f;
   collision = true;
   bt = nullptr;
-  team = TEAM_NONE;
+  faction = FACTION_NONE;
   sprite_id = 1;
 }
 
@@ -32,8 +32,8 @@ void Actor::update() {
   }
 }
 
-void Actor::damage(int strength) {
-  health -= strength;
+void Actor::damage(int str) {
+  health -= str;
   if (health <= 0) {
     kill();
   }
@@ -54,7 +54,7 @@ void Actor::attack(vec2i dpos) {
     auto acts = get_map()->get_entities(pos.x + dpos.x, pos.y + dpos.y, 0, ENTITY_ACTOR);
     for (Entity* ent : acts) {
       auto act = (Actor*)ent;
-      if (act->is_alive() && act->get_actor_team() != team) {
+      if (act->is_alive() && act->get_actor_faction() != faction) {
         act->damage(strength);
         break;
       }

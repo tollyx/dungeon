@@ -5,17 +5,17 @@
 
 class BehaviourTree;
 
-enum Actors {
+enum Actors { // TODO: Softcode this
   ACT_BASE,
   ACT_HERO,
   ACT_GOBLIN,
   ACT_SHAMAN
 };
 
-enum ActorTeams {
-  TEAM_NONE,
-  TEAM_PLAYER,
-  TEAM_GOBS
+enum ActorFactions { // TODO: Make factions dynamic
+  FACTION_NONE,
+  FACTION_PLAYER,
+  FACTION_GOBS
 };
 
 class Tilemap;
@@ -30,7 +30,7 @@ protected:
   int strength;
   float range;
   bool alive;
-  ActorTeams team;
+  ActorFactions faction;
 public:
   int id;
   std::string name;
@@ -44,7 +44,7 @@ public:
   int get_strength() { return strength; }
   int get_health() { return health; }
   int get_health_max() { return health_max; }
-  ActorTeams get_actor_team() { return team; }
+  ActorFactions get_actor_faction() { return faction; }
   float get_range() { return range; }
   void kill() { alive = false; health = 0; collision = false; };
   void update();

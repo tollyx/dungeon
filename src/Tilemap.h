@@ -19,9 +19,9 @@ public:
   int GetHeight();
   int GetIndex(int x, int y); // Converts [x,y] to a 1D index.
   bool IsInsideBounds(int x, int y);
-  std::vector<vec2i> getNeighbours(int x, int y, int range = 1);
+  std::vector<vec2i> get_neighbours(int x, int y, int range = 1);
   void set_tile(int x, int y, unsigned int tile); // "Tile" is inteded for tile ids, but can be anything really.
-  int GetTile(int x, int y);
+  int get_tile(int x, int y);
   bool IsBlocked(int x, int y); // Checks if there is an actor blocking the tile.
 
   void draw(Renderer *renderer, Tileset *tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view);

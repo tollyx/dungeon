@@ -5,7 +5,9 @@
 #include "App.h"
 #include <SDL.h>
 #include <ctime>
-#include "Config.h"
+#include <fstream>
+#include <string>
+#include <kaguya\kaguya.hpp>
 #include "Renderer.h"
 #include "imgui.h"
 #include "Input.h"
@@ -17,22 +19,55 @@ double currTime() {
   return SDL_GetPerformanceCounter() / (double)perfFreq;
 }
 
+struct {
+  struct {
+    bool fullscreen = false;
+    int width = 792;
+    int height = 600;
+  } window;
+  struct {
+    bool vsync = false;
+    bool wireframes = false;
+  } gfx;
+} config;
+
+void load_config() {
+  kaguya::State state;
+  state["dungeon"] = kaguya::NewTable();
+  if (state.dofile("config.lua")) {
+    state(R"lua(
+local cfg = {
+	window = {
+		fullscreen = false,
+		width = 792,
+		height = 600,
+	},
+	gfx = {
+		vsync = false,
+		wireframes = false,
+	}
+}
+
+if type(dungeon.config) == "function" then
+  	dungeon.config(cfg)
+end
+
+config = cfg
+)lua");
+    config.gfx.vsync = state["config"]["gfx"]["vsync"];
+    config.gfx.wireframes = state["config"]["gfx"]["wireframes"];
+    config.window.fullscreen = state["config"]["window"]["fullscreen"];
+    config.window.width = state["config"]["window"]["width"];
+    config.window.height = state["config"]["window"]["height"];
+  }
+}
+
 bool App::init() {
   //setenv("MESA_DEBUG", "", 0);
 
-  Config cfg = Config("dungeon.cfg");
-  cfg.load();
-
-  int windowWidth = cfg.getInt("ResolutionX", 792);
-  int windowHeight = cfg.getInt("ResolutionY", 600);
-  bool vsync = cfg.getBool("VSync", false);
-  bool wireframe = cfg.getBool("Wireframes", false);
-
-  cfg.save();
-
   int err = 0;
   err = SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO);
-  SDL_LogSetAllPriority(SDL_LOG_PRIORITY_DEBUG);
+  SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
   if (err != 0) {
     const char* error = SDL_GetError();
     fprintf(stderr, error);
@@ -41,8 +76,12 @@ bool App::init() {
   }
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM,"SDL initialized.\n");
 
+  
+  load_config();
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Config Loaded.\n");
+
   renderer = new Renderer();
-  if (!renderer->Init("Dungeon", windowWidth, windowHeight)) {
+  if (!renderer->Init("Dungeon", config.window.width, config.window.height)) {
     const char* error = SDL_GetError();
     SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "%s", error);
     SDL_ShowSimpleMessageBox(0, "Error", error, nullptr);
@@ -50,12 +89,13 @@ bool App::init() {
     return false;
   }
 
-  renderer->set_vsync_enabled(vsync);
-  renderer->set_wireframes_enabled(wireframe);
+  renderer->set_vsync_enabled(config.gfx.vsync);
+  renderer->set_wireframes_enabled(config.gfx.wireframes);
 
   input = new Input();
   srand(static_cast<unsigned int>(time(nullptr)));
   perfFreq = SDL_GetPerformanceFrequency();
+  SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "App initialized.\n");
   return true;
 }
 

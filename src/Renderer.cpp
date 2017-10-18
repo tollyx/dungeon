@@ -1,7 +1,8 @@
 #include "Renderer.h"
 
 #define GLEW_STATIC
-#include "glew.h"
+#define GLEW_NO_GLU
+#include <GL/glew.h>
 
 #include <fstream>
 #include <SDL.h>

@@ -49,7 +49,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
 
   vec2i pos = tick->target->get_position();
 
-  std::vector<vec2i> neigh = map->getNeighbours(pos.x, pos.y);
+  std::vector<vec2i> neigh = map->get_neighbours(pos.x, pos.y);
   std::vector<vec2i> options;
   float lowestval = 999999;
   for (vec2i npos : neigh) {
