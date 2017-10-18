@@ -26,6 +26,10 @@ Currently, you need to import the source as a new project in visual studio and s
 * [ ] Make entities and AI completely data-driven
 * [ ] Implement Lua for item/effects/action scripting
   * Might as well use it for basic data storage as well, since I can then skip creating my own parser or adding an additional library for json/yaml/toml/whatever.
+  * [x] Initial implementation
+  * [ ] Items
+  * [ ] Status Effects
+  * [ ] Spells
 
 ### Wishlist
 
