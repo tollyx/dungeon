@@ -7,7 +7,7 @@
 #include <ctime>
 #include <fstream>
 #include <string>
-#include <kaguya\kaguya.hpp>
+#include <kaguya/kaguya.hpp>
 #include "Renderer.h"
 #include "imgui.h"
 #include "Input.h"

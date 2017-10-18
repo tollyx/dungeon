@@ -53,20 +53,20 @@ struct InputEvent {
   bool pressed;
 
   union {
-    struct MouseMoveEvent { // mouse click;
+    struct { // mouse click;
       int x;
       int y;
       int dx;
       int dy;
     } mouse_move_event;
 
-    struct MouseClickEvent { // mouse click;
+    struct { // mouse click;
       int x;
       int y;
       int button;
     } mouse_click_event;
 
-    struct KeyPressEvent { // key
+    struct { // key
       SDL_Keycode key;
       SDL_Keymod mod;
       bool echo;
