@@ -5,10 +5,11 @@
 #include <cmath>
 #include "FieldOfView.h"
 #include "Tilemap.h"
+#include "Level.h"
 
-FieldOfView::FieldOfView(Tilemap *map) {
-  this->map = map;
-  seen = new Tilemap(map->GetWidth(), map->GetHeight());
+FieldOfView::FieldOfView(Level *level) {
+  this->level = level;
+  seen = new Tilemap(level->get_width(), level->get_height());
   counter = 0;
 }
 
@@ -53,7 +54,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       float leftSlope = (deltaX - 0.5f) / (deltaY + 0.5f);
       float rightSlope = (deltaX + 0.5f) / (deltaY - 0.5f);
 
-      if (!(currentX >= 0 && currentY >= 0 && currentX < map->GetWidth() && currentY < map->GetHeight()) || start < rightSlope) {
+      if (!(currentX >= 0 && currentY >= 0 && currentX < level->get_width() && currentY < level->get_height()) || start < rightSlope) {
         continue;
       }
       else if (end > leftSlope) {
@@ -65,7 +66,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       }
 
       if (blocked) {
-        if (map->get_tile(currentX, currentY) == '#') { // TODO: Stop hardcoding tiles
+        if (level->has_flags(TILE_OPAQUE, currentX, currentY)) {
           newStart = rightSlope;
           continue;
         }
@@ -75,7 +76,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
         }
       }
       else {
-        if (map->get_tile(currentX, currentY) == '#' && distance < radius) { // TODO: Get rid of hardcoded tiles
+        if (level->has_flags(TILE_OPAQUE, currentX, currentY) && distance < radius) {
           blocked = true;
           cast_light(distance + 1, start, leftSlope, xx, xy, yx, yy, startX, startY, radius);
           newStart = rightSlope;
@@ -85,7 +86,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
   }
 }
 
-bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
+bool line_of_sight(Level *level, vec2i start, vec2i end) {
   if (start == end) return true;
   vec2i delta = end - start;
   const char ix = (delta.x > 0) - (delta.x < 0);
@@ -98,7 +99,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.y - (delta.x >> 1));
 
-    while (start.x != end.x && map->get_tile(start.x, start.y) != '#') // TODO: Hardcoded tiles
+    while (start.x != end.x && !level->has_flags(TILE_OPAQUE, start.x, start.y))
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (ix > 0)))
@@ -117,7 +118,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.x - (delta.y >> 1));
 
-    while (start.y != end.y && map->get_tile(start.x, start.y) != '#') // TODO: Stop hardcoding tiles
+    while (start.y != end.y && !level->has_flags(TILE_OPAQUE, start.x, start.y)) // TODO: Stop hardcoding tiles
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (iy > 0)))

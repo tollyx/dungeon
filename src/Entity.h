@@ -9,7 +9,7 @@
 #include "vec2i.h"
 #include "Color.h"
 
-class Tilemap;
+class Level;
 
 enum EntityTypes {
   ENTITY_BASE, // All entities are objects that can be placed on the map and can be interacted with
@@ -19,15 +19,15 @@ enum EntityTypes {
 
 class Entity {
   vec2i position;
-  Tilemap* map;
+  Level* map;
 protected:
   unsigned int sprite_id;
   Color sprite_color;
   bool collision;
 public:
-  Entity(Tilemap* map, vec2i pos);
+  Entity(Level* map, vec2i pos);
 
-  Tilemap* get_map();
+  Level* get_map();
   vec2i get_position();
   bool has_collision();
   bool move(int dx, int dy); // returns false if movement failed

@@ -7,21 +7,22 @@
 
 #include "vec2i.h"
 
+class Level;
 class Tilemap;
 
 class FieldOfView {
-  Tilemap* map;
+  Level* level;
   unsigned int counter;
 
   void cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY, float radius);
 public:
   Tilemap* seen;
-  explicit FieldOfView(Tilemap* map);
+  explicit FieldOfView(Level* map);
   ~FieldOfView();
   void calc(vec2i pos, float range);
   bool can_see(vec2i pos);
   bool has_seen(vec2i pos);
 };
-bool line_of_sight(Tilemap* map, vec2i start, vec2i end);
+bool line_of_sight(Level* map, vec2i start, vec2i end);
 
 #endif //DUNGEON_FIELDOFVIEW_H

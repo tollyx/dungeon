@@ -31,12 +31,12 @@ protected:
   float range;
   bool alive;
   ActorFactions faction;
-  Actor(Tilemap *map, vec2i pos);
+  Actor(Level *map, vec2i pos);
 public:
   int id;
   std::string name;
 
-  Actor(Tilemap *map, vec2i pos, std::string datakey);
+  Actor(Level *map, vec2i pos, std::string datakey);
   bool is_alive(){ return alive; };
   void attack(vec2i dpos); // basic melee attack
   void attack(Actor* act);

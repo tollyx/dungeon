@@ -8,6 +8,7 @@
 #include <SDL.h>
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
+#include "Tileset.h"
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <utility>
@@ -365,6 +366,24 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
   glDisableVertexAttribArray(1);
 
   
+}
+
+void Renderer::draw_text(Tileset * tileset, std::string str, int x, int y, int w) {
+  int xpos = 0, ypos = 0;
+  int tile_width = tileset->get_tile_width();
+  int tile_height = tileset->get_tile_height();
+  for (char c : str) {
+    Sprite* spr = tileset->get_sprite(c);
+    if (spr) {
+      draw_sprite(spr, x + xpos, y + ypos);
+    }
+    
+    xpos += tile_width;
+    if (w > 0 && xpos + tile_width >= w) {
+      xpos = 0;
+      ypos += tile_height;
+    }
+  }
 }
 
 void Renderer::Clear() {

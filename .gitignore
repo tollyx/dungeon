@@ -6,6 +6,7 @@
 *.sdf
 *.pdb
 *.sln
+*.obj
 *.vcxproj*
 [Dd]ebug
 [Rr]elease
@@ -27,7 +28,10 @@ compile_commands.json
 CTestTestfile.cmake
 
 # Misc
+gitparams.h
+bin
 build
+*.exe
 *.cfg
 *.log
 imgui.ini

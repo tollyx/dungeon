@@ -1,5 +1,6 @@
 #include <math.h>
 #include "Pathfinder.h"
+#include "Level.h"
 #include "Tilemap.h"
 
 namespace Pathfinder
@@ -11,8 +12,9 @@ namespace Pathfinder
     return sqrtf(dx*dx + dy*dy);
   }
 
-  std::vector<vec2i> aStar(Tilemap * map, vec2i start, vec2i goal)
+  std::vector<vec2i> aStar(Level * level, vec2i start, vec2i goal)
   {
+    Tilemap* map = level->get_flags_map();
     std::vector<AStarNode*> open;
     std::vector<AStarNode*> closed;
 
@@ -36,7 +38,7 @@ namespace Pathfinder
 
       auto neighbours = map->get_neighbours(current->pos.x, current->pos.y);
       for (auto pos : neighbours) {
-        if (map->get_tile(pos.x, pos.y) == '#') {
+        if (level->has_flags(TILE_WALKABLE, pos.x, pos.y)) {
           continue;
         }
         AStarNode* neighbour = new AStarNode();
@@ -140,16 +142,17 @@ namespace Pathfinder
     return path;
   }
 
-  void calcDijkstraMap(Tilemap * map, std::vector<vec2i>* goals, DijkstraMap * out, float maxValue) {
+  void calcDijkstraMap(Level * level, std::vector<vec2i>* goals, DijkstraMap * out, float maxValue) {
+    Tilemap* map = level->get_flags_map();
     if (out->tilemap != nullptr) {
       delete out->tilemap;
     }
-    out->tilemap = new float[map->GetWidth() * map->GetHeight()];
-    for (int i = 0; i < map->GetWidth() * map->GetHeight(); i++) {
+    out->tilemap = new float[map->get_width() * map->get_height()];
+    for (int i = 0; i < map->get_width() * map->get_height(); i++) {
       out->tilemap[i] = maxValue;
     }
-    out->height = map->GetHeight();
-    out->width = map->GetWidth();
+    out->height = map->get_height();
+    out->width = map->get_width();
     for (vec2i pos : *goals) {
       out->setValue(pos.x, pos.y, 0);
     }
@@ -160,7 +163,7 @@ namespace Pathfinder
       auto neigh = map->get_neighbours(pos.x, pos.y);
       for (vec2i npos : neigh) {
         int val = out->getValue(npos.x, npos.y);
-        if (map->get_tile(npos.x, npos.y) != '#' && val > 1) {
+        if (level->has_flags(TILE_WALKABLE, npos.x, npos.y) && val > 1) {
           if (npos.x != 0 && npos.y != 0) {
             out->setValue(npos.x, npos.y, 1.4f);
           }
@@ -184,7 +187,7 @@ namespace Pathfinder
         if (dp.x != 0 && dp.y != 0) {
           val += .4f;
         }
-        if (map->get_tile(npos.x, npos.y) != '#' && out->getValue(npos.x, npos.y) > val) { // TODO: Remove hardcoded tile
+        if (level->has_flags(TILE_WALKABLE, npos.x, npos.y) && out->getValue(npos.x, npos.y) > val) {
           out->setValue(npos.x, npos.y, val);
           queue.push_back(neigh[i]);
         }

@@ -4,6 +4,7 @@
 #include <string>
 #include "Color.h"
 
+class Tileset;
 struct SDL_Window;
 struct SDL_Texture;
 union SDL_Event;
@@ -56,6 +57,7 @@ public:
   Texture * LoadTexture(std::string path);
   Sprite CreateSprite(std::string path, int x, int y, int w, int h);
   void draw_sprite(Sprite *sprite, int x, int y, float sx = 1, float sy = 1);
+  void draw_text(Tileset *tileset, std::string str, int x, int y, int w = 0);
   void Clear();
   void Present();
 };

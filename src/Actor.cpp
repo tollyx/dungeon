@@ -1,10 +1,10 @@
 #include "Actor.h"
-#include "Tilemap.h"
+#include "Level.h"
 #include "BehaviourTree.h"
 
 int id_counter = 0;
 
-Actor::Actor(Tilemap *map, vec2i pos) : Entity(map, pos) {
+Actor::Actor(Level *map, vec2i pos) : Entity(map, pos) {
   id = id_counter++;
   name = "Actor";
   range = 1.5f;
@@ -12,6 +12,10 @@ Actor::Actor(Tilemap *map, vec2i pos) : Entity(map, pos) {
   bt = nullptr;
   faction = FACTION_NONE;
   sprite_id = 1;
+}
+
+Actor::Actor(Level * map, vec2i pos, std::string datakey) : Entity(map, pos) {
+  Actor(map, pos);
 }
 
 void Actor::update() {
@@ -47,6 +51,7 @@ void Actor::attack(Actor *act) {
     }
   }
 }
+
 
 void Actor::attack(vec2i dpos) {
   if (dpos.dist() <= range) {

@@ -3,7 +3,7 @@
 #include "vec2i.h"
 #include <vector>
 
-class Tilemap;
+class Level;
 
 namespace Pathfinder
 {
@@ -66,6 +66,6 @@ namespace Pathfinder
   };
 
   float distance(vec2i a, vec2i b);
-  std::vector<vec2i> aStar(Tilemap* map, vec2i start, vec2i goal);
-  void calcDijkstraMap(Tilemap* map, std::vector<vec2i>* goals, DijkstraMap* out, float maxValue = 32);
+  std::vector<vec2i> aStar(Level* map, vec2i start, vec2i goal);
+  void calcDijkstraMap(Level* map, std::vector<vec2i>* goals, DijkstraMap* out, float maxValue = 32);
 }

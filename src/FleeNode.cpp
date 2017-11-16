@@ -3,6 +3,7 @@
 #include "Pathfinder.h"
 #include "BehaviourTree.h"
 #include "Actor.h"
+#include "Level.h"
 #include "Tilemap.h"
 #include "FieldOfView.h"
 
@@ -14,7 +15,7 @@ FleeNode::~FleeNode() = default;
 
 BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   Pathfinder::DijkstraMap dijkstra;
-  Tilemap * map = tick->target->get_map();
+  Level * map = tick->target->get_map();
   std::vector<vec2i> enemyPos;
   bool ishero = tick->target->is_type_of(ACT_HERO);
   vec2i targetpos = tick->target->get_position();
@@ -48,8 +49,8 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   Pathfinder::calcDijkstraMap(map, &safety, &dijkstra);
 
   vec2i pos = tick->target->get_position();
-
-  std::vector<vec2i> neigh = map->get_neighbours(pos.x, pos.y);
+  Tilemap* flags = map->get_flags_map();
+  std::vector<vec2i> neigh = flags->get_neighbours(pos.x, pos.y);
   std::vector<vec2i> options;
   float lowestval = 999999;
   for (vec2i npos : neigh) {

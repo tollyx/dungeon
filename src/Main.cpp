@@ -1,6 +1,7 @@
+#include <SDL.h>
 #include "App.h"
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   App app{};
   int err = 1;
   if (app.init()) {

@@ -9,13 +9,13 @@
 #include "Gamestate.h"
 
 class Tileset;
-class Tilemap;
+class Level;
 class Actor;
 class FieldOfView;
 
 class PlayState : public Gamestate {
   Tileset* ascii;
-  Tilemap* tilemap;
+  Level* level;
   Actor * hero;
   FieldOfView *fov;
 

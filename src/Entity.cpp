@@ -3,9 +3,9 @@
 //
 
 #include "Entity.h"
-#include "Tilemap.h"
+#include "Level.h"
 
-Entity::Entity(Tilemap *map, vec2i pos) {
+Entity::Entity(Level *map, vec2i pos) {
   this->map = map;
   position = pos;
   collision = false;
@@ -22,7 +22,7 @@ bool Entity::move(vec2i dpos) {
 
 bool Entity::move(int dx, int dy) {
   vec2i newpos = position + vec2i(dx, dy);
-  if (!collision || !map->IsBlocked(newpos.x, newpos.y)) {
+  if (!collision || (map->has_flags(TILE_WALKABLE, newpos.x, newpos.y) && !map->has_flags(TILE_COLLISION, newpos.x, newpos.y))) {
     position = newpos;
     return true;
   }
@@ -33,7 +33,7 @@ void Entity::set_position(vec2i pos) {
   position = pos;
 }
 
-Tilemap *Entity::get_map() {
+Level *Entity::get_map() {
   return map;
 }
 

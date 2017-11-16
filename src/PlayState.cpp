@@ -9,6 +9,7 @@
 #include "App.h"
 #include "Tileset.h"
 #include "Tilemap.h"
+#include "Level.h"
 #include "FieldOfView.h"
 #include "imgui.h"
 #include "Hero.h"
@@ -16,6 +17,7 @@
 #include "Shaman.h"
 
 const int mapwidth = 32;
+unsigned int update_time = 0;
 
 InputAction action;
 
@@ -58,9 +60,9 @@ void PlayState::load() {
 void PlayState::new_game() {
   action = ACTION_NONE;
 
-  if (tilemap != nullptr) {
-    delete tilemap;
-    tilemap = nullptr;
+  if (level != nullptr) {
+    delete level;
+    level = nullptr;
     hero = nullptr;
   }
 
@@ -110,9 +112,12 @@ void PlayState::new_game() {
       "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #";
 
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
-  tilemap = new Tilemap(32, 32);
+  level = new Level(32, 32);
   int y = 0;
   int x = 0;
+
+  Tilemap* flags = level->get_flags_map();
+  Tilemap* glyphs = level->get_glyphs_map();
   for (char i : map) {
 
     if (y >= 32) {
@@ -127,32 +132,44 @@ void PlayState::new_game() {
     }
 
     if (i == '@') {
-      hero = new Hero(tilemap, vec2i(x, y));
-      tilemap->add_entity(hero);
-      tilemap->set_tile(x, y, '.');
+      hero = new Hero(level, vec2i(x, y));
+      level->add_entity(hero);
+      glyphs->set_tile(x, y, '.');
+      flags->set_tile(x, y, TILE_WALKABLE);
     }
     else if (i == 'g') {
-      tilemap->add_entity(new Goblin(tilemap, vec2i(x, y)));
-      tilemap->set_tile(x, y, '.');
+      level->add_entity(new Goblin(level, vec2i(x, y)));
+      glyphs->set_tile(x, y, '.');
+      flags->set_tile(x, y, TILE_WALKABLE);
     }
     else if (i == 's') {
-      tilemap->add_entity(new Shaman(tilemap, vec2i(x, y)));
-      tilemap->set_tile(x, y, '.');
+      level->add_entity(new Shaman(level, vec2i(x, y)));
+      glyphs->set_tile(x, y, '.');
+      flags->set_tile(x, y, TILE_WALKABLE);
     }
     else {
-      tilemap->set_tile(x, y, i);
+      glyphs->set_tile(x, y, i);
+      switch (i) {
+      case '#':
+        flags->set_tile(x, y, TILE_COLLISION | TILE_OPAQUE | TILE_WALL);
+      case '.':
+        flags->set_tile(x, y, TILE_WALKABLE);
+      default:
+        break;
+      }
     }
     x++;
   }
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
-  fov = new FieldOfView(tilemap);
+  fov = new FieldOfView(level);
   fov->calc(hero->get_position(), 6);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
 }
 
 Gamestate *PlayState::update(double delta) {
   if (action != ACTION_NONE) {
+    update_time = SDL_GetTicks();
     if (hero && hero->is_alive()) {
       vec2i dir;
       switch (action) {
@@ -170,8 +187,9 @@ Gamestate *PlayState::update(double delta) {
       if (dir != vec2i(0,0)) {
         if (!hero->move(dir.x, dir.y)) {
           vec2i heropos = hero->get_position();
-          auto acts = tilemap->get_entities(heropos.x + dir.x, heropos.y + dir.y, 0, ENTITY_ACTOR);
+          auto acts = level->get_entities(heropos.x + dir.x, heropos.y + dir.y, 0, ENTITY_ACTOR);
           if(acts.empty()) {
+            update_time = SDL_GetTicks() - update_time;
             return nullptr; // unable to move and nothing to attack == abort turn
           }
           for (auto ent : acts) {
@@ -187,7 +205,7 @@ Gamestate *PlayState::update(double delta) {
       fov->calc(hero->get_position(), 6);
     }
 
-    auto actors = tilemap->get_entity_list();
+    auto actors = level->get_entity_list();
     for (Entity* var : *actors) {
       if (var == hero) continue;
       if (var->entity_type() == ENTITY_ACTOR) {
@@ -207,6 +225,7 @@ Gamestate *PlayState::update(double delta) {
     }
      */
     action = ACTION_NONE;
+    update_time = SDL_GetTicks() - update_time;
   }
   return nullptr;
 }
@@ -224,6 +243,8 @@ void PlayState::draw(double delta) {
         ImGui::MenuItem("Actors", nullptr, &debug_actors);
         ImGui::EndMenu();
       }
+      ImGui::SameLine(ImGui::GetWindowWidth()-48);
+      ImGui::Text("%dms", update_time);
 
       ImGui::EndMainMenuBar();
     }
@@ -242,7 +263,7 @@ void PlayState::draw(double delta) {
     if (debug_actors) {
       ImGui::Begin("Actors", &debug_actors);
 
-      auto actors = tilemap->get_entity_list();
+      auto actors = level->get_entity_list();
       const char* headers[] {
           "id", "name", "health", "strength"
       };
@@ -284,9 +305,9 @@ void PlayState::draw(double delta) {
       (tilesize.y/2-heropos.y),
   };
 
-  tilemap->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, fov);
+  level->get_glyphs_map()->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, fov);
 
-  auto entities = tilemap->get_entity_list();
+  auto entities = level->get_entity_list();
 
   // Draw dead actors
   for (Entity* var : *entities) {
@@ -332,12 +353,14 @@ void PlayState::draw(double delta) {
       app->renderer->draw_sprite(ascii->get_sprite(3), (i+1) * asciisize.x, asciisize.y);
     }
   }
+  app->renderer->set_color(255, 255, 255, 255);
+  app->renderer->draw_text(ascii, "Testing writing text", 0, app->renderer->get_renderer_height() - ascii->get_tile_height());
 }
 
 void PlayState::quit() {
-  if (tilemap != nullptr) {
-    delete tilemap;
-    tilemap = nullptr;
+  if (level != nullptr) {
+    delete level;
+    level = nullptr;
     hero = nullptr;
   }
 

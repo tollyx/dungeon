@@ -2,6 +2,7 @@
 #include "WanderNode.h"
 #include "BehaviourTree.h"
 #include "Actor.h"
+#include "Level.h"
 #include "Tilemap.h"
 
 WanderNode::WanderNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent){}
@@ -11,7 +12,7 @@ WanderNode::~WanderNode() = default;
 
 BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
   vec2i pos = tick->target->get_position();
-  std::vector<vec2i> neighbours = tick->target->get_map()->get_neighbours(pos.x, pos.y);
+  std::vector<vec2i> neighbours = tick->target->get_map()->get_glyphs_map()->get_neighbours(pos.x, pos.y);
   while (true) {
     if (neighbours.empty()) {
       previous.clear();
