@@ -81,7 +81,9 @@ bool App::init() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Config Loaded.\n");
 
   renderer = new Renderer();
-  if (!renderer->Init("Dungeon", config.window.width, config.window.height)) {
+  std::string title = "Dungeon ";
+  title += version;
+  if (!renderer->Init(title, config.window.width, config.window.height)) {
     const char* error = SDL_GetError();
     SDL_LogCritical(SDL_LOG_CATEGORY_SYSTEM, "%s", error);
     SDL_ShowSimpleMessageBox(0, "Error", error, nullptr);
@@ -108,6 +110,7 @@ int App::start() {
   double currentTime = currTime();
   double accumulator = dt;
 
+  bool show_log = false;
   bool running = true;
   Gamestate* nextstate = nullptr;
 
@@ -190,7 +193,6 @@ int App::start() {
 
       accumulator -= dt;
     }
-
     renderer->Clear();
     current->draw(accumulator / dt);
     renderer->Present();
