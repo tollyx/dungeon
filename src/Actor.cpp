@@ -21,11 +21,11 @@ void Actor::update() {
     bt->tick(this);
   }
   if (health < health_max) {
+    healcounter--;
     if (healcounter <= 0) {
-      health++;
+      heal(1);
       healcounter = 4;
     }
-    healcounter--;
   }
   if (health <= 0) {
     kill();
