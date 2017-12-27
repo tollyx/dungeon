@@ -10,14 +10,11 @@ Dependencies: `SDL2`, `Lua53`, `glm`, and `glbinding`
 
 ### Linux
 
-* Install the dependencies using your distro's package manager
-* Create a directory named  "build" and run `cmake .. && make` inside it
-* Move either the resulting binary to the root folder of the repository or copy the assets folder into the build directory
-* You can now run the binary
+Install the dependencies using your favorite package manager and then use cmake.
 
 ### Windows
 
-CMake should work just fine on windows as well, but I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to install the libraries.
+I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to install the dependencies. When you've done that, either use cmake or the included solution to build with visual studio.
 
 ## Future plans
 
