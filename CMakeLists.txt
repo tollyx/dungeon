@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.4)
-set(CMAKE_DISABLE_SOURCE_CHANGES ON)
+#set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
@@ -12,7 +12,7 @@ execute_process(
 file(WRITE "src/gitparams.h" "#define GIT_CUR_COMMIT ${GIT_COMMIT}")
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g -static-libgcc -static-libstdc++")
 
 project(dungeon LANGUAGES CXX)
 

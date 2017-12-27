@@ -7,17 +7,17 @@
 
 
 #include "Gamestate.h"
+#include "Tilemap.h"
+#include "FieldOfView.h"
 
 class Tileset;
-class Tilemap;
 class Actor;
-class FieldOfView;
 
 class PlayState : public Gamestate {
   Tileset* ascii;
-  Tilemap* tilemap;
+  Tilemap tilemap;
   Actor * hero;
-  FieldOfView *fov;
+  FieldOfView fov;
 
   bool debug;
 public:

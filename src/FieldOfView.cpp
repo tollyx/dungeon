@@ -5,6 +5,10 @@
 #include <cmath>
 #include "FieldOfView.h"
 #include "Tilemap.h"
+#include <SDL.h>
+
+FieldOfView::FieldOfView() {
+}
 
 FieldOfView::FieldOfView(Tilemap *map) {
   this->map = map;
@@ -20,14 +24,19 @@ void FieldOfView::calc(vec2i pos, float range) {
   counter++;
   seen->set_tile(pos.x, pos.y, counter);
   // Once for each octant
-  cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, -1, 0, 0, -1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, 1, -1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 1, 0, 0, -1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, -1, 1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, -1, 0, 0, 1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, 1, 1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 1, 0, 0, 1, pos.x, pos.y, range);
+  if (map != nullptr) {
+    cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, -1, 0, 0, -1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, 1, -1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 1, 0, 0, -1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, -1, 1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, -1, 0, 0, 1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, 1, 1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 1, 0, 0, 1, pos.x, pos.y, range);
+  }
+  else {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Tried to calc fov with a null tilemap!\n");
+  }
 }
 
 bool FieldOfView::can_see(vec2i pos) {

@@ -16,7 +16,8 @@ class FieldOfView {
   void cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY, float radius);
 public:
   Tilemap* seen;
-  explicit FieldOfView(Tilemap* map);
+  FieldOfView();
+  FieldOfView(Tilemap* map);
   ~FieldOfView();
   void calc(vec2i pos, float range);
   bool can_see(vec2i pos);
