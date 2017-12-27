@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -9,451 +9,220 @@
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="MinSizeRel|Win32">
-      <Configuration>MinSizeRel</Configuration>
-      <Platform>Win32</Platform>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|Win32">
-      <Configuration>RelWithDebInfo</Configuration>
-      <Platform>Win32</Platform>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E0613C51-E74C-3258-8634-C19684B171CF}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{E786EE71-011C-4AAC-8D46-C06B0671388B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <Platform>Win32</Platform>
-    <ProjectName>dungeon</ProjectName>
-    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
-    <VcpkgEnabled>false</VcpkgEnabled>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets">
-    <Import Project="do_not_import_user.props" Condition="exists('do_not_import_user.props')" Label="LocalAppDataPlatform" />
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Programmering\C++\Dungeon\Debug\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dungeon.dir\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dungeon</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Programmering\C++\Dungeon\Release\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">dungeon.dir\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">dungeon</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Programmering\C++\Dungeon\MinSizeRel\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">dungeon.dir\MinSizeRel\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">dungeon</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Programmering\C++\Dungeon\RelWithDebInfo\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">dungeon.dir\RelWithDebInfo\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">dungeon</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
-    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
-      <Optimization>Disabled</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <PostBuildEvent>
-      <Message></Message>
-      <Command>setlocal
-powershell -noprofile -executionpolicy Bypass -file E:/Programmering/C++/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary E:/Programmering/C++/Dungeon/Debug/dungeon.exe -installedDir E:/Programmering/C++/vcpkg/installed/x86-windows/debug/bin -OutVariable out
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\manual-link\SDL2main.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\SDL2.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\debug\lib\glew32d.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\debug\lib\lua.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Programmering/C++/Dungeon/Debug/dungeon.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Programmering/C++/Dungeon/Debug/dungeon.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>Release/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat></DebugInformationFormat>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <PostBuildEvent>
-      <Message></Message>
-      <Command>setlocal
-powershell -noprofile -executionpolicy Bypass -file E:/Programmering/C++/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary E:/Programmering/C++/Dungeon/Release/dungeon.exe -installedDir E:/Programmering/C++/vcpkg/installed/x86-windows/bin -OutVariable out
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
-    <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\manual-link\SDL2main.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\SDL2.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\glew32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\debug\lib\lua.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Programmering/C++/Dungeon/Release/dungeon.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Programmering/C++/Dungeon/Release/dungeon.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
-      <Version></Version>
-    </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MinSpace</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat></DebugInformationFormat>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <PostBuildEvent>
-      <Message></Message>
-      <Command>setlocal
-powershell -noprofile -executionpolicy Bypass -file E:/Programmering/C++/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary E:/Programmering/C++/Dungeon/MinSizeRel/dungeon.exe -installedDir E:/Programmering/C++/vcpkg/installed/x86-windows/bin -OutVariable out
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
-    <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\manual-link\SDL2main.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\SDL2.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\glew32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\debug\lib\lua.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Programmering/C++/Dungeon/MinSizeRel/dungeon.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Programmering/C++/Dungeon/MinSizeRel/dungeon.pdb</ProgramDataBaseFile>
-      <SubSystem>Console</SubSystem>
-      <Version></Version>
-    </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <ClCompile>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
-      <CompileAs>CompileAsCpp</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <Optimization>MaxSpeed</Optimization>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ResourceCompile>
-    <Midl>
-      <AdditionalIncludeDirectories>E:\Programmering\C++\vcpkg\installed\x86-windows\include\SDL2;E:\Programmering\C++\vcpkg\installed\x86-windows\include;E:\Programmering\C++\Dungeon\libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
-      <HeaderFileName>%(Filename).h</HeaderFileName>
-      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
-      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
-      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
-    </Midl>
-    <PostBuildEvent>
-      <Message></Message>
-      <Command>setlocal
-powershell -noprofile -executionpolicy Bypass -file E:/Programmering/C++/vcpkg/scripts/buildsystems/msbuild/applocal.ps1 -targetBinary E:/Programmering/C++/Dungeon/RelWithDebInfo/dungeon.exe -installedDir E:/Programmering/C++/vcpkg/installed/x86-windows/bin -OutVariable out
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-    </PostBuildEvent>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\manual-link\SDL2main.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\SDL2.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\lib\glew32.lib;E:\Programmering\C++\vcpkg\installed\x86-windows\debug\lib\lua.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>E:/Programmering/C++/Dungeon/RelWithDebInfo/dungeon.lib</ImportLibrary>
-      <ProgramDataBaseFile>E:/Programmering/C++/Dungeon/RelWithDebInfo/dungeon.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
-      <Version></Version>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
-    <ProjectReference>
-      <LinkLibraryDependencies>false</LinkLibraryDependencies>
-    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="E:\Programmering\C++\Dungeon\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule E:/Programmering/C++/Dungeon/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HE:/Programmering/C++/Dungeon -BE:/Programmering/C++/Dungeon --check-stamp-file E:/Programmering/C++/Dungeon/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:/Programmering/C++/Dungeon/CMakeLists.txt;E:\Programmering\C++\Dungeon\CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Programmering\C++\vcpkg\scripts\cmake\vcpkg_get_windows_sdk.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystem.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-Determine-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ARMCC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Comeau-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Compaq-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GNU-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\HP-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\NVIDIA-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SunPro-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\VisualAge-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\XL-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\zOS-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Internal\FeatureTesting.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindGLEW.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindLua.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\cmake\FindSDL2.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckSymbolExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFile.cxx.in;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Programmering\C++\Dungeon\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule E:/Programmering/C++/Dungeon/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HE:/Programmering/C++/Dungeon -BE:/Programmering/C++/Dungeon --check-stamp-file E:/Programmering/C++/Dungeon/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Programmering/C++/Dungeon/CMakeLists.txt;E:\Programmering\C++\Dungeon\CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Programmering\C++\vcpkg\scripts\cmake\vcpkg_get_windows_sdk.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystem.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-Determine-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ARMCC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Comeau-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Compaq-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GNU-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\HP-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\NVIDIA-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SunPro-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\VisualAge-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\XL-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\zOS-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Internal\FeatureTesting.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindGLEW.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindLua.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\cmake\FindSDL2.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckSymbolExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFile.cxx.in;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Programmering\C++\Dungeon\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule E:/Programmering/C++/Dungeon/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HE:/Programmering/C++/Dungeon -BE:/Programmering/C++/Dungeon --check-stamp-file E:/Programmering/C++/Dungeon/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:/Programmering/C++/Dungeon/CMakeLists.txt;E:\Programmering\C++\Dungeon\CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Programmering\C++\vcpkg\scripts\cmake\vcpkg_get_windows_sdk.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystem.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-Determine-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ARMCC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Comeau-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Compaq-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GNU-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\HP-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\NVIDIA-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SunPro-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\VisualAge-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\XL-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\zOS-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Internal\FeatureTesting.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindGLEW.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindLua.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\cmake\FindSDL2.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckSymbolExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFile.cxx.in;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">E:\Programmering\C++\Dungeon\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule E:/Programmering/C++/Dungeon/CMakeLists.txt</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -HE:/Programmering/C++/Dungeon -BE:/Programmering/C++/Dungeon --check-stamp-file E:/Programmering/C++/Dungeon/CMakeFiles/generate.stamp
-if %errorlevel% neq 0 goto :cmEnd
-:cmEnd
-endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
-:cmErrorLevel
-exit /b %1
-:cmDone
-if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:/Programmering/C++/Dungeon/CMakeLists.txt;E:\Programmering\C++\Dungeon\CMakeLists.txt;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;E:\Programmering\C++\vcpkg\scripts\cmake\vcpkg_get_windows_sdk.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystem.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeSystem.cmake;E:\Programmering\C++\vcpkg\scripts\buildsystems\vcpkg.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-Determine-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\ARMCC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Comeau-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Compaq-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\GNU-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\HP-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\NVIDIA-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\SunPro-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\VisualAge-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\XL-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\zOS-CXX-DetermineCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\IBMCPP-CXX-DetermineVersionInternal.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeFindBinUtils.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeGenericSystem.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\WindowsPaths.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeLanguageInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC-CXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Platform\Windows-MSVC.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeRCInformation.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestRCCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompilerABI.cpp;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Internal\FeatureTesting.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\Compiler\MSVC-CXX-FeatureTests.cmake;E:\Programmering\C++\Dungeon\CMakeFiles\feature_tests.cxx;C:\Program Files\CMake\share\cmake-3.9\Modules\CMakeCXXCompiler.cmake.in;E:\Programmering\C++\Dungeon\CMakeFiles\3.9.2\CMakeCXXCompiler.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindOpenGL.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindGLEW.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\SelectLibraryConfigurations.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindLua.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\cmake\FindSDL2.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindThreads.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckLibraryExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckSymbolExists.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFileCXX.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\CheckIncludeFile.cxx.in;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.9\Modules\FindPackageMessage.cmake;E:\Programmering\C++\Dungeon\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">E:\Programmering\C++\Dungeon\CMakeFiles\generate.stamp</Outputs>
-      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
-    </CustomBuild>
+    <ClCompile Include="src\Actor.cpp" />
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\AttackEnemyNode.cpp" />
+    <ClCompile Include="src\BehaviourTree.cpp" />
+    <ClCompile Include="src\BehaviourTreeMemSelector.cpp" />
+    <ClCompile Include="src\BehaviourTreeMemSequencer.cpp" />
+    <ClCompile Include="src\BehaviourTreeNode.cpp" />
+    <ClCompile Include="src\BehaviourTreeSelector.cpp" />
+    <ClCompile Include="src\BehaviourTreeSequencer.cpp" />
+    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\ExploreNode.cpp" />
+    <ClCompile Include="src\FieldOfView.cpp" />
+    <ClCompile Include="src\FleeNode.cpp" />
+    <ClCompile Include="src\Gamestate.cpp" />
+    <ClCompile Include="src\Goblin.cpp" />
+    <ClCompile Include="src\HealFriendNode.cpp" />
+    <ClCompile Include="src\Hero.cpp" />
+    <ClCompile Include="src\IfHealthBelow.cpp" />
+    <ClCompile Include="src\IfNotSeeEnemyNode.cpp" />
+    <ClCompile Include="src\IfSeeEnemyNode.cpp" />
+    <ClCompile Include="src\IfSeeFriendNode.cpp" />
+    <ClCompile Include="src\imgui.cpp" />
+    <ClCompile Include="src\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="src\imgui_user.cpp" />
+    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Mapgen.cpp" />
+    <ClCompile Include="src\Pathfinder.cpp" />
+    <ClCompile Include="src\PlayState.cpp" />
+    <ClCompile Include="src\RangedAttackNode.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\RestNode.cpp" />
+    <ClCompile Include="src\Shaman.cpp" />
+    <ClCompile Include="src\Tilemap.cpp" />
+    <ClCompile Include="src\Tileset.cpp" />
+    <ClCompile Include="src\WanderNode.cpp" />
+    <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Actor.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\App.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\AttackEnemyNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTree.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeMemSelector.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeMemSequencer.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeSelector.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeSequencer.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Config.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Entity.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\ExploreNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\FieldOfView.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\FleeNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Gamestate.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Goblin.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\HealFriendNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Hero.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\IfHealthBelow.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\IfNotSeeEnemyNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\IfSeeEnemyNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\IfSeeFriendNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Input.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Main.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Mapgen.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Pathfinder.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\PlayState.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\RangedAttackNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Renderer.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\RestNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Shaman.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Tilemap.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\Tileset.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\WanderNode.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\World.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\imgui.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\imgui_demo.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\imgui_draw.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\imgui_impl_sdl_gl3.cpp"  />
-    <ClCompile Include="E:\Programmering\C++\Dungeon\src\imgui_user.cpp"  />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Actor.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\App.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\AttackEnemyNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTree.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeMemSelector.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeMemSequencer.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeSelector.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\BehaviourTreeSequencer.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Color.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Config.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Entity.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\ExploreNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\FieldOfView.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\FleeNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Gamestate.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Goblin.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\HealFriendNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Hero.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\IfHealthBelow.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\IfNotSeeEnemyNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\IfSeeEnemyNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\IfSeeFriendNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Input.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Logger.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Mapgen.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Pathfinder.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\PlayState.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\RangedAttackNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Renderer.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\RestNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Shaman.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Stats.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Tilemap.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\Tileset.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\WanderNode.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\World.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\gitparams.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\imconfig.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\imgui.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\imgui_impl_sdl_gl3.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\imgui_internal.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\imgui_user.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\stb_rect_pack.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\stb_textedit.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\stb_truetype.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\vec2i.h" />
-    <ClInclude Include="E:\Programmering\C++\Dungeon\src\wglew.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="E:\Programmering\C++\Dungeon\ZERO_CHECK.vcxproj">
-      <Project>{56B8DEDE-1CE3-3F25-B401-94BB947B4758}</Project>
-      <Name>ZERO_CHECK</Name>
-    </ProjectReference>
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\another_binding_api.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\compatibility.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\config.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_function_def.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_ref_impl.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_table_def.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_variant_def.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\error_handler.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\exception.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\function_tuple_def.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\kaguya.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_function.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_table.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\metatable.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx03.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx11.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\object.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\optional.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess_repeate.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_any.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_tuple.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\ref_tuple.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\state.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\traits.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\type.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx03.hpp" />
+    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx11.hpp" />
+    <ClInclude Include="src\Actor.h" />
+    <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\AttackEnemyNode.h" />
+    <ClInclude Include="src\BehaviourTree.h" />
+    <ClInclude Include="src\BehaviourTreeMemSelector.h" />
+    <ClInclude Include="src\BehaviourTreeMemSequencer.h" />
+    <ClInclude Include="src\BehaviourTreeNode.h" />
+    <ClInclude Include="src\BehaviourTreeSelector.h" />
+    <ClInclude Include="src\BehaviourTreeSequencer.h" />
+    <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\ExploreNode.h" />
+    <ClInclude Include="src\FieldOfView.h" />
+    <ClInclude Include="src\FleeNode.h" />
+    <ClInclude Include="src\Gamestate.h" />
+    <ClInclude Include="src\gitparams.h" />
+    <ClInclude Include="src\Goblin.h" />
+    <ClInclude Include="src\HealFriendNode.h" />
+    <ClInclude Include="src\Hero.h" />
+    <ClInclude Include="src\IfHealthBelow.h" />
+    <ClInclude Include="src\IfNotSeeEnemyNode.h" />
+    <ClInclude Include="src\IfSeeEnemyNode.h" />
+    <ClInclude Include="src\IfSeeFriendNode.h" />
+    <ClInclude Include="src\imconfig.h" />
+    <ClInclude Include="src\imgui.h" />
+    <ClInclude Include="src\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="src\imgui_internal.h" />
+    <ClInclude Include="src\imgui_user.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\Logger.h" />
+    <ClInclude Include="src\Mapgen.h" />
+    <ClInclude Include="src\Pathfinder.h" />
+    <ClInclude Include="src\PlayState.h" />
+    <ClInclude Include="src\RangedAttackNode.h" />
+    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RestNode.h" />
+    <ClInclude Include="src\Shaman.h" />
+    <ClInclude Include="src\Stats.h" />
+    <ClInclude Include="src\stb_rect_pack.h" />
+    <ClInclude Include="src\stb_textedit.h" />
+    <ClInclude Include="src\stb_truetype.h" />
+    <ClInclude Include="src\Tilemap.h" />
+    <ClInclude Include="src\Tileset.h" />
+    <ClInclude Include="src\vec2i.h" />
+    <ClInclude Include="src\WanderNode.h" />
+    <ClInclude Include="src\wglew.h" />
+    <ClInclude Include="src\World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

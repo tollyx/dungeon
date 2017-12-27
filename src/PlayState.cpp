@@ -173,8 +173,8 @@ Gamestate *PlayState::update(double delta) {
           vec2i heropos = hero->get_position();
           auto acts = tilemap.get_entities(heropos.x + dir.x, heropos.y + dir.y, 0, ENTITY_ACTOR);
           if(acts.empty()) {
-            action = ACTION_NONE;
             SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: invalid player action.\n");
+            action = ACTION_NONE;
             return nullptr; // unable to move and nothing to attack == abort turn
           }
           for (auto ent : acts) {

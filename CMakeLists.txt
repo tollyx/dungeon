@@ -24,11 +24,9 @@ find_package(SDL2 REQUIRED)
 include_directories(
 	${OPENGL_INCLUDE_DIR} 
 	${SDL2_INCLUDE_DIR} 
-	${GLBINDING_INCLUDE_DIRS} 
 	${LUA_INCLUDE_DIR} 
 	"libs/kaguya-1.3.2/include"
 )
-message(STATUS ${GLBINDING_LIBRARIES})
 
 link_libraries(
 	${OPENGL_LIBRARIES} 
@@ -37,6 +35,6 @@ link_libraries(
 )
 
 file(GLOB SOURCES "src/*.cpp" "src/*.c" "src/*.h")
-add_executable(dungeon ${SOURCES})
+add_executable(${TARGET} ${SOURCES})
 
 target_link_libraries(${TARGET} PUBLIC glbinding::glbinding)
