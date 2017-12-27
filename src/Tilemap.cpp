@@ -4,7 +4,7 @@
 #include "Renderer.h"
 #include "Tileset.h"
 #include "FieldOfView.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 int Tilemap::GetIndex(int x, int y) 
 {

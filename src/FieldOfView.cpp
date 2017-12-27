@@ -5,7 +5,7 @@
 #include <cmath>
 #include "FieldOfView.h"
 #include "Tilemap.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 FieldOfView::FieldOfView() {
 }

@@ -5,7 +5,7 @@
 #include <GL/glew.h>
 
 #include <fstream>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include <glm/gtx/transform.hpp>
