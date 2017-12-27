@@ -1,8 +1,8 @@
 #include "Renderer.h"
 
-#define GLEW_STATIC
-#define GLEW_NO_GLU
-#include <GL/glew.h>
+#include <glbinding\gl\gl.h>
+#include <glbinding\Binding.h>
+#include <glbinding\gl\types.h>
 
 #include <fstream>
 #include <SDL2/SDL.h>
@@ -11,6 +11,8 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <utility>
+
+using namespace gl;
 
 const GLfloat rectVertData[]{
   0,0,0, 1,0,0, 0,1,0, 1,1,0
@@ -37,7 +39,7 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
     return 0;
   }
   
-  GLint result = GL_FALSE;
+  GLboolean result = GL_FALSE;
   int infologlength;
 
   SDL_Log("Compiling shader: %s\n", path);
@@ -63,7 +65,7 @@ GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
   glAttachShader(programId, fragshader);
   glLinkProgram(programId);
 
-  GLint result = GL_FALSE;
+  GLboolean result = GL_FALSE;
   int infologlength;
 
   glGetShaderiv(programId, GL_LINK_STATUS, &result);
@@ -128,6 +130,9 @@ bool Renderer::Init(std::string title, int width, int height) {
     return false;
   }
 
+  glbinding::Binding::initialize();
+  
+  /*
   GLenum err = glewInit();
   if (err != GLEW_OK) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER, "Failed to initialize OpenGl: %s\n", glewGetErrorString(err));
@@ -138,7 +143,7 @@ bool Renderer::Init(std::string title, int width, int height) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"OpenGl 3.2 is not supported, please try updating your drivers!\n");
     return false;
   }
-
+  */
   glClearColor(0, 0, 0, 1);
 
   ImGui_ImplSdlGL3_Init(window);
@@ -250,7 +255,7 @@ Texture * Renderer::LoadTexture(std::string path) {
       glGenTextures(1, &textureId);
       glBindTexture(GL_TEXTURE_2D, textureId);
 
-      int mode = GL_RGB;
+      GLenum mode = GL_RGB;
       if (surface->format->BytesPerPixel == 4) {
         mode = GL_RGBA;
       }

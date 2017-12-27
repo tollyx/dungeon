@@ -6,18 +6,18 @@ A work-in-progress, cross-platform roguelike written in C++ using SDL2 and OpenG
 
 ## Compiling
 
+Dependencies: `SDL2`, `Lua53`, `glm`, and `glbinding`
+
 ### Linux
 
-* Install SDL2, Lua53 and GLEW using your distro's package manager
+* Install the dependencies using your distro's package manager
 * Create a directory named  "build" and run `cmake .. && make` inside it
 * Move either the resulting binary to the root folder of the repository or copy the assets folder into the build directory
 * You can now run the binary
 
 ### Windows
 
-I really need to fix a hassle-free way to build this shit on windows.
-
-Currently, you need to import the source as a new project in visual studio and set up the dependencies yourself. (SDL2, Lua53, GLEW, OpenGL)
+CMake should work just fine on windows as well, but I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to install the libraries.
 
 ## Future plans
 
@@ -28,7 +28,8 @@ Currently, you need to import the source as a new project in visual studio and s
 * [ ] Make entities and AI completely data-driven
 * [ ] Implement Lua for item/effects/action scripting
   * Might as well use it for basic data storage as well, since I can then skip creating my own parser or adding an additional library for json/yaml/toml/whatever.
-  * [x] Initial implementation
+  * [x] Get Lua to work
+  * [ ] Initial implementation
   * [ ] Items
   * [ ] Status Effects
   * [ ] Spells
