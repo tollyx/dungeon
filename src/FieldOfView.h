@@ -6,19 +6,17 @@
 #define DUNGEON_FIELDOFVIEW_H
 
 #include "vec2i.h"
-
-class Tilemap;
+#include "Tilemap.h"
 
 class FieldOfView {
   Tilemap* map;
   unsigned int counter;
+  Tilemap seen;
 
   void cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY, float radius);
 public:
-  Tilemap* seen;
   FieldOfView();
   FieldOfView(Tilemap* map);
-  ~FieldOfView();
   void calc(vec2i pos, float range);
   bool can_see(vec2i pos);
   bool has_seen(vec2i pos);

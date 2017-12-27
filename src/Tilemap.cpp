@@ -15,12 +15,11 @@ Tilemap::Tilemap(int width, int height)
 {
   this->width = width;
   this->height = height;
-  tilemap = new unsigned int[width*height]{0};
+  tilemap = std::vector<unsigned int>(width*height, 0);
 }
 
 Tilemap::~Tilemap() 
 {
-  delete tilemap;
   for (auto var : entities) {
     delete var;
   }

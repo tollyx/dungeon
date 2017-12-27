@@ -12,17 +12,13 @@ FieldOfView::FieldOfView() {
 
 FieldOfView::FieldOfView(Tilemap *map) {
   this->map = map;
-  seen = new Tilemap(map->GetWidth(), map->GetHeight());
+  seen = Tilemap(map->GetWidth(), map->GetHeight());
   counter = 0;
-}
-
-FieldOfView::~FieldOfView() {
-  delete seen;
 }
 
 void FieldOfView::calc(vec2i pos, float range) {
   counter++;
-  seen->set_tile(pos.x, pos.y, counter);
+  seen.set_tile(pos.x, pos.y, counter);
   // Once for each octant
   if (map != nullptr) {
     cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
@@ -40,11 +36,11 @@ void FieldOfView::calc(vec2i pos, float range) {
 }
 
 bool FieldOfView::can_see(vec2i pos) {
-  return seen->get_tile(pos.x, pos.y) >= counter;
+  return seen.get_tile(pos.x, pos.y) >= counter;
 }
 
 bool FieldOfView::has_seen(vec2i pos) {
-  return seen->get_tile(pos.x, pos.y) > 0;
+  return seen.get_tile(pos.x, pos.y) > 0;
 }
 
 void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY,
@@ -70,7 +66,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       }
 
       if (sqrt(deltaX*deltaX + deltaY*deltaY) <= radius) {
-        seen->set_tile(currentX, currentY, counter);
+        seen.set_tile(currentX, currentY, counter);
       }
 
       if (blocked) {

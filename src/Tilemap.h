@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 #include <vector>
 #include "Tileset.h"
 #include "Entity.h"
@@ -8,7 +9,7 @@ class Renderer;
 class FieldOfView;
 
 class Tilemap {
-  unsigned int* tilemap;
+  std::vector<unsigned int> tilemap;
   std::vector<Entity*> entities;
   int width;
   int height;
