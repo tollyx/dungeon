@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.4)
 #set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 execute_process(
 	COMMAND git describe --tags --always
@@ -21,20 +20,11 @@ find_package(OpenGL REQUIRED)
 find_package(glbinding REQUIRED)
 find_package(Lua REQUIRED)
 find_package(SDL2 REQUIRED)
-include_directories(
-	${OPENGL_INCLUDE_DIR} 
-	${SDL2_INCLUDE_DIR} 
-	${LUA_INCLUDE_DIR} 
-	"libs/kaguya-1.3.2/include"
-)
-
-link_libraries(
-	${OPENGL_LIBRARIES} 
-	${SDL2_LIBRARY}
-	${LUA_LIBRARIES}
-)
+include_directories("libs/kaguya-1.3.2/include")
 
 file(GLOB SOURCES "src/*.cpp" "src/*.c" "src/*.h")
 add_executable(${TARGET} ${SOURCES})
-
 target_link_libraries(${TARGET} PUBLIC glbinding::glbinding)
+target_link_libraries(${TARGET} PUBLIC SDL2)
+target_link_libraries(${TARGET} PUBLIC OpenGL)
+target_link_libraries(${TARGET} PUBLIC lua)

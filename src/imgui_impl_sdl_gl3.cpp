@@ -12,8 +12,8 @@
 // SDL,GL3W
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
-#include <glbinding\gl\gl.h>
-#include <glbinding\gl\types.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/gl/types.h>
 using namespace gl;
 
 // Data

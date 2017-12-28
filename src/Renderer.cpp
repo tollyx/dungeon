@@ -1,8 +1,8 @@
 #include "Renderer.h"
 
-#include <glbinding\gl\gl.h>
-#include <glbinding\Binding.h>
-#include <glbinding\gl\types.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/Binding.h>
+#include <glbinding/gl/types.h>
 
 #include <fstream>
 #include <SDL2/SDL.h>
