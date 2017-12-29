@@ -14,6 +14,7 @@
 #include "Hero.h"
 #include "Goblin.h"
 #include "Shaman.h"
+#include "Rng.h"
 
 const int mapwidth = 32;
 
@@ -69,80 +70,16 @@ void PlayState::new_game() {
     hero = nullptr;
   }
 
-  std::string map =
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# @ . . . # # # # # # # # . . . . . . . . . . . . . . . . . # #"
-      "# . . . . . . . . # # # # . # # . # # # # # # . # # # # # . # #"
-      "# . . . . # # # . . . . . . # . g . # # # # # . # # # . . g . #"
-      "# . . . . # # # # # # # # . # . . . # # . . . . . . . . . . . #"
-      "# # # . # # # # # # # # # . . . . g # # . # # # . # # . . g . #"
-      "# . . . . . . . . . . . . . # # # # # . . . # # . # # # # # # #"
-      "# . # # # # # # # # . # # . # # # # # . g . # # . # . . g . . #"
-      "# . . . . g # # . . . # . . . # # # # . . . # # . # . . . . . #"
-      "# . . g . . # # . # # # . s . . . # # # # # # # . . . . s . . #"
-      "# . . . . . # # . . . # . . . # . . . . . . . . . # . g . . . #"
-      "# # . # # # # # . # . # # # # # # # # # . # # # # # # # # . # #"
-      "# . . . . . . . . # . . . . . . . . . . . . . . . . . . . . . #"
-      "# . # # # # # # # # # # . # . # # # # # # # # # # . # # # # . #"
-      "# . . . . . . . . . . . . # . # . . . . # . . . . . # # # . . #"
-      "# # # # # # . # # # . # # # . # . . . . # . . . # . # # # . # #"
-      "# . . . . # . # . . . . . # . . . . . . . . . . # . # # . . . #"
-      "# . . . . # . # . . . . . # . # . . . . # # # # # . . . . . . #"
-      "# . . . . . . # . . . . . # . # # # # # # . . . . . # # . . . #"
-      "# . . . . # . # # # # # # # . . . . . . . . # # # # # # # # # #"
-      "# . . . . # . . . . . . . . . # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #"
-      "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #";
-
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
-  /*
-  tilemap = new Tilemap(32, 32);
-  int y = 0;
-  int x = 0;
-  for (char i : map) {
 
-    if (y >= 32) {
-      break;
-    }
-    if (x >= mapwidth) {
-      y++;
-      x = 0;
-    }
-    if (i == ' ' || i == '\t' || i == '\n') {
-      continue;
-    }
-
-    if (i == '@') {
-      hero = new Hero(tilemap, vec2i(x, y));
-      tilemap.add_entity(hero);
-      tilemap.set_tile(x, y, '.');
-    }
-    else if (i == 'g') {
-      tilemap.add_entity(new Goblin(tilemap, vec2i(x, y)));
-      tilemap.set_tile(x, y, '.');
-    }
-    else if (i == 's') {
-      tilemap.add_entity(new Shaman(tilemap, vec2i(x, y)));
-      tilemap.set_tile(x, y, '.');
-    }
-    else {
-      tilemap.set_tile(x, y, i);
-    }
-    x++;
-  }
-  */
-  tilemap = generate_level(1, 32, 32);
-  hero = new Hero(&tilemap, vec2i(4,4));
+  Rng rng;
+  tilemap = generate_dungeon(64, 64);
+  vec2i heropos;
+  do {
+    heropos.x = rng.get_int(1, tilemap.get_width() - 1);
+    heropos.y = rng.get_int(1, tilemap.get_width() - 1);
+  } while (tilemap.get_tile(heropos.x, heropos.y) == '#');
+  hero = new Hero(&tilemap, vec2i(heropos.x,heropos.y));
   tilemap.add_entity(hero);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
@@ -217,6 +154,7 @@ Gamestate *PlayState::update(double delta) {
 
 bool debug_actors = false;
 bool debug_settings = false;
+bool debug_disable_fov = true;
 
 void PlayState::draw(double delta) {
   if (debug) {
@@ -240,6 +178,8 @@ void PlayState::draw(double delta) {
       bool vsync = app->renderer->is_vsync_enabled();
       ImGui::Checkbox("VSync", &vsync);
       app->renderer->set_vsync_enabled(vsync);
+
+      ImGui::Checkbox("Disable FoV", &debug_disable_fov);
 
       ImGui::End();
     }
@@ -287,7 +227,7 @@ void PlayState::draw(double delta) {
       (tilesize.x/2-heropos.x),
       (tilesize.y/2-heropos.y),
   };
-  tilemap.draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, &fov);
+  tilemap.draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, debug_disable_fov ? nullptr : &fov);
 
   auto entities = tilemap.get_entity_list();
 
@@ -296,7 +236,7 @@ void PlayState::draw(double delta) {
     if (var->entity_type() == ENTITY_ACTOR && ((Actor*)var)->is_alive()) continue;
 
     vec2i pos = var->get_position();
-    if (fov.can_see(pos)) {
+    if (debug_disable_fov || fov.can_see(pos)) {
 
       app->renderer->set_color(0, 0, 0, 1);
       app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
@@ -314,7 +254,7 @@ void PlayState::draw(double delta) {
     if (var->entity_type() == ENTITY_ACTOR && !((Actor*)var)->is_alive()) continue;
 
     vec2i pos = var->get_position();
-    if (fov.can_see(pos)) {
+    if (debug_disable_fov || fov.can_see(pos)) {
     
       app->renderer->set_color(0, 0, 0, 1);
       app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);

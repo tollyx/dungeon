@@ -11,7 +11,7 @@ execute_process(
 file(WRITE "src/gitparams.h" "#define GIT_CUR_COMMIT ${GIT_COMMIT}")
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -static-libgcc -static-libstdc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
 
 set(TARGET dungeon)
 project(${TARGET} LANGUAGES CXX)
@@ -25,6 +25,6 @@ include_directories("libs/kaguya-1.3.2/include")
 file(GLOB SOURCES "src/*.cpp" "src/*.c" "src/*.h")
 add_executable(${TARGET} ${SOURCES})
 target_link_libraries(${TARGET} PUBLIC glbinding::glbinding)
-target_link_libraries(${TARGET} PUBLIC SDL2)
-target_link_libraries(${TARGET} PUBLIC OpenGL)
-target_link_libraries(${TARGET} PUBLIC lua)
+target_link_libraries(${TARGET} PUBLIC ${SDL2_LIBRARY})
+target_link_libraries(${TARGET} PUBLIC ${OPENGL_LIBRARY})
+target_link_libraries(${TARGET} PUBLIC ${LUA_LIBRARY})

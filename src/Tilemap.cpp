@@ -6,7 +6,7 @@
 #include "FieldOfView.h"
 #include <SDL2/SDL.h>
 
-int Tilemap::GetIndex(int x, int y) 
+int Tilemap::get_index(int x, int y) 
 {
   return y * width + x;
 }
@@ -25,36 +25,32 @@ Tilemap::~Tilemap()
   }
 }
 
-int Tilemap::GetWidth() 
+int Tilemap::get_width() 
 {
   return width;
 }
 
-int Tilemap::GetHeight() 
+int Tilemap::get_height() 
 {
   return height;
 }
 
-bool Tilemap::IsInsideBounds(int x, int y) 
+bool Tilemap::is_inside_bounds(int x, int y) 
 {
   return x >= 0 && x < width && y >= 0 && y < height;
 }
 
 std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) 
 {
+  return get_neighbours(x,y,range,range,range,range);
+}
+
+std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int up, int down, int left, int right) {
   std::vector<vec2i> neigh;
-  if (range == 0) 
-  {
-    neigh.emplace_back(x,y);
-    return neigh;
-  }
-  for (int dx = -range; dx <= range; dx++) 
-  {
-    for (int dy = -range; dy <= range; dy++) 
-    {
-      if ((dx != 0 || dy != 0) && IsInsideBounds(x + dx, y + dy)) 
-      {
-        neigh.emplace_back(x+dx,y+dy);
+  for (int dx = -left; dx <= right; dx++) {
+    for (int dy = -up; dy <= down; dy++) {
+      if ((dx != 0 || dy != 0) && is_inside_bounds(x + dx, y + dy)) {
+        neigh.emplace_back(x + dx, y + dy);
       }
     }
   }
@@ -63,26 +59,26 @@ std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range)
 
 void Tilemap::set_tile(int x, int y, unsigned int tile)
 {
-  if (IsInsideBounds(x, y)) 
+  if (is_inside_bounds(x, y)) 
   {
-    tilemap[GetIndex(x, y)] = tile;
+    tilemap[get_index(x, y)] = tile;
   }
 }
 
 int Tilemap::get_tile(int x, int y) 
 {
-  if (IsInsideBounds(x, y)) 
+  if (is_inside_bounds(x, y)) 
   {
-    return tilemap[GetIndex(x, y)];
+    return tilemap[get_index(x, y)];
   }
   return -1;
 }
 
-bool Tilemap::IsBlocked(int x, int y) 
+bool Tilemap::is_blocked(int x, int y) 
 {
-  if (IsInsideBounds(x, y)) 
+  if (is_inside_bounds(x, y)) 
   {
-    if (tilemap[GetIndex(x,y)] == '#') { // TODO: Replace hardcoded tiles
+    if (tilemap[get_index(x,y)] == '#') { // TODO: Replace hardcoded tiles
       return true;
     }
     for (Entity* var : entities) {
@@ -154,15 +150,15 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, i
     for (int iy = 0; iy < th; iy++) {
       int ax = tx + ix;
       int ay = ty + iy;
-      if (IsInsideBounds(ax, ay)) {
+      if (is_inside_bounds(ax, ay)) {
         if (view == nullptr || view->has_seen({ax, ay})) {
-          renderer->set_color(1, 1, 1, 1);
-          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), x + ix * w, y + iy * h);
-
-          if (view != nullptr && !view->can_see({ax, ay})) {
-            renderer->set_color(0, 0, 0, .6f);
-            renderer->draw_sprite(tileset->get_sprite(219), x + ix * w, y + iy * h);
+          if (view != nullptr && !view->can_see({ ax, ay })) {
+            renderer->set_color(1, 1, 1, .3f);
           }
+          else {
+            renderer->set_color(1, 1, 1, 1);
+          }
+          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), x + ix * w, y + iy * h);
         }
       }
     }

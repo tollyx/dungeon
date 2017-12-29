@@ -144,12 +144,12 @@ namespace Pathfinder
     if (out->tilemap != nullptr) {
       delete out->tilemap;
     }
-    out->tilemap = new float[map->GetWidth() * map->GetHeight()];
-    for (int i = 0; i < map->GetWidth() * map->GetHeight(); i++) {
+    out->tilemap = new float[map->get_width() * map->get_height()];
+    for (int i = 0; i < map->get_width() * map->get_height(); i++) {
       out->tilemap[i] = maxValue;
     }
-    out->height = map->GetHeight();
-    out->width = map->GetWidth();
+    out->height = map->get_height();
+    out->width = map->get_width();
     for (vec2i pos : *goals) {
       out->setValue(pos.x, pos.y, 0);
     }

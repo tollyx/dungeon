@@ -12,7 +12,7 @@ FieldOfView::FieldOfView() {
 
 FieldOfView::FieldOfView(Tilemap *map) {
   this->map = map;
-  seen = Tilemap(map->GetWidth(), map->GetHeight());
+  seen = Tilemap(map->get_width(), map->get_height());
   counter = 0;
 }
 
@@ -58,7 +58,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       float leftSlope = (deltaX - 0.5f) / (deltaY + 0.5f);
       float rightSlope = (deltaX + 0.5f) / (deltaY - 0.5f);
 
-      if (!(currentX >= 0 && currentY >= 0 && currentX < map->GetWidth() && currentY < map->GetHeight()) || start < rightSlope) {
+      if (!(currentX >= 0 && currentY >= 0 && currentX < map->get_width() && currentY < map->get_height()) || start < rightSlope) {
         continue;
       }
       else if (end > leftSlope) {

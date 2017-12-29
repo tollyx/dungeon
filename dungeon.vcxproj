@@ -81,7 +81,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -98,7 +98,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -137,6 +137,7 @@
     <ClCompile Include="src\RangedAttackNode.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\RestNode.cpp" />
+    <ClCompile Include="src\Rng.cpp" />
     <ClCompile Include="src\Shaman.cpp" />
     <ClCompile Include="src\Tilemap.cpp" />
     <ClCompile Include="src\Tileset.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="src\RangedAttackNode.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\RestNode.h" />
+    <ClInclude Include="src\Rng.h" />
     <ClInclude Include="src\Shaman.h" />
     <ClInclude Include="src\Stats.h" />
     <ClInclude Include="src\stb_rect_pack.h" />
