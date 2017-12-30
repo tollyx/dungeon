@@ -42,9 +42,6 @@
     <ClCompile Include="src\BehaviourTreeSequencer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Config.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -143,99 +140,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\another_binding_api.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\compatibility.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\config.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\error_handler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\exception.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\function_tuple_def.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\kaguya.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_function.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_table.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\metatable.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx03.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx11.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\optional.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess_repeate.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_any.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_tuple.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\ref_tuple.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\state.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\traits.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\type.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx03.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx11.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_function_def.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_ref_impl.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_table_def.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_variant_def.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Actor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -264,9 +168,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Entity.h">

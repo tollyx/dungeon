@@ -72,10 +72,11 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -88,9 +89,10 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -100,6 +102,18 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Shader.cpp" />
@@ -112,7 +126,6 @@
     <ClCompile Include="src\BehaviourTreeNode.cpp" />
     <ClCompile Include="src\BehaviourTreeSelector.cpp" />
     <ClCompile Include="src\BehaviourTreeSequencer.cpp" />
-    <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\ExploreNode.cpp" />
     <ClCompile Include="src\FieldOfView.cpp" />
@@ -146,37 +159,6 @@
     <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\another_binding_api.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\compatibility.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\config.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_function_def.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_ref_impl.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_table_def.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\detail\lua_variant_def.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\error_handler.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\exception.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\function_tuple_def.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\kaguya.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_function.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\lua_ref_table.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\metatable.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx03.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\native_function_cxx11.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\object.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\optional.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\preprocess_repeate.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_any.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\push_tuple.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\ref_tuple.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\state.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\traits.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\type.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx03.hpp" />
-    <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx11.hpp" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Actor.h" />
     <ClInclude Include="src\App.h" />
@@ -188,7 +170,6 @@
     <ClInclude Include="src\BehaviourTreeSelector.h" />
     <ClInclude Include="src\BehaviourTreeSequencer.h" />
     <ClInclude Include="src\Color.h" />
-    <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\ExploreNode.h" />
     <ClInclude Include="src\FieldOfView.h" />
