@@ -154,7 +154,7 @@ Gamestate *PlayState::update(double delta) {
 
 bool debug_actors = false;
 bool debug_settings = false;
-bool debug_disable_fov = true;
+bool debug_disable_fov = false;
 
 void PlayState::draw(double delta) {
   if (debug) {
@@ -231,21 +231,18 @@ void PlayState::draw(double delta) {
 
   auto entities = tilemap.get_entity_list();
 
+  Color black = Color(0, 0, 0, 1);
+
   // Draw dead actors
   for (Entity* var : *entities) {
     if (var->entity_type() == ENTITY_ACTOR && ((Actor*)var)->is_alive()) continue;
 
     vec2i pos = var->get_position();
     if (debug_disable_fov || fov.can_see(pos)) {
-
-      app->renderer->set_color(0, 0, 0, 1);
-      app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
-
       int sprite = var->get_sprite_id();
 
-      app->renderer->set_color(var->get_sprite_color()*0.35f);
-
-      app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+      Color fg = var->get_sprite_color()*0.35f;
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, black, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
 
@@ -256,23 +253,17 @@ void PlayState::draw(double delta) {
     vec2i pos = var->get_position();
     if (debug_disable_fov || fov.can_see(pos)) {
     
-      app->renderer->set_color(0, 0, 0, 1);
-      app->renderer->draw_sprite(ascii->get_sprite(219), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
-
       int sprite = var->get_sprite_id();
       
-      app->renderer->set_color(var->get_sprite_color());
+      Color fg = var->get_sprite_color();
 
-      app->renderer->draw_sprite(ascii->get_sprite(sprite), margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, black, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
   if (hero != nullptr) {
-    app->renderer->set_color(155, 5, 5, 255);
+    Color fg = Color(1, 0.01, 0.01, 1);
     for (int i = 0; i < hero->get_health(); i++) {
-      app->renderer->set_color(0, 0, 0, 255);
-      app->renderer->draw_sprite(ascii->get_sprite(219), (i+1) * asciisize.x, asciisize.y);
-      app->renderer->set_color(255, 0, 0, 255);
-      app->renderer->draw_sprite(ascii->get_sprite(3), (i+1) * asciisize.x, asciisize.y);
+      app->renderer->draw_sprite(ascii->get_sprite(3), fg, black, (i+1) * asciisize.x, asciisize.y);
     }
   }
 }

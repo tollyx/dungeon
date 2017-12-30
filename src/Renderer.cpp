@@ -110,6 +110,7 @@ GLuint shaderProg;
 GLuint wireShaderProg;
 GLuint spriteVertArrayId;
 GLint colorUniform;
+GLint bgUniform;
 GLint mvpUniform;
 
 bool Renderer::Init(std::string title, int width, int height) {
@@ -169,20 +170,13 @@ bool Renderer::Init(std::string title, int width, int height) {
   glUseProgram(shaderProg);
 
   colorUniform = glGetUniformLocation(shaderProg, "colortint");
+  bgUniform = glGetUniformLocation(shaderProg, "colorbackground");
   mvpUniform = glGetUniformLocation(shaderProg, "MVP");
 
   set_window_size(width, height);
 
   SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer initialized.\n");
   return true;
-}
-
-void Renderer::set_color(float r, float g, float b, float a) {
-  currentcolor = { r, g, b, a };
-}
-
-void Renderer::set_color(Color col) {
-  set_color(col.r, col.g, col.b, col.a);
 }
 
 void Renderer::set_title(const char *title) {
@@ -321,7 +315,7 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
 }
 
 
-void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
+void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, float sx, float sy) {
 
   glm::mat4 model = glm::translate(glm::vec3(x, y, 0)) * glm::scale(glm::vec3(sprite->region.w * sx, sprite->region.h * sy, 1)) * glm::mat4(1);
 
@@ -334,7 +328,8 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
   glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
     
   glUseProgram(shaderProg);
-  glUniform4f(colorUniform, currentcolor.r, currentcolor.g, currentcolor.b, currentcolor.a);
+  glUniform4f(colorUniform, fg.r, fg.g, fg.b, fg.a);
+  glUniform4f(bgUniform, bg.r, bg.g, bg.b, bg.a);
 
   glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
   

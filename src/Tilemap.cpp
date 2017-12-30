@@ -6,43 +6,36 @@
 #include "FieldOfView.h"
 #include <SDL2/SDL.h>
 
-int Tilemap::get_index(int x, int y) 
-{
+int Tilemap::get_index(int x, int y) {
   return y * width + x;
 }
 
-Tilemap::Tilemap(int width, int height)
-{
+Tilemap::Tilemap(int width, int height) {
   this->width = width;
   this->height = height;
   tilemap = std::vector<unsigned int>(width*height, 0);
 }
 
-Tilemap::~Tilemap() 
-{
+Tilemap::~Tilemap() {
   for (auto var : entities) {
     delete var;
   }
 }
 
-int Tilemap::get_width() 
-{
+int Tilemap::get_width() {
   return width;
 }
 
-int Tilemap::get_height() 
-{
+int Tilemap::get_height() {
   return height;
 }
 
-bool Tilemap::is_inside_bounds(int x, int y) 
-{
+bool Tilemap::is_inside_bounds(int x, int y) {
   return x >= 0 && x < width && y >= 0 && y < height;
 }
 
-std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) 
-{
-  return get_neighbours(x,y,range,range,range,range);
+std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) {
+  return get_neighbours(x, y, range, range, range, range);
 }
 
 std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int up, int down, int left, int right) {
@@ -57,28 +50,22 @@ std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int up, int down, int l
   return neigh;
 }
 
-void Tilemap::set_tile(int x, int y, unsigned int tile)
-{
-  if (is_inside_bounds(x, y)) 
-  {
+void Tilemap::set_tile(int x, int y, unsigned int tile) {
+  if (is_inside_bounds(x, y)) {
     tilemap[get_index(x, y)] = tile;
   }
 }
 
-int Tilemap::get_tile(int x, int y) 
-{
-  if (is_inside_bounds(x, y)) 
-  {
+int Tilemap::get_tile(int x, int y) {
+  if (is_inside_bounds(x, y)) {
     return tilemap[get_index(x, y)];
   }
   return -1;
 }
 
-bool Tilemap::is_blocked(int x, int y) 
-{
-  if (is_inside_bounds(x, y)) 
-  {
-    if (tilemap[get_index(x,y)] == '#') { // TODO: Replace hardcoded tiles
+bool Tilemap::is_blocked(int x, int y) {
+  if (is_inside_bounds(x, y)) {
+    if (tilemap[get_index(x, y)] == '#') { // TODO: Replace hardcoded tiles
       return true;
     }
     for (Entity* var : entities) {
@@ -151,14 +138,13 @@ void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, i
       int ax = tx + ix;
       int ay = ty + iy;
       if (is_inside_bounds(ax, ay)) {
-        if (view == nullptr || view->has_seen({ax, ay})) {
+        if (view == nullptr || view->has_seen({ ax, ay })) {
+          Color fg = Color(1, 1, 1, 1);
+          Color bg = Color(0, 0, 0, 1);
           if (view != nullptr && !view->can_see({ ax, ay })) {
-            renderer->set_color(1, 1, 1, .3f);
+            fg.a = 0.4f;
           }
-          else {
-            renderer->set_color(1, 1, 1, 1);
-          }
-          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), x + ix * w, y + iy * h);
+          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), fg, bg, x + ix * w, y + iy * h);
         }
       }
     }
