@@ -18,9 +18,8 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   std::vector<vec2i> enemyPos;
   bool ishero = tick->target->is_type_of(ACT_HERO);
   vec2i targetpos = tick->target->get_position();
-  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
-  for (auto ent : actors) {
-    auto actor = (Actor*)ent;
+  auto actors = tick->target->get_map()->get_actors(targetpos.x, targetpos.y, 6);
+  for (Actor* actor : actors) {
     if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
       if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {

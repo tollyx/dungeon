@@ -65,7 +65,7 @@ void maze_fill(Tilemap& map, int x, int y, Rng &rng) {
 }
 
 Tilemap generate_dungeon(int width, int height) {
-  return generate_dungeon(std::random_device()(), width, height);
+  return generate_dungeon(Rng::get_random_seed(), width, height);
 }
 
 Tilemap generate_dungeon(unsigned int seed, int width, int height) {
@@ -186,8 +186,8 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height) {
 
   // Clean up dead ends in the maze
   std::vector<vec2i> dead_ends;
-  for (int y = 0; y < map.get_height(); y++) {
-    for (int x = 0; x < map.get_width(); x++) {
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
       std::vector<vec2i> neigh{vec2i(x + 1, y), vec2i(x, y + 1), vec2i(x - 1, y), vec2i(x, y - 1) };
       int count = 0;
       for (vec2i pos : neigh) {
@@ -200,7 +200,7 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height) {
       }
     }
   }
-  int pass_amount = 100;
+  int pass_amount = width + height;
   for (int pass = 0; pass < pass_amount; pass++) {
     if (dead_ends.empty()) break;
     std::vector<vec2i> new_dead_ends;

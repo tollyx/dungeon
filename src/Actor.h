@@ -35,8 +35,9 @@ protected:
 public:
   int id;
   std::string name;
+  bool player_controlled;
 
-  Actor(Tilemap *map, vec2i pos, std::string datakey);
+  //Actor(Tilemap *map, vec2i pos, std::string datakey);
   bool is_alive(){ return alive; };
   void attack(vec2i dpos); // basic melee attack
   void attack(Actor* act);

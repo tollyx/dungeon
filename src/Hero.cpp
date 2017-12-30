@@ -11,6 +11,7 @@
 Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
   name = "Hero";
   alive = true;
+  player_controlled = true;
   health = 6;
   health_max = 6;
   strength = 2;

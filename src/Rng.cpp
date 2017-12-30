@@ -2,9 +2,14 @@
 #include <random>
 #include <chrono>
 
+std::random_device rd;
+
+unsigned int Rng::get_random_seed() {
+  return rd();
+}
+
 Rng::Rng() {
-  std::random_device rd;
-  Rng(rd(), 0);
+  Rng(get_random_seed(), 0);
 }
 
 
@@ -26,4 +31,13 @@ int Rng::get_int(int max) {
 int Rng::get_int(int min, int max) {
   step++;
   return std::uniform_int_distribution<int>{min, max}(mte);
+}
+
+float Rng::get_float(float max) {
+  return get_float(0, max);
+}
+
+float Rng::get_float(float min, float max) {
+  step++;
+  return std::uniform_real_distribution<float>{min, max}(mte);
 }

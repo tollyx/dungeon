@@ -1,10 +1,4 @@
-//
-// Created by Adrian on 2017-09-21.
-//
-
-#ifndef DUNGEON_PLAYSTATE_H
-#define DUNGEON_PLAYSTATE_H
-
+#pragma once
 
 #include "Gamestate.h"
 #include "Tilemap.h"
@@ -16,10 +10,18 @@ class Actor;
 class PlayState : public Gamestate {
   Tileset* ascii;
   Tilemap tilemap;
-  Actor * hero;
+  Actor * player_actor;
   FieldOfView fov;
+  unsigned int current_entity_index;
+  bool is_player_turn;
+
+  vec2i camera_pos;
 
   bool debug;
+  bool debug_actors = false;
+  bool debug_settings = false;
+  bool debug_disable_fov = false;
+
 public:
   void new_game();
   void load() override;
@@ -28,6 +30,3 @@ public:
   void quit() override;
   void inputevent(InputEvent* event) override;
 };
-
-
-#endif //DUNGEON_PLAYSTATE_H

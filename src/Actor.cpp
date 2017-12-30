@@ -17,7 +17,7 @@ Actor::Actor(Tilemap *map, vec2i pos) : Entity(map, pos) {
 void Actor::update() {
   if (!alive) return;
 
-  if (bt != nullptr) {
+  if (!player_controlled && bt != nullptr) {
     bt->tick(this);
   }
   if (health < health_max) {
@@ -51,7 +51,7 @@ void Actor::attack(Actor *act) {
 void Actor::attack(vec2i dpos) {
   if (dpos.dist() <= range) {
     vec2i pos = get_position();
-    auto acts = get_map()->get_entities(pos.x + dpos.x, pos.y + dpos.y, 0, ENTITY_ACTOR);
+    auto acts = get_map()->get_actors(pos.x + dpos.x, pos.y + dpos.y, 0);
     for (Entity* ent : acts) {
       auto act = (Actor*)ent;
       if (act->is_alive() && act->get_actor_faction() != faction) {

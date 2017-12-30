@@ -40,7 +40,7 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
   }
   
   GLboolean result = GL_FALSE;
-  int infologlength;
+  int infologlength = 0;
 
   SDL_Log("Compiling shader: %s\n", path);
   char const * source = shadersource.c_str();
@@ -66,7 +66,7 @@ GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
   glLinkProgram(programId);
 
   GLboolean result = GL_FALSE;
-  int infologlength;
+  int infologlength = 0;
 
   glGetShaderiv(programId, GL_LINK_STATUS, &result);
   glGetShaderiv(programId, GL_INFO_LOG_LENGTH, &infologlength);

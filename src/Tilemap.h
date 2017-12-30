@@ -2,7 +2,7 @@
 #include <array>
 #include <vector>
 #include "Tileset.h"
-#include "Entity.h"
+#include "Actor.h"
 
 struct vec2i;
 class Renderer;
@@ -10,7 +10,7 @@ class FieldOfView;
 
 class Tilemap {
   std::vector<unsigned int> tilemap;
-  std::vector<Entity*> entities;
+  std::vector<Actor*> actors;
   int width;
   int height;
 public:
@@ -28,13 +28,13 @@ public:
 
   void draw(Renderer *renderer, Tileset *tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view);
 
-  void add_entity(Entity *actor);
-  void remove_entity(Entity *actor);
+  void add_actor(Actor *actor);
+  void remove_actor(Actor *actor);
 
   void debug_print();
 
   Entity* get_entity(int x, int y, EntityTypes type);
-  std::vector<Entity*> get_entities(int x, int y, int range, EntityTypes type);
-  std::vector<Entity*>* get_entity_list();
+  std::vector<Actor*> get_actors(int x, int y, int range);
+  std::vector<Actor*>* get_actor_list();
 };
 

@@ -102,6 +102,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Actor.cpp" />
     <ClCompile Include="src\App.cpp" />
     <ClCompile Include="src\AttackEnemyNode.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility.hpp" />
     <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx03.hpp" />
     <ClInclude Include="libs\kaguya-1.3.2\include\kaguya\utility_cxx11.hpp" />
+    <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Actor.h" />
     <ClInclude Include="src\App.h" />
     <ClInclude Include="src\AttackEnemyNode.h" />

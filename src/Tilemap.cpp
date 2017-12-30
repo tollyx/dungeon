@@ -17,7 +17,7 @@ Tilemap::Tilemap(int width, int height) {
 }
 
 Tilemap::~Tilemap() {
-  for (auto var : entities) {
+  for (auto var : actors) {
     delete var;
   }
 }
@@ -68,7 +68,7 @@ bool Tilemap::is_blocked(int x, int y) {
     if (tilemap[get_index(x, y)] == '#') { // TODO: Replace hardcoded tiles
       return true;
     }
-    for (Entity* var : entities) {
+    for (Entity* var : actors) {
       vec2i pos = var->get_position();
       if (var->has_collision() && pos == vec2i(x, y))
         return true;
@@ -78,19 +78,19 @@ bool Tilemap::is_blocked(int x, int y) {
   return true;
 }
 
-void Tilemap::add_entity(Entity *actor) {
-  for (Entity* var : entities) {
+void Tilemap::add_actor(Actor *actor) {
+  for (Actor* var : actors) {
     if (var == actor) {
       return;
     }
   }
-  entities.push_back(actor);
+  actors.push_back(actor);
 }
 
-void Tilemap::remove_entity(Entity * actor) {
-  for (auto it = entities.begin(); it != entities.end(); it++) {
+void Tilemap::remove_actor(Actor * actor) {
+  for (auto it = actors.begin(); it != actors.end(); it++) {
     if ((*it) == actor) {
-      entities.erase(it);
+      actors.erase(it);
       return;
     }
   }
@@ -98,7 +98,7 @@ void Tilemap::remove_entity(Entity * actor) {
 
 Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
   vec2i pos = { x,y };
-  for (Entity* ent : entities) {
+  for (Entity* ent : actors) {
     if (ent->entity_type() == type) {
       vec2i apos = ent->get_position();
       if (apos == pos) {
@@ -109,25 +109,23 @@ Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
   return nullptr;
 }
 
-std::vector<Entity*> Tilemap::get_entities(int x, int y, int range, EntityTypes type) {
-  std::vector<Entity*> found;
+std::vector<Actor*> Tilemap::get_actors(int x, int y, int range) {
+  std::vector<Actor*> found;
   std::vector<vec2i> neigh = get_neighbours(x, y, range);
-  for (Entity* ent : entities) {
+  for (Actor* ent : actors) {
     for (vec2i pos : neigh) {
-      if (ent->entity_type() == type) {
-        vec2i apos = ent->get_position();
-        if (apos == pos) {
-          found.emplace_back(ent);
-          break;
-        }
+      vec2i apos = ent->get_position();
+      if (apos == pos) {
+        found.emplace_back(ent);
+        break;
       }
     }
   }
   return found;
 }
 
-std::vector<Entity*>* Tilemap::get_entity_list() {
-  return &entities;
+std::vector<Actor*>* Tilemap::get_actor_list() {
+  return &actors;
 }
 
 void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
