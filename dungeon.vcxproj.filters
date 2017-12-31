@@ -123,9 +123,6 @@
     <ClCompile Include="src\Tilemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tileset.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\WanderNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,6 +133,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SpriteAtlas.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,9 +266,6 @@
     <ClInclude Include="src\Tilemap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tileset.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\vec2i.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -285,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SpriteAtlas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,11 +4,11 @@
 #include "Tilemap.h"
 #include "FieldOfView.h"
 
-class Tileset;
+class SpriteAtlas;
 class Actor;
 
 class PlayState : public Gamestate {
-  Tileset* ascii;
+  SpriteAtlas* ascii;
   Tilemap tilemap;
   Actor * player_actor;
   FieldOfView fov;

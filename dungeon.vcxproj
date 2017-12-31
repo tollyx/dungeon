@@ -154,7 +154,7 @@
     <ClCompile Include="src\Rng.cpp" />
     <ClCompile Include="src\Shaman.cpp" />
     <ClCompile Include="src\Tilemap.cpp" />
-    <ClCompile Include="src\Tileset.cpp" />
+    <ClCompile Include="src\SpriteAtlas.cpp" />
     <ClCompile Include="src\WanderNode.cpp" />
     <ClCompile Include="src\World.cpp" />
   </ItemGroup>
@@ -203,7 +203,7 @@
     <ClInclude Include="src\stb_textedit.h" />
     <ClInclude Include="src\stb_truetype.h" />
     <ClInclude Include="src\Tilemap.h" />
-    <ClInclude Include="src\Tileset.h" />
+    <ClInclude Include="src\SpriteAtlas.h" />
     <ClInclude Include="src\vec2i.h" />
     <ClInclude Include="src\WanderNode.h" />
     <ClInclude Include="src\wglew.h" />

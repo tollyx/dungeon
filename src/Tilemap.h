@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <vector>
-#include "Tileset.h"
+#include "SpriteAtlas.h"
 #include "Actor.h"
 
 struct vec2i;
@@ -26,7 +26,7 @@ public:
   int get_tile(int x, int y);
   bool is_blocked(int x, int y); // Checks if there is an actor blocking the tile.
 
-  void draw(Renderer *renderer, Tileset *tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view);
+  void draw(Renderer *renderer, SpriteAtlas *tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view);
 
   void add_actor(Actor *actor);
   void remove_actor(Actor *actor);
@@ -36,5 +36,6 @@ public:
   Entity* get_entity(int x, int y, EntityTypes type);
   std::vector<Actor*> get_actors(int x, int y, int range);
   std::vector<Actor*>* get_actor_list();
+  void delete_actors();
 };
 

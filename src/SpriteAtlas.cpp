@@ -1,7 +1,7 @@
-#include "Tileset.h"
+#include "SpriteAtlas.h"
 #include "Renderer.h"
 
-Tileset::Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight) {
+SpriteAtlas::SpriteAtlas(Renderer* renderer, std::string imgPath, int imgWidth, int imgHeight, int tileWidth, int tileHeight) {
   int tilesX = imgWidth / tileWidth;
   int tilesY = imgHeight / tileHeight;
   tile_width = tileWidth;
@@ -20,25 +20,25 @@ Tileset::Tileset(Renderer* renderer, std::string imgPath, int imgWidth, int imgH
   }
 }
 
-Tileset::~Tileset() {
+SpriteAtlas::~SpriteAtlas() {
   delete sprites;
 }
 
-int Tileset::get_amount() {
+int SpriteAtlas::get_amount() {
   return amount;
 }
 
-Sprite * Tileset::get_sprite(int tileId) {
+Sprite * SpriteAtlas::get_sprite(int tileId) {
   if (tileId >= 0 && tileId < amount) {
     return &sprites[tileId];
   }
   return nullptr;
 }
 
-int Tileset::get_tile_width() {
+int SpriteAtlas::get_tile_width() {
   return tile_width;
 }
 
-int Tileset::get_tile_height() {
+int SpriteAtlas::get_tile_height() {
   return tile_height;
 }

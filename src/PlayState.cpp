@@ -7,7 +7,7 @@
 #include "Renderer.h"
 #include "Actor.h"
 #include "App.h"
-#include "Tileset.h"
+#include "SpriteAtlas.h"
 #include "Mapgen.h"
 #include "FieldOfView.h"
 #include "imgui.h"
@@ -22,7 +22,7 @@ InputAction player_action;
 
 void PlayState::load() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating ascii tileset...\n");
-  ascii = new Tileset(app->renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
+  ascii = new SpriteAtlas(app->renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Created ascii tileset.\n");
 
   app->input->bind_key(SDLK_ESCAPE, ACTION_ESCAPE_MENU);

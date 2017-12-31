@@ -2,7 +2,7 @@
 #include "vec2i.h"
 #include "Actor.h"
 #include "Renderer.h"
-#include "Tileset.h"
+#include "SpriteAtlas.h"
 #include "FieldOfView.h"
 #include <SDL2/SDL.h>
 
@@ -16,11 +16,7 @@ Tilemap::Tilemap(int width, int height) {
   tilemap = std::vector<unsigned int>(width*height, 0);
 }
 
-Tilemap::~Tilemap() {
-  for (auto var : actors) {
-    delete var;
-  }
-}
+Tilemap::~Tilemap() {}
 
 int Tilemap::get_width() {
   return width;
@@ -128,7 +124,13 @@ std::vector<Actor*>* Tilemap::get_actor_list() {
   return &actors;
 }
 
-void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
+void Tilemap::delete_actors() {
+  for (auto var : actors) {
+    delete var;
+  }
+}
+
+void Tilemap::draw(Renderer *renderer, SpriteAtlas* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
   int w = tileset->get_tile_width();
   int h = tileset->get_tile_height();
   for (int ix = 0; ix < tw; ix++) {
