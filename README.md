@@ -20,16 +20,26 @@ I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to in
 
 ### To-Do
 
-* [ ] A main menu
+* [ ] Main menu
+  * [ ] Character creation
+  * [ ] Settings menu
+  * [ ] Data editors?
 * [ ] Dungeon generation
-* [ ] Make entities and AI completely data-driven
-* [ ] Implement Lua for item/effects/action scripting
-  * Might as well use it for basic data storage as well, since I can then skip creating my own parser or adding an additional library for json/yaml/toml/whatever.
-  * [x] Get Lua to work
-  * [ ] Initial implementation
-  * [ ] Items
-  * [ ] Status Effects
-  * [ ] Spells
+  * [x] Generate rooms & corridors
+  * [ ] Place entrance & exit
+  * [ ] Place enemies
+  * [ ] Prefabs
+* [ ] Items
+  * [ ] Inventory
+  * [ ] Consumables
+  * [ ] Equipment
+* [ ] Data-driven AI
+* [ ] Lua scripting
+  * [x] Data Loading
+  * [ ] Item effects
+  * [ ] Status effects
+  * [ ] Dialouges?
+  * [ ] Spells/Skills
 
 ### Wishlist
 
