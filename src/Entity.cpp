@@ -5,8 +5,7 @@
 #include "Entity.h"
 #include "Tilemap.h"
 
-Entity::Entity(Tilemap *map, vec2i pos) {
-  this->map = map;
+Entity::Entity(vec2i pos) {
   position = pos;
   collision = false;
   sprite_id = '?';
@@ -16,11 +15,11 @@ vec2i Entity::get_position() {
   return position;
 }
 
-bool Entity::move(vec2i dpos) {
-  return move(dpos.x, dpos.y);
+bool Entity::move(vec2i dpos, Tilemap* map) {
+  return move(dpos.x, dpos.y, map);
 }
 
-bool Entity::move(int dx, int dy) {
+bool Entity::move(int dx, int dy, Tilemap* map) {
   vec2i newpos = position + vec2i(dx, dy);
   if (!collision || !map->is_blocked(newpos.x, newpos.y)) {
     position = newpos;
@@ -31,10 +30,6 @@ bool Entity::move(int dx, int dy) {
 
 void Entity::set_position(vec2i pos) {
   position = pos;
-}
-
-Tilemap *Entity::get_map() {
-  return map;
 }
 
 bool Entity::has_collision() {

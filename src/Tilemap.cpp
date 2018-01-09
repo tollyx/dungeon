@@ -10,10 +10,11 @@ int Tilemap::get_index(int x, int y) {
   return y * width + x;
 }
 
-Tilemap::Tilemap(int width, int height) {
+Tilemap::Tilemap(TileSet tileset, int width, int height) {
   this->width = width;
   this->height = height;
-  tilemap = std::vector<unsigned int>(width*height, 0);
+  tilemap = std::vector<std::string>(width*height, "");
+  tiles = tileset;
 }
 
 Tilemap::~Tilemap() {}
@@ -46,22 +47,26 @@ std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int up, int down, int l
   return neigh;
 }
 
-void Tilemap::set_tile(int x, int y, unsigned int tile) {
+void Tilemap::set_tile(int x, int y, std::string tile) {
   if (is_inside_bounds(x, y)) {
     tilemap[get_index(x, y)] = tile;
   }
 }
 
-int Tilemap::get_tile(int x, int y) {
+std::string Tilemap::get_tile_id(int x, int y) {
   if (is_inside_bounds(x, y)) {
     return tilemap[get_index(x, y)];
   }
-  return -1;
+  return "nil";
+}
+
+Tile const& Tilemap::get_tile(int x, int y) {
+  return tiles.get_tile(get_tile_id(x,y));
 }
 
 bool Tilemap::is_blocked(int x, int y) {
   if (is_inside_bounds(x, y)) {
-    if (tilemap[get_index(x, y)] == '#') { // TODO: Replace hardcoded tiles
+    if (!tiles.get_tile(tilemap[get_index(x, y)]).passable) {
       return true;
     }
     for (Entity* var : actors) {
@@ -92,14 +97,12 @@ void Tilemap::remove_actor(Actor * actor) {
   }
 }
 
-Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
+Actor * Tilemap::get_actor(int x, int y) {
   vec2i pos = { x,y };
-  for (Entity* ent : actors) {
-    if (ent->entity_type() == type) {
-      vec2i apos = ent->get_position();
-      if (apos == pos) {
-        return ent;
-      }
+  for (Actor* ent : actors) {
+    vec2i apos = ent->get_position();
+    if (apos == pos) {
+      return ent;
     }
   }
   return nullptr;
@@ -130,21 +133,23 @@ void Tilemap::delete_actors() {
   }
 }
 
-void Tilemap::draw(Renderer *renderer, SpriteAtlas* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
-  int w = tileset->get_tile_width();
-  int h = tileset->get_tile_height();
+void Tilemap::draw(Renderer *renderer, SpriteAtlas* sprites, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
+  int w = sprites->get_tile_width();
+  int h = sprites->get_tile_height();
   for (int ix = 0; ix < tw; ix++) {
     for (int iy = 0; iy < th; iy++) {
       int ax = tx + ix;
       int ay = ty + iy;
       if (is_inside_bounds(ax, ay)) {
         if (view == nullptr || view->has_seen({ ax, ay })) {
-          Color fg = Color(1, 1, 1, 1);
-          Color bg = Color(0, 0, 0, 1);
+          Tile t = get_tile(ax, ay);
+          Color fg = t.fg;
+          Color bg = t.bg;
           if (view != nullptr && !view->can_see({ ax, ay })) {
             fg.a = 0.4f;
+            bg.a = 0.4f;
           }
-          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), fg, bg, x + ix * w, y + iy * h);
+          renderer->draw_sprite(sprites->get_sprite(t.glyph), fg, bg, x + ix * w, y + iy * h);
         }
       }
     }

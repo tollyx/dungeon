@@ -13,7 +13,7 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
   bool ishero = tick->target->is_type_of(ACT_HERO);
   vec2i targetpos = tick->target->get_position();
 
-  auto actors = tick->target->get_map()->get_actors(targetpos.x, targetpos.y, 6);
+  auto actors = tick->map->get_actors(targetpos.x, targetpos.y, 6);
   std::vector<Actor*> visibleEnemies;
 
   for (Actor* actor : actors) {
@@ -22,7 +22,7 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
 
     if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
+      if (line_of_sight(tick->map, tick->target->get_position(), pos)) {
         visibleEnemies.push_back(actor);
       }
     }
@@ -53,11 +53,11 @@ BehaviourTreeStatus AttackEnemyNode::tick(BTTick * tick) {
   else {
     vec2i pos = tick->target->get_position();
     vec2i goal = closestActor->get_position();
-    auto path = Pathfinder::aStar(tick->target->get_map(), pos, goal);
+    auto path = Pathfinder::a_star(tick->map, pos, goal);
     if (!path.empty()) {
       //path.pop_back();
       vec2i dpos = path.back() - pos;
-      if (tick->target->move(dpos.x, dpos.y)) {
+      if (tick->target->move(dpos.x, dpos.y, tick->map)) {
         return BT_RUNNING;
       }
     }

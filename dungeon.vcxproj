@@ -157,6 +157,7 @@
     <ClCompile Include="src\SpriteAtlas.cpp" />
     <ClCompile Include="src\WanderNode.cpp" />
     <ClCompile Include="src\World.cpp" />
+    <ClCompile Include="src\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Shader.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\WanderNode.h" />
     <ClInclude Include="src\wglew.h" />
     <ClInclude Include="src\World.h" />
+    <ClInclude Include="src\TileSet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -4,21 +4,22 @@
 
 int id_counter = 0;
 
-Actor::Actor(Tilemap *map, vec2i pos) : Entity(map, pos) {
+Actor::Actor(vec2i pos) : Entity(pos) {
   id = id_counter++;
   name = "Actor";
   range = 1.5f;
+  player_controlled = false;
   collision = true;
   bt = nullptr;
   faction = FACTION_NONE;
   sprite_id = 1;
 }
 
-void Actor::update() {
+void Actor::update(Tilemap* map) {
   if (!alive) return;
 
   if (!player_controlled && bt != nullptr) {
-    bt->tick(this);
+    bt->tick(this, map);
   }
   if (health < health_max) {
     healcounter--;
@@ -48,10 +49,10 @@ void Actor::attack(Actor *act) {
   }
 }
 
-void Actor::attack(vec2i dpos) {
+void Actor::attack(vec2i dpos, Tilemap* map) {
   if (dpos.dist() <= range) {
     vec2i pos = get_position();
-    auto acts = get_map()->get_actors(pos.x + dpos.x, pos.y + dpos.y, 0);
+    auto acts = map->get_actors(pos.x + dpos.x, pos.y + dpos.y, 0);
     for (Entity* ent : acts) {
       auto act = (Actor*)ent;
       if (act->is_alive() && act->get_actor_faction() != faction) {
