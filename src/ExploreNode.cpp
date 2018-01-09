@@ -4,7 +4,7 @@
 #include "BehaviourTree.h"
 #include "Actor.h"
 #include "Tilemap.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 ExploreNode::ExploreNode(BehaviourTreeNode* parent) : BehaviourTreeNode(parent){}
 

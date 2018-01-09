@@ -3,7 +3,7 @@
 //
 
 #include "App.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <ctime>
 #include <fstream>
 #include <string>
@@ -102,10 +102,6 @@ bool App::init() {
 }
 
 int App::start() {
-  current = new PlayState();
-  current->init(this);
-  current->load();
-
   double dt = 1.0/30;
   double currentTime = currTime();
   double accumulator = dt;
@@ -113,6 +109,10 @@ int App::start() {
   bool show_log = false;
   bool running = true;
   Gamestate* nextstate = nullptr;
+
+  current = new PlayState();
+  current->init(this);
+  current->load();
 
   while (running) {
     double newTime = currTime();
@@ -136,7 +136,7 @@ int App::start() {
     ImGuiIO &io = ImGui::GetIO();
     renderer->ImguiNewFrame();
     while (SDL_PollEvent(&ev)) {
-      renderer->ImguiProcessEvents(&ev);
+      //renderer->ImguiProcessEvents(&ev);
       switch (ev.type) {
         case SDL_WINDOWEVENT:
           switch (ev.window.event) {
@@ -199,7 +199,7 @@ int App::start() {
     SDL_Delay(1);
   }
   delete renderer;
-  ImGui::Shutdown();
+  //ImGui::Shutdown();
   SDL_Quit();
 
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Quit.");

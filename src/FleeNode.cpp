@@ -14,16 +14,15 @@ FleeNode::~FleeNode() = default;
 
 BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   Pathfinder::DijkstraMap dijkstra;
-  Tilemap * map = tick->target->get_map();
+  Tilemap * map = tick->map;
   std::vector<vec2i> enemyPos;
   bool ishero = tick->target->is_type_of(ACT_HERO);
   vec2i targetpos = tick->target->get_position();
-  auto actors = tick->target->get_map()->get_entities(targetpos.x, targetpos.y, 6, ENTITY_ACTOR);
-  for (auto ent : actors) {
-    auto actor = (Actor*)ent;
+  auto actors = map->get_actors(targetpos.x, targetpos.y, 6);
+  for (Actor* actor : actors) {
     if (actor->is_type_of(ACT_HERO) != ishero) {
       vec2i pos = actor->get_position();
-      if (line_of_sight(tick->target->get_map(), tick->target->get_position(), pos)) {
+      if (line_of_sight(map, tick->target->get_position(), pos)) {
         enemyPos.push_back(pos);
       }
     }
@@ -31,7 +30,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   if (enemyPos.empty()) {
     return BT_FAILED;
   }
-  Pathfinder::calcDijkstraMap(map, &enemyPos, &dijkstra, 16);
+  Pathfinder::calc_dijkstra_map(*map, enemyPos, dijkstra, 16);
 
   dijkstra.add(-16);
   dijkstra.mult(-1);
@@ -39,13 +38,13 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   std::vector<vec2i> safety;
   for (int x = 0; x < dijkstra.width; x++) {
     for (int y = 0; y < dijkstra.height; y++) {
-      if (dijkstra.getValue(x,y) <= 0 && dijkstra.getValue(x, y) >= -10) {
+      if (dijkstra.get_value(x,y) <= 0 && dijkstra.get_value(x, y) >= -10) {
         safety.emplace_back(x, y);
       }
     }
   }
 
-  Pathfinder::calcDijkstraMap(map, &safety, &dijkstra);
+  Pathfinder::calc_dijkstra_map(*map, safety, dijkstra);
 
   vec2i pos = tick->target->get_position();
 
@@ -53,7 +52,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
   std::vector<vec2i> options;
   float lowestval = 999999;
   for (vec2i npos : neigh) {
-    float val = dijkstra.getValue(npos.x, npos.y);
+    float val = dijkstra.get_value(npos.x, npos.y);
     if (val < lowestval) {
       lowestval = val;
       options.clear();
@@ -71,7 +70,7 @@ BehaviourTreeStatus FleeNode::tick(BTTick * tick) {
     int i = rand() % options.size();
     vec2i next = options[i];
     vec2i dp = next - pos;
-    if (tick->target->move(dp.x, dp.y)) {
+    if (tick->target->move(dp.x, dp.y, map)) {
       //printf("FLEEING val:%f\t(%i,%i)\n", lowestval, next.x, next.y);
       return BT_RUNNING;
     }

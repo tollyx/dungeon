@@ -5,8 +5,7 @@
 *.opensdf
 *.sdf
 *.pdb
-*.sln
-*.vcxproj*
+*.user
 [Dd]ebug
 [Rr]elease
 
@@ -33,3 +32,4 @@ build
 imgui.ini
 *.sublime*
 *.dll
+gitparams.h

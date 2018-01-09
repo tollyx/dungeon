@@ -1,16 +1,18 @@
 #include "Renderer.h"
 
-#define GLEW_STATIC
-#define GLEW_NO_GLU
-#include <GL/glew.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/Binding.h>
+#include <glbinding/gl/types.h>
 
 #include <fstream>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include "imgui.h"
 #include "imgui_impl_sdl_gl3.h"
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <utility>
+
+using namespace gl;
 
 const GLfloat rectVertData[]{
   0,0,0, 1,0,0, 0,1,0, 1,1,0
@@ -37,8 +39,8 @@ GLuint LoadShader(const char* path, GLenum shadertype) {
     return 0;
   }
   
-  GLint result = GL_FALSE;
-  int infologlength;
+  GLboolean result = GL_FALSE;
+  int infologlength = 0;
 
   SDL_Log("Compiling shader: %s\n", path);
   char const * source = shadersource.c_str();
@@ -63,8 +65,8 @@ GLuint CreateShaderProgram(GLuint vertshader, GLuint fragshader) {
   glAttachShader(programId, fragshader);
   glLinkProgram(programId);
 
-  GLint result = GL_FALSE;
-  int infologlength;
+  GLboolean result = GL_FALSE;
+  int infologlength = 0;
 
   glGetShaderiv(programId, GL_LINK_STATUS, &result);
   glGetShaderiv(programId, GL_INFO_LOG_LENGTH, &infologlength);
@@ -108,6 +110,7 @@ GLuint shaderProg;
 GLuint wireShaderProg;
 GLuint spriteVertArrayId;
 GLint colorUniform;
+GLint bgUniform;
 GLint mvpUniform;
 
 bool Renderer::Init(std::string title, int width, int height) {
@@ -128,6 +131,9 @@ bool Renderer::Init(std::string title, int width, int height) {
     return false;
   }
 
+  glbinding::Binding::initialize();
+  
+  /*
   GLenum err = glewInit();
   if (err != GLEW_OK) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER, "Failed to initialize OpenGl: %s\n", glewGetErrorString(err));
@@ -138,7 +144,7 @@ bool Renderer::Init(std::string title, int width, int height) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"OpenGl 3.2 is not supported, please try updating your drivers!\n");
     return false;
   }
-
+  */
   glClearColor(0, 0, 0, 1);
 
   ImGui_ImplSdlGL3_Init(window);
@@ -164,20 +170,13 @@ bool Renderer::Init(std::string title, int width, int height) {
   glUseProgram(shaderProg);
 
   colorUniform = glGetUniformLocation(shaderProg, "colortint");
+  bgUniform = glGetUniformLocation(shaderProg, "colorbackground");
   mvpUniform = glGetUniformLocation(shaderProg, "MVP");
 
   set_window_size(width, height);
 
   SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer initialized.\n");
   return true;
-}
-
-void Renderer::set_color(float r, float g, float b, float a) {
-  currentcolor = { r, g, b, a };
-}
-
-void Renderer::set_color(Color col) {
-  set_color(col.r, col.g, col.b, col.a);
 }
 
 void Renderer::set_title(const char *title) {
@@ -250,7 +249,7 @@ Texture * Renderer::LoadTexture(std::string path) {
       glGenTextures(1, &textureId);
       glBindTexture(GL_TEXTURE_2D, textureId);
 
-      int mode = GL_RGB;
+      GLenum mode = GL_RGB;
       if (surface->format->BytesPerPixel == 4) {
         mode = GL_RGBA;
       }
@@ -316,7 +315,7 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
 }
 
 
-void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
+void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, float sx, float sy) {
 
   glm::mat4 model = glm::translate(glm::vec3(x, y, 0)) * glm::scale(glm::vec3(sprite->region.w * sx, sprite->region.h * sy, 1)) * glm::mat4(1);
 
@@ -329,7 +328,8 @@ void Renderer::draw_sprite(Sprite *sprite, int x, int y, float sx, float sy) {
   glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
     
   glUseProgram(shaderProg);
-  glUniform4f(colorUniform, currentcolor.r, currentcolor.g, currentcolor.b, currentcolor.a);
+  glUniform4f(colorUniform, fg.r, fg.g, fg.b, fg.a);
+  glUniform4f(bgUniform, bg.r, bg.g, bg.b, bg.a);
 
   glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
   

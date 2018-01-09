@@ -1,10 +1,4 @@
-//
-// Created by Adrian on 2017-09-25.
-//
-
-#ifndef DUNGEON_ENTITY_H
-#define DUNGEON_ENTITY_H
-
+#pragma once
 
 #include "vec2i.h"
 #include "Color.h"
@@ -19,24 +13,19 @@ enum EntityTypes {
 
 class Entity {
   vec2i position;
-  Tilemap* map;
 protected:
   unsigned int sprite_id;
   Color sprite_color;
   bool collision;
 public:
-  Entity(Tilemap* map, vec2i pos);
+  Entity(vec2i pos);
 
-  Tilemap* get_map();
   vec2i get_position();
   bool has_collision();
-  bool move(int dx, int dy); // returns false if movement failed
-  bool move(vec2i dpos);
+  bool move(int dx, int dy, Tilemap* map); // returns false if movement failed
+  bool move(vec2i dpos, Tilemap* map);
   void set_position(vec2i pos);
   unsigned int get_sprite_id() { return sprite_id; };
   Color get_sprite_color() { return sprite_color; };
   virtual EntityTypes entity_type() { return ENTITY_BASE; };
 };
-
-
-#endif //DUNGEON_ENTITY_H

@@ -1,41 +1,41 @@
-//
-// Created by Adrian on 2017-09-21.
-//
-
 #include <cmath>
 #include "FieldOfView.h"
 #include "Tilemap.h"
+#include <SDL2/SDL.h>
+
+FieldOfView::FieldOfView() {
+}
 
 FieldOfView::FieldOfView(Tilemap *map) {
   this->map = map;
-  seen = new Tilemap(map->GetWidth(), map->GetHeight());
-  counter = 0;
-}
-
-FieldOfView::~FieldOfView() {
-  delete seen;
+  seen = std::vector<unsigned int>(map->get_width()*map->get_height(),0);
 }
 
 void FieldOfView::calc(vec2i pos, float range) {
   counter++;
-  seen->set_tile(pos.x, pos.y, counter);
+  seen[map->get_index(pos.x, pos.y)] = counter;
   // Once for each octant
-  cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, -1, 0, 0, -1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, 1, -1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 1, 0, 0, -1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, -1, 1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, -1, 0, 0, 1, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 0, 1, 1, 0, pos.x, pos.y, range);
-  cast_light(1, 1.0f, 0.0f, 1, 0, 0, 1, pos.x, pos.y, range);
+  if (map != nullptr) {
+    cast_light(1, 1.0f, 0.0f, 0, -1, -1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, -1, 0, 0, -1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, 1, -1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 1, 0, 0, -1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, -1, 1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, -1, 0, 0, 1, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 0, 1, 1, 0, pos.x, pos.y, range);
+    cast_light(1, 1.0f, 0.0f, 1, 0, 0, 1, pos.x, pos.y, range);
+  }
+  else {
+    SDL_LogError(SDL_LOG_CATEGORY_SYSTEM, "Tried to calc fov with a null tilemap!\n");
+  }
 }
 
 bool FieldOfView::can_see(vec2i pos) {
-  return seen->get_tile(pos.x, pos.y) >= counter;
+  return seen[map->get_index(pos.x, pos.y)] >= counter;
 }
 
 bool FieldOfView::has_seen(vec2i pos) {
-  return seen->get_tile(pos.x, pos.y) > 0;
+  return seen[map->get_index(pos.x, pos.y)] > seen_cutoff;
 }
 
 void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, int yx, int yy, int startX, int startY,
@@ -53,7 +53,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       float leftSlope = (deltaX - 0.5f) / (deltaY + 0.5f);
       float rightSlope = (deltaX + 0.5f) / (deltaY - 0.5f);
 
-      if (!(currentX >= 0 && currentY >= 0 && currentX < map->GetWidth() && currentY < map->GetHeight()) || start < rightSlope) {
+      if (!(currentX >= 0 && currentY >= 0 && currentX < map->get_width() && currentY < map->get_height()) || start < rightSlope) {
         continue;
       }
       else if (end > leftSlope) {
@@ -61,11 +61,11 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
       }
 
       if (sqrt(deltaX*deltaX + deltaY*deltaY) <= radius) {
-        seen->set_tile(currentX, currentY, counter);
+        seen[map->get_index(currentX, currentY)] = counter;
       }
 
       if (blocked) {
-        if (map->get_tile(currentX, currentY) == '#') { // TODO: Stop hardcoding tiles
+        if (map->get_tile(currentX, currentY).opaque) { // TODO: Stop hardcoding tiles
           newStart = rightSlope;
           continue;
         }
@@ -75,7 +75,7 @@ void FieldOfView::cast_light(int row, float start, float end, int xx, int xy, in
         }
       }
       else {
-        if (map->get_tile(currentX, currentY) == '#' && distance < radius) { // TODO: Get rid of hardcoded tiles
+        if (map->get_tile(currentX, currentY).opaque && distance < radius) { // TODO: Get rid of hardcoded tiles
           blocked = true;
           cast_light(distance + 1, start, leftSlope, xx, xy, yx, yy, startX, startY, radius);
           newStart = rightSlope;
@@ -98,7 +98,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.y - (delta.x >> 1));
 
-    while (start.x != end.x && map->get_tile(start.x, start.y) != '#') // TODO: Hardcoded tiles
+    while (!start.x != end.x && map->get_tile(start.x, start.y).opaque) // TODO: Hardcoded tiles
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (ix > 0)))
@@ -117,7 +117,7 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
     // error may go below zero
     int error(delta.x - (delta.y >> 1));
 
-    while (start.y != end.y && map->get_tile(start.x, start.y) != '#') // TODO: Stop hardcoding tiles
+    while (start.y != end.y && !map->get_tile(start.x, start.y).opaque) // TODO: Stop hardcoding tiles
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (iy > 0)))

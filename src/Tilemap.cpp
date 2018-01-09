@@ -2,91 +2,74 @@
 #include "vec2i.h"
 #include "Actor.h"
 #include "Renderer.h"
-#include "Tileset.h"
+#include "SpriteAtlas.h"
 #include "FieldOfView.h"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
-int Tilemap::GetIndex(int x, int y) 
-{
+int Tilemap::get_index(int x, int y) {
   return y * width + x;
 }
 
-Tilemap::Tilemap(int width, int height)
-{
+Tilemap::Tilemap(TileSet tileset, int width, int height) {
   this->width = width;
   this->height = height;
-  tilemap = new unsigned int[width*height]{0};
+  tilemap = std::vector<std::string>(width*height, "");
+  tiles = tileset;
 }
 
-Tilemap::~Tilemap() 
-{
-  delete tilemap;
-  for (auto var : entities) {
-    delete var;
-  }
-}
+Tilemap::~Tilemap() {}
 
-int Tilemap::GetWidth() 
-{
+int Tilemap::get_width() {
   return width;
 }
 
-int Tilemap::GetHeight() 
-{
+int Tilemap::get_height() {
   return height;
 }
 
-bool Tilemap::IsInsideBounds(int x, int y) 
-{
+bool Tilemap::is_inside_bounds(int x, int y) {
   return x >= 0 && x < width && y >= 0 && y < height;
 }
 
-std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) 
-{
+std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int range) {
+  return get_neighbours(x, y, range, range, range, range);
+}
+
+std::vector<vec2i> Tilemap::get_neighbours(int x, int y, int up, int down, int left, int right) {
   std::vector<vec2i> neigh;
-  if (range == 0) 
-  {
-    neigh.emplace_back(x,y);
-    return neigh;
-  }
-  for (int dx = -range; dx <= range; dx++) 
-  {
-    for (int dy = -range; dy <= range; dy++) 
-    {
-      if ((dx != 0 || dy != 0) && IsInsideBounds(x + dx, y + dy)) 
-      {
-        neigh.emplace_back(x+dx,y+dy);
+  for (int dx = -left; dx <= right; dx++) {
+    for (int dy = -up; dy <= down; dy++) {
+      if ((dx != 0 || dy != 0) && is_inside_bounds(x + dx, y + dy)) {
+        neigh.emplace_back(x + dx, y + dy);
       }
     }
   }
   return neigh;
 }
 
-void Tilemap::set_tile(int x, int y, unsigned int tile)
-{
-  if (IsInsideBounds(x, y)) 
-  {
-    tilemap[GetIndex(x, y)] = tile;
+void Tilemap::set_tile(int x, int y, std::string tile) {
+  if (is_inside_bounds(x, y)) {
+    tilemap[get_index(x, y)] = tile;
   }
 }
 
-int Tilemap::get_tile(int x, int y) 
-{
-  if (IsInsideBounds(x, y)) 
-  {
-    return tilemap[GetIndex(x, y)];
+std::string Tilemap::get_tile_id(int x, int y) {
+  if (is_inside_bounds(x, y)) {
+    return tilemap[get_index(x, y)];
   }
-  return -1;
+  return "nil";
 }
 
-bool Tilemap::IsBlocked(int x, int y) 
-{
-  if (IsInsideBounds(x, y)) 
-  {
-    if (tilemap[GetIndex(x,y)] == '#') { // TODO: Replace hardcoded tiles
+Tile const& Tilemap::get_tile(int x, int y) {
+  return tiles.get_tile(get_tile_id(x,y));
+}
+
+bool Tilemap::is_blocked(int x, int y) {
+  if (is_inside_bounds(x, y)) {
+    if (!tiles.get_tile(tilemap[get_index(x, y)]).passable) {
       return true;
     }
-    for (Entity* var : entities) {
+    for (Entity* var : actors) {
       vec2i pos = var->get_position();
       if (var->has_collision() && pos == vec2i(x, y))
         return true;
@@ -96,74 +79,77 @@ bool Tilemap::IsBlocked(int x, int y)
   return true;
 }
 
-void Tilemap::add_entity(Entity *actor) {
-  for (Entity* var : entities) {
+void Tilemap::add_actor(Actor *actor) {
+  for (Actor* var : actors) {
     if (var == actor) {
       return;
     }
   }
-  entities.push_back(actor);
+  actors.push_back(actor);
 }
 
-void Tilemap::remove_entity(Entity * actor) {
-  for (auto it = entities.begin(); it != entities.end(); it++) {
+void Tilemap::remove_actor(Actor * actor) {
+  for (auto it = actors.begin(); it != actors.end(); it++) {
     if ((*it) == actor) {
-      entities.erase(it);
+      actors.erase(it);
       return;
     }
   }
 }
 
-Entity * Tilemap::get_entity(int x, int y, EntityTypes type) {
+Actor * Tilemap::get_actor(int x, int y) {
   vec2i pos = { x,y };
-  for (Entity* ent : entities) {
-    if (ent->entity_type() == type) {
-      vec2i apos = ent->get_position();
-      if (apos == pos) {
-        return ent;
-      }
+  for (Actor* ent : actors) {
+    vec2i apos = ent->get_position();
+    if (apos == pos) {
+      return ent;
     }
   }
   return nullptr;
 }
 
-std::vector<Entity*> Tilemap::get_entities(int x, int y, int range, EntityTypes type) {
-  std::vector<Entity*> found;
+std::vector<Actor*> Tilemap::get_actors(int x, int y, int range) {
+  std::vector<Actor*> found;
   std::vector<vec2i> neigh = get_neighbours(x, y, range);
-  for (Entity* ent : entities) {
+  for (Actor* ent : actors) {
     for (vec2i pos : neigh) {
-      if (ent->entity_type() == type) {
-        vec2i apos = ent->get_position();
-        if (apos == pos) {
-          found.emplace_back(ent);
-          break;
-        }
+      vec2i apos = ent->get_position();
+      if (apos == pos) {
+        found.emplace_back(ent);
+        break;
       }
     }
   }
   return found;
 }
 
-std::vector<Entity*>* Tilemap::get_entity_list() {
-  return &entities;
+std::vector<Actor*>* Tilemap::get_actor_list() {
+  return &actors;
 }
 
-void Tilemap::draw(Renderer *renderer, Tileset* tileset, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
-  int w = tileset->get_tile_width();
-  int h = tileset->get_tile_height();
+void Tilemap::delete_actors() {
+  for (auto var : actors) {
+    delete var;
+  }
+}
+
+void Tilemap::draw(Renderer *renderer, SpriteAtlas* sprites, int x, int y, int tx, int ty, int tw, int th, FieldOfView* view) {
+  int w = sprites->get_tile_width();
+  int h = sprites->get_tile_height();
   for (int ix = 0; ix < tw; ix++) {
     for (int iy = 0; iy < th; iy++) {
       int ax = tx + ix;
       int ay = ty + iy;
-      if (IsInsideBounds(ax, ay)) {
-        if (view == nullptr || view->has_seen({ax, ay})) {
-          renderer->set_color(1, 1, 1, 1);
-          renderer->draw_sprite(tileset->get_sprite(get_tile(ax, ay)), x + ix * w, y + iy * h);
-
-          if (view != nullptr && !view->can_see({ax, ay})) {
-            renderer->set_color(0, 0, 0, .6f);
-            renderer->draw_sprite(tileset->get_sprite(219), x + ix * w, y + iy * h);
+      if (is_inside_bounds(ax, ay)) {
+        if (view == nullptr || view->has_seen({ ax, ay })) {
+          Tile t = get_tile(ax, ay);
+          Color fg = t.fg;
+          Color bg = t.bg;
+          if (view != nullptr && !view->can_see({ ax, ay })) {
+            fg.a = 0.4f;
+            bg.a = 0.4f;
           }
+          renderer->draw_sprite(sprites->get_sprite(t.glyph), fg, bg, x + ix * w, y + iy * h);
         }
       }
     }

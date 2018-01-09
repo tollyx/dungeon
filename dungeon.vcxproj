@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{E786EE71-011C-4AAC-8D46-C06B0671388B}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(ProjectDir)libs\kaguya-1.3.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Actor.cpp" />
+    <ClCompile Include="src\App.cpp" />
+    <ClCompile Include="src\AttackEnemyNode.cpp" />
+    <ClCompile Include="src\BehaviourTree.cpp" />
+    <ClCompile Include="src\BehaviourTreeMemSelector.cpp" />
+    <ClCompile Include="src\BehaviourTreeMemSequencer.cpp" />
+    <ClCompile Include="src\BehaviourTreeNode.cpp" />
+    <ClCompile Include="src\BehaviourTreeSelector.cpp" />
+    <ClCompile Include="src\BehaviourTreeSequencer.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\ExploreNode.cpp" />
+    <ClCompile Include="src\FieldOfView.cpp" />
+    <ClCompile Include="src\FleeNode.cpp" />
+    <ClCompile Include="src\Gamestate.cpp" />
+    <ClCompile Include="src\Goblin.cpp" />
+    <ClCompile Include="src\HealFriendNode.cpp" />
+    <ClCompile Include="src\Hero.cpp" />
+    <ClCompile Include="src\IfHealthBelow.cpp" />
+    <ClCompile Include="src\IfNotSeeEnemyNode.cpp" />
+    <ClCompile Include="src\IfSeeEnemyNode.cpp" />
+    <ClCompile Include="src\IfSeeFriendNode.cpp" />
+    <ClCompile Include="src\imgui.cpp" />
+    <ClCompile Include="src\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="src\imgui_user.cpp" />
+    <ClCompile Include="src\Input.cpp" />
+    <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Mapgen.cpp" />
+    <ClCompile Include="src\Pathfinder.cpp" />
+    <ClCompile Include="src\PlayState.cpp" />
+    <ClCompile Include="src\RangedAttackNode.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\RestNode.cpp" />
+    <ClCompile Include="src\Rng.cpp" />
+    <ClCompile Include="src\Shaman.cpp" />
+    <ClCompile Include="src\Tilemap.cpp" />
+    <ClCompile Include="src\SpriteAtlas.cpp" />
+    <ClCompile Include="src\WanderNode.cpp" />
+    <ClCompile Include="src\World.cpp" />
+    <ClCompile Include="src\TileSet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\Actor.h" />
+    <ClInclude Include="src\App.h" />
+    <ClInclude Include="src\AttackEnemyNode.h" />
+    <ClInclude Include="src\BehaviourTree.h" />
+    <ClInclude Include="src\BehaviourTreeMemSelector.h" />
+    <ClInclude Include="src\BehaviourTreeMemSequencer.h" />
+    <ClInclude Include="src\BehaviourTreeNode.h" />
+    <ClInclude Include="src\BehaviourTreeSelector.h" />
+    <ClInclude Include="src\BehaviourTreeSequencer.h" />
+    <ClInclude Include="src\Color.h" />
+    <ClInclude Include="src\Entity.h" />
+    <ClInclude Include="src\ExploreNode.h" />
+    <ClInclude Include="src\FieldOfView.h" />
+    <ClInclude Include="src\FleeNode.h" />
+    <ClInclude Include="src\Gamestate.h" />
+    <ClInclude Include="src\gitparams.h" />
+    <ClInclude Include="src\Goblin.h" />
+    <ClInclude Include="src\HealFriendNode.h" />
+    <ClInclude Include="src\Hero.h" />
+    <ClInclude Include="src\IfHealthBelow.h" />
+    <ClInclude Include="src\IfNotSeeEnemyNode.h" />
+    <ClInclude Include="src\IfSeeEnemyNode.h" />
+    <ClInclude Include="src\IfSeeFriendNode.h" />
+    <ClInclude Include="src\imconfig.h" />
+    <ClInclude Include="src\imgui.h" />
+    <ClInclude Include="src\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="src\imgui_internal.h" />
+    <ClInclude Include="src\imgui_user.h" />
+    <ClInclude Include="src\Input.h" />
+    <ClInclude Include="src\Logger.h" />
+    <ClInclude Include="src\Mapgen.h" />
+    <ClInclude Include="src\Pathfinder.h" />
+    <ClInclude Include="src\PlayState.h" />
+    <ClInclude Include="src\RangedAttackNode.h" />
+    <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\RestNode.h" />
+    <ClInclude Include="src\Rng.h" />
+    <ClInclude Include="src\Shaman.h" />
+    <ClInclude Include="src\Stats.h" />
+    <ClInclude Include="src\stb_rect_pack.h" />
+    <ClInclude Include="src\stb_textedit.h" />
+    <ClInclude Include="src\stb_truetype.h" />
+    <ClInclude Include="src\Tilemap.h" />
+    <ClInclude Include="src\SpriteAtlas.h" />
+    <ClInclude Include="src\vec2i.h" />
+    <ClInclude Include="src\WanderNode.h" />
+    <ClInclude Include="src\wglew.h" />
+    <ClInclude Include="src\World.h" />
+    <ClInclude Include="src\TileSet.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

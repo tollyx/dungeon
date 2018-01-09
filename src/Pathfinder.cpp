@@ -1,6 +1,7 @@
 #include <math.h>
 #include "Pathfinder.h"
 #include "Tilemap.h"
+#include <queue>
 
 namespace Pathfinder
 {
@@ -11,7 +12,7 @@ namespace Pathfinder
     return sqrtf(dx*dx + dy*dy);
   }
 
-  std::vector<vec2i> aStar(Tilemap * map, vec2i start, vec2i goal)
+  std::vector<vec2i> a_star(Tilemap * map, vec2i start, vec2i goal)
   {
     std::vector<AStarNode*> open;
     std::vector<AStarNode*> closed;
@@ -36,7 +37,7 @@ namespace Pathfinder
 
       auto neighbours = map->get_neighbours(current->pos.x, current->pos.y);
       for (auto pos : neighbours) {
-        if (map->get_tile(pos.x, pos.y) == '#') {
+        if (!map->get_tile(pos.x, pos.y).passable) {
           continue;
         }
         AStarNode* neighbour = new AStarNode();
@@ -140,53 +141,53 @@ namespace Pathfinder
     return path;
   }
 
-  void calcDijkstraMap(Tilemap * map, std::vector<vec2i>* goals, DijkstraMap * out, float maxValue) {
-    if (out->tilemap != nullptr) {
-      delete out->tilemap;
+  void calc_dijkstra_map(Tilemap& map, std::vector<vec2i>& goals, DijkstraMap& out, float maxValue) {
+    if (out.tilemap != nullptr) {
+      delete out.tilemap;
     }
-    out->tilemap = new float[map->GetWidth() * map->GetHeight()];
-    for (int i = 0; i < map->GetWidth() * map->GetHeight(); i++) {
-      out->tilemap[i] = maxValue;
+    out.tilemap = new float[map.get_width() * map.get_height()];
+    for (int i = 0; i < map.get_width() * map.get_height(); i++) {
+      out.tilemap[i] = maxValue;
     }
-    out->height = map->GetHeight();
-    out->width = map->GetWidth();
-    for (vec2i pos : *goals) {
-      out->setValue(pos.x, pos.y, 0);
+    out.height = map.get_height();
+    out.width = map.get_width();
+    for (vec2i& pos : goals) {
+      out.setValue(pos.x, pos.y, 0);
     }
 
-    std::vector<vec2i> queue;
+    std::queue<vec2i> queue;
 
-    for (vec2i pos : *goals) {
-      auto neigh = map->get_neighbours(pos.x, pos.y);
-      for (vec2i npos : neigh) {
-        int val = out->getValue(npos.x, npos.y);
-        if (map->get_tile(npos.x, npos.y) != '#' && val > 1) {
+    for (vec2i& pos : goals) {
+      auto neigh = map.get_neighbours(pos.x, pos.y);
+      for (vec2i& npos : neigh) {
+        int val = out.get_value(npos.x, npos.y);
+        if (map.get_tile(npos.x, npos.y).passable && val > 1.4f) {
           if (npos.x != 0 && npos.y != 0) {
-            out->setValue(npos.x, npos.y, 1.4f);
+            out.setValue(npos.x, npos.y, 1.4f);
           }
           else {
-            out->setValue(npos.x, npos.y, 1);
+            out.setValue(npos.x, npos.y, 1);
           }
-          queue.push_back(npos);
+          queue.push(npos);
         }
       }
     }
 
     while (queue.size() > 0) {
-      vec2i current = queue.back();
-      queue.pop_back();
+      vec2i current = queue.front();
+      float val = out.get_value(current.x, current.y);
+      queue.pop();
       
-      std::vector<vec2i> neigh = map->get_neighbours(current.x, current.y);
-      for (int i = 0; i < neigh.size(); i++) {
-        float val = out->getValue(current.x, current.y) + 1;
-        vec2i npos = neigh[i];
+      std::vector<vec2i> neigh = map.get_neighbours(current.x, current.y);
+      for (vec2i& npos : neigh) {
         vec2i dp = npos - current;
+        float nval = val + 1;
         if (dp.x != 0 && dp.y != 0) {
-          val += .4f;
+          nval += .4f;
         }
-        if (map->get_tile(npos.x, npos.y) != '#' && out->getValue(npos.x, npos.y) > val) { // TODO: Remove hardcoded tile
-          out->setValue(npos.x, npos.y, val);
-          queue.push_back(neigh[i]);
+        if (map.get_tile(npos.x, npos.y).passable && out.get_value(npos.x, npos.y) > nval) {
+          out.setValue(npos.x, npos.y, nval);
+          queue.push(npos);
         }
       }
     }

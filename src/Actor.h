@@ -31,14 +31,15 @@ protected:
   float range;
   bool alive;
   ActorFactions faction;
-  Actor(Tilemap *map, vec2i pos);
+  Actor(vec2i pos);
 public:
   int id;
   std::string name;
+  bool player_controlled;
 
-  Actor(Tilemap *map, vec2i pos, std::string datakey);
+  //Actor(Tilemap *map, vec2i pos, std::string datakey);
   bool is_alive(){ return alive; };
-  void attack(vec2i dpos); // basic melee attack
+  void attack(vec2i dpos, Tilemap* map); // basic melee attack
   void attack(Actor* act);
   void heal(int amount);
   void damage(int strength);
@@ -48,7 +49,7 @@ public:
   ActorFactions get_actor_faction() { return faction; }
   float get_range() { return range; }
   void kill() { alive = false; health = 0; collision = false; };
-  void update();
+  void update(Tilemap* map);
   virtual bool is_type_of(Actors actor){ return actor == ACT_BASE; };
   virtual Actors type() { return ACT_BASE; };
   EntityTypes entity_type() override { return ENTITY_ACTOR; };

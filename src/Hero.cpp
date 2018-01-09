@@ -8,9 +8,10 @@
 #include "RestNode.h"
 #include "FleeNode.h"
 
-Hero::Hero(Tilemap* map, vec2i pos) : Actor(map, pos) {
+Hero::Hero(vec2i pos) : Actor(pos) {
   name = "Hero";
   alive = true;
+  player_controlled = true;
   health = 6;
   health_max = 6;
   strength = 2;
