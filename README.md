@@ -2,7 +2,7 @@
 
 A work-in-progress, cross-platform roguelike written in C++ using SDL2 and OpenGL.  
 
-![Screenshot](https://i.imgur.com/apzKOmm.png)
+![Screenshot](https://i.imgur.com/aKUhgCz.png)
 
 ## Compiling
 
