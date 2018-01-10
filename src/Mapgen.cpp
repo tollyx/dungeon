@@ -1,9 +1,5 @@
 #include "Mapgen.h"
-<<<<<<< HEAD
 #include "vec2i.h"
-=======
-#include "vec2i.h"
->>>>>>> 9557a88ed46a9e1e9aa3994762f9ec1dd7e051f1
 #include <vector>
 #include <queue>
 #include <random>
@@ -255,7 +251,8 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet tiles
   // Find the room furthest away from the entrance and make it the exit
   Pathfinder::DijkstraMap dijk;
   const float maxv = width+height;
-  Pathfinder::calc_dijkstra_map(map, std::vector<vec2i>{ startpos }, dijk, maxv);
+  std::vector<vec2i> goals = { startpos };
+  Pathfinder::calc_dijkstra_map(map, goals, dijk, maxv);
   
   float exitroomval = 0;
   Room* exitroom = &startroom;

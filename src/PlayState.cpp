@@ -16,7 +16,7 @@
 #include "Shaman.h"
 #include "Rng.h"
 #include "TileSet.h"
-#include <kaguya\kaguya.hpp>
+#include <kaguya/kaguya.hpp>
 
 InputAction player_action;
 TileSet tileset;
