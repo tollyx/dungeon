@@ -11,7 +11,7 @@
 
 BehaviourTree* shamtree = nullptr;
 
-Shaman::Shaman(Tilemap* map, vec2i pos) : Actor(map, pos) {
+Shaman::Shaman(vec2i pos) : Actor(pos) {
   name = "Shaman";
   alive = true;
   health = 2;

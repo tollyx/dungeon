@@ -28,7 +28,6 @@ class Renderer
 {
   SDL_Window* window;
   SDL_GLContext context;
-  Color currentcolor;
   unsigned int spriteVBuf;
   std::vector<Sprite> sprites;
   std::map<std::string, Texture> textures;
@@ -39,8 +38,6 @@ public:
   Renderer();
   ~Renderer();
   bool Init(std::string title, int width, int height);
-  void set_color(float r, float g, float b, float a);
-  void set_color(Color col);
   void set_title(const char *title);
   void set_window_size(int width, int height);
   void set_clear_color(float r, float g, float b, float a);
@@ -55,7 +52,7 @@ public:
   void ImguiNewFrame();
   Texture * LoadTexture(std::string path);
   Sprite CreateSprite(std::string path, int x, int y, int w, int h);
-  void draw_sprite(Sprite *sprite, int x, int y, float sx = 1, float sy = 1);
+  void draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, float sx = 1, float sy = 1);
   void Clear();
   void Present();
 };

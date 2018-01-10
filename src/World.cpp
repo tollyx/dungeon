@@ -28,7 +28,7 @@ Tilemap* World::GetMap(unsigned int level) {
       return maps[level];
     }
     else {
-      Tilemap* map = new Tilemap(64, 64);
+      Tilemap* map = new Tilemap(TileSet(),64, 64);
       // TODO: generate map
       maps[level] = map;
       return map;

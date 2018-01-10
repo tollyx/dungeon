@@ -2,36 +2,44 @@
 
 A work-in-progress, cross-platform roguelike written in C++ using SDL2 and OpenGL.  
 
-![Screenshot](https://i.imgur.com/apzKOmm.png)
+![Screenshot](https://i.imgur.com/aKUhgCz.png)
 
 ## Compiling
 
+Dependencies: `SDL2`, `Lua53`, `glm`, and `glbinding`
+
 ### Linux
 
-* Install SDL2, Lua53 and GLEW using your distro's package manager
-* Create a directory named  "build" and run `cmake .. && make` inside it
-* Move either the resulting binary to the root folder of the repository or copy the assets folder into the build directory
-* You can now run the binary
+Install the dependencies using your favorite package manager and then use cmake.
 
 ### Windows
 
-I really need to fix a hassle-free way to build this shit on windows.
-
-Currently, you need to import the source as a new project in visual studio and set up the dependencies yourself. (SDL2, Lua53, GLEW, OpenGL)
+I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to install the dependencies. When you've done that, either use cmake or the included solution to build with visual studio.
 
 ## Future plans
 
 ### To-Do
 
-* [ ] A main menu
+* [ ] Main menu
+  * [ ] Character creation
+  * [ ] Settings menu
+  * [ ] Data editors?
 * [ ] Dungeon generation
-* [ ] Make entities and AI completely data-driven
-* [ ] Implement Lua for item/effects/action scripting
-  * Might as well use it for basic data storage as well, since I can then skip creating my own parser or adding an additional library for json/yaml/toml/whatever.
-  * [x] Initial implementation
-  * [ ] Items
-  * [ ] Status Effects
-  * [ ] Spells
+  * [x] Generate rooms & corridors
+  * [x] Place entrance & exit
+  * [x] Place enemies
+  * [ ] Prefabs
+* [ ] Items
+  * [ ] Inventory
+  * [ ] Consumables
+  * [ ] Equipment
+* [ ] Data-driven AI
+* [ ] Lua scripting
+  * [x] Data Loading
+  * [ ] Item effects
+  * [ ] Status effects
+  * [ ] Dialouges?
+  * [ ] Spells/Skills
 
 ### Wishlist
 

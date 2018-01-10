@@ -18,7 +18,7 @@ namespace Pathfinder
     float* tilemap = nullptr;
     int width, height;
 
-    float getValue(int x, int y) {
+    float get_value(int x, int y) {
       if (x >= 0 && x < width && y >= 0 && y < height) {
         return tilemap[y*width + x];
       }
@@ -66,6 +66,6 @@ namespace Pathfinder
   };
 
   float distance(vec2i a, vec2i b);
-  std::vector<vec2i> aStar(Tilemap* map, vec2i start, vec2i goal);
-  void calcDijkstraMap(Tilemap* map, std::vector<vec2i>* goals, DijkstraMap* out, float maxValue = 32);
+  std::vector<vec2i> a_star(Tilemap* map, vec2i start, vec2i goal);
+  void calc_dijkstra_map(Tilemap& map, std::vector<vec2i>& goals, DijkstraMap& out, float maxValue = 32);
 }

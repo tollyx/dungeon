@@ -13,10 +13,11 @@ BehaviourTree::~BehaviourTree() {
   }
 }
 
-void BehaviourTree::tick(Actor * target) {
+void BehaviourTree::tick(Actor * target, Tilemap* map) {
   BTTick tick;
   tick.target = target;
   tick.tree = this;
+  tick.map = map;
 
   root->execute(&tick);
 

@@ -11,7 +11,7 @@ WanderNode::~WanderNode() = default;
 
 BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
   vec2i pos = tick->target->get_position();
-  std::vector<vec2i> neighbours = tick->target->get_map()->get_neighbours(pos.x, pos.y);
+  std::vector<vec2i> neighbours = tick->map->get_neighbours(pos.x, pos.y);
   while (true) {
     if (neighbours.empty()) {
       previous.clear();
@@ -26,7 +26,7 @@ BehaviourTreeStatus WanderNode::tick(BTTick * tick) {
         break;
       }
     }
-    if (valid && tick->target->move(dp.x, dp.y)) {
+    if (valid && tick->target->move(dp.x, dp.y, tick->map)) {
       previous.push_back(neighbours[i]);
       if (previous.size() > 5) {
         previous.erase(previous.begin());

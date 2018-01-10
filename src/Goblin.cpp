@@ -7,7 +7,7 @@
 
 BehaviourTree* gobtree = nullptr;
 
-Goblin::Goblin(Tilemap* map, vec2i pos) : Actor(map, pos) {
+Goblin::Goblin(vec2i pos) : Actor(pos) {
   name = "Goblin";
   alive = true;
   health = 4;
