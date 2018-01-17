@@ -66,7 +66,7 @@ void TileSet::load_from_table(kaguya::LuaStackRef table) {
     else {
       SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "Tileset: Missing value wall for tile: %s", key.c_str());
     }
-    SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Tileset: Added tile: %s", key.c_str());
+    //SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Tileset: Added tile: %s", key.c_str());
     tiles[key] = t;
     if (tiles.count(key) == 0) {
       SDL_LogDebug(SDL_LOG_CATEGORY_APPLICATION, "Tileset: Could not find the tile we just added?!: %s", key.c_str());

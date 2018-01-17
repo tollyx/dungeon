@@ -126,15 +126,17 @@ Gamestate *PlayState::update(double delta) {
       }
       if (dir != vec2i(0,0)) {
         if (!actor->move(dir.x, dir.y, &tilemap)) {
-          vec2i heropos = actor->get_position();
-          Actor* act = tilemap.get_actor(heropos.x + dir.x, heropos.y + dir.y);
-          if(act == nullptr) {
+          vec2i pos = actor->get_position();
+          auto acts = tilemap.get_actors(pos.x + dir.x, pos.y + dir.y, 0);
+          if(acts.empty()) {
             SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: invalid player action.\n");
             player_action = ACTION_NONE;
             return nullptr; // unable to move and nothing to attack == abort turn
           }
-          if (act->is_alive() && act->get_actor_faction() != actor->get_actor_faction()) {
-            actor->attack(act);
+          for (Actor* a : acts) {
+            if (a->is_alive() && a->get_actor_faction() != actor->get_actor_faction()) {
+              actor->attack(a);
+            }  
           }
         }
       }
@@ -240,7 +242,8 @@ void PlayState::draw(double delta) {
       int sprite = var->get_sprite_id();
 
       Color fg = var->get_sprite_color()*0.35f;
-      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, black, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+      Color bg = tilemap.get_tile(pos.x, pos.y).bg;
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, bg, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
 
