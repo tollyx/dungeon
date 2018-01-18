@@ -96,9 +96,9 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
   if (delta.x >= delta.y)
   {
     // error may go below zero
-    int error(delta.y - (delta.x >> 1));
+    int error = delta.y - (delta.x >> 1);
 
-    while (!start.x != end.x && map->get_tile(start.x, start.y).opaque) // TODO: Hardcoded tiles
+    while (start.x != end.x && map->get_tile(start.x, start.y).opaque)
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (ix > 0)))
@@ -115,9 +115,9 @@ bool line_of_sight(Tilemap *map, vec2i start, vec2i end) {
   else
   {
     // error may go below zero
-    int error(delta.x - (delta.y >> 1));
+    int error = delta.x - (delta.y >> 1);
 
-    while (start.y != end.y && !map->get_tile(start.x, start.y).opaque) // TODO: Stop hardcoding tiles
+    while (start.y != end.y && !map->get_tile(start.x, start.y).opaque)
     {
       // reduce error, while taking into account the corner case of error == 0
       if ((error > 0) || (!error && (iy > 0)))

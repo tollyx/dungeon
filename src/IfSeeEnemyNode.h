@@ -7,4 +7,3 @@ public:
   ~IfSeeEnemyNode();
   BehaviourTreeStatus tick(BTTick* tick);
 };
-

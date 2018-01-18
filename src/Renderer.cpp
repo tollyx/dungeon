@@ -11,6 +11,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <utility>
+#include "Shader.h"
 
 using namespace gl;
 
@@ -106,12 +107,42 @@ Renderer::~Renderer() {
   SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Renderer destroyed.");
 }
 
-GLuint shaderProg;
-GLuint wireShaderProg;
+Shader mainshader;
+Shader wireshader;
+
 GLuint spriteVertArrayId;
-GLint colorUniform;
-GLint bgUniform;
-GLint mvpUniform;
+
+
+void MessageCallback( GLenum source,
+                      GLenum type,
+                      GLuint id,
+                      GLenum severity,
+                      GLsizei length,
+                      const GLchar* message,
+                      const void* userParam ) 
+{
+  const char* sev;
+  switch (severity) {
+    case GL_DEBUG_SEVERITY_HIGH:
+      sev = "HIGH";
+    break;
+    case GL_DEBUG_SEVERITY_MEDIUM:
+      sev = "MEDIUM";
+    break;
+    case GL_DEBUG_SEVERITY_LOW:
+      sev = "LOW";
+    break;
+    case GL_DEBUG_SEVERITY_NOTIFICATION:
+      sev = "NOTIFY";
+    break;
+    default:
+      sev = "UKNOWN";
+  }
+  fprintf( stderr, "GL CALLBACK: %s type = 0x%x, severity = %s, message = %s\n",
+           ( type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "" ),
+            type, sev, message );
+}
+
 
 bool Renderer::Init(std::string title, int width, int height) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -132,19 +163,9 @@ bool Renderer::Init(std::string title, int width, int height) {
   }
 
   glbinding::Binding::initialize();
-  
-  /*
-  GLenum err = glewInit();
-  if (err != GLEW_OK) {
-    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER, "Failed to initialize OpenGl: %s\n", glewGetErrorString(err));
-    return false;
-  }
+  glEnable(GL_DEBUG_OUTPUT);
+  //glDebugMessageCallback((GLDEBUGPROC)MessageCallback, 0);
 
-  if (!GLEW_VERSION_3_2) {
-    SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"OpenGl 3.2 is not supported, please try updating your drivers!\n");
-    return false;
-  }
-  */
   glClearColor(0, 0, 0, 1);
 
   ImGui_ImplSdlGL3_Init(window);
@@ -156,22 +177,10 @@ bool Renderer::Init(std::string title, int width, int height) {
   glBindBuffer(GL_ARRAY_BUFFER, spriteVBuf);
   glBufferData(GL_ARRAY_BUFFER, sizeof(rectVertData), rectVertData, GL_STATIC_DRAW);
 
-  GLuint frag = LoadShader("assets/main.frag", GL_FRAGMENT_SHADER);
-  GLuint vert = LoadShader("assets/main.vert", GL_VERTEX_SHADER);
-  shaderProg = CreateShaderProgram(vert, frag);
-  GLuint wirefrag = LoadShader("assets/wireframe.frag", GL_FRAGMENT_SHADER);
-  GLuint wirevert = LoadShader("assets/wireframe.vert", GL_VERTEX_SHADER);
-  wireShaderProg = CreateShaderProgram(wirevert, wirefrag);
-  glDeleteShader(frag);
-  glDeleteShader(vert);
-  glDeleteShader(wirefrag);
-  glDeleteShader(wirevert);
+  mainshader = Shader("assets/main.vert", "assets/main.frag");
+  mainshader.print_values();
 
-  glUseProgram(shaderProg);
-
-  colorUniform = glGetUniformLocation(shaderProg, "colortint");
-  bgUniform = glGetUniformLocation(shaderProg, "colorbackground");
-  mvpUniform = glGetUniformLocation(shaderProg, "MVP");
+  wireshader = Shader("assets/wireframe.vert", "assets/wireframe.frag");
 
   set_window_size(width, height);
 
@@ -193,7 +202,7 @@ void Renderer::set_window_size(int width, int height) {
   heightmult = 1. / windowheight * 2;
 
   glm::mat4 projection = glm::ortho(-1, 1, 1, -1);
-  glm::mat4 view = glm::scale(glm::vec3(widthmult, heightmult, 1)) * glm::translate(glm::vec3(-windowwidth / 2, -windowheight / 2, 0)) * glm::mat4(1);
+  glm::mat4 view = glm::scale(glm::vec3(widthmult, heightmult, 1)) * glm::translate(glm::vec3(-windowwidth / 2, -windowheight / 2, 0));
 
   screenVPmat = projection * view;
   SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Window size set to %dx%d.\n", windowwidth, windowheight);
@@ -237,54 +246,51 @@ bool Renderer::ImguiProcessEvents(SDL_Event *e) {
 void Renderer::ImguiNewFrame() {
   ImGui_ImplSdlGL3_NewFrame(window);
 }
+
 Texture * Renderer::LoadTexture(std::string path) {
   auto it = textures.find(path);
-  if (it == textures.end()) {
-    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loading texture: %s\n", path.c_str());
-    // Texture not loaded, let's load it.
-    SDL_Surface* surface = SDL_LoadBMP(path.c_str());
-    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded surface.");
-    if (surface != NULL) {
-      GLuint textureId;
-      glGenTextures(1, &textureId);
-      glBindTexture(GL_TEXTURE_2D, textureId);
+  if (it != textures.end()) return &it->second; // Texture already loaded
 
-      GLenum mode = GL_RGB;
-      if (surface->format->BytesPerPixel == 4) {
-        mode = GL_RGBA;
-      }
+  SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loading texture: %s\n", path.c_str());
+  // Texture not loaded, let's load it.
+  SDL_Surface* surface = SDL_LoadBMP(path.c_str());
+  SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded surface.");
+  if (surface != NULL) {
+    GLuint textureId;
+    glGenTextures(1, &textureId);
+    glBindTexture(GL_TEXTURE_2D, textureId);
 
-      glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-      glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-      glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
-      glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
-
-      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Sending %dx%d texture to GPU...", surface->w, surface->h);
-      glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
-      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded texture to GPU.");
-
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-      Texture t{};
-      t.id = textureId;
-      t.w = surface->w;
-      t.h = surface->h;
-
-      SDL_FreeSurface(surface);
-      SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Freed surface.");
-      textures.insert(std::pair<std::string, Texture>(path, t));
-      SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Loaded texture \"%s\"\n", path.c_str());
-      return &textures[path];
+    GLenum mode = GL_RGB;
+    if (surface->format->BytesPerPixel == 4) {
+      mode = GL_RGBA;
     }
-    else {
-      SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Could not load texture \"%s\"\n\t%s\n", path.c_str(), SDL_GetError());
-      return nullptr;
-    }
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_SKIP_PIXELS, 0);
+    glPixelStorei(GL_UNPACK_SKIP_ROWS, 0);
+
+    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Sending %dx%d texture to GPU...", surface->w, surface->h);
+    glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Loaded texture to GPU.");
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    Texture t{};
+    t.id = textureId;
+    t.w = surface->w;
+    t.h = surface->h;
+
+    SDL_FreeSurface(surface);
+    SDL_LogVerbose(SDL_LOG_CATEGORY_RENDER, "Freed surface.");
+    textures.insert(std::pair<std::string, Texture>(path, t));
+    SDL_LogDebug(SDL_LOG_CATEGORY_RENDER, "Loaded texture \"%s\"\n", path.c_str());
+    return &textures[path];
   }
   else {
-    // Texture already loaded, no need to load it again
-    return &it->second;
+    SDL_LogError(SDL_LOG_CATEGORY_RENDER, "Could not load texture \"%s\"\n\t%s\n", path.c_str(), SDL_GetError());
+    return nullptr;
   }
 }
 
@@ -305,7 +311,6 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
       x / tw, (y + h) / th,
       (x + w) / tw, (y + h) / th,
     };
-
     
     glCreateBuffers(1, &sprite.uvBuf);
     glBindBuffer(GL_ARRAY_BUFFER, sprite.uvBuf);
@@ -326,12 +331,11 @@ void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, flo
   glEnable(GL_BLEND);
   glBlendEquationSeparate(GL_FUNC_ADD, GL_FUNC_ADD);
   glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-    
-  glUseProgram(shaderProg);
-  glUniform4f(colorUniform, fg.r, fg.g, fg.b, fg.a);
-  glUniform4f(bgUniform, bg.r, bg.g, bg.b, bg.a);
-
-  glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
+  
+  mainshader.use();
+  mainshader.set_mvp(mvp);
+  mainshader.set_color_tint(fg);
+  mainshader.set_aux_uniform("colorbackground", bg);
   
   glBindVertexArray(spriteVertArrayId);
 
@@ -343,13 +347,13 @@ void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, flo
   glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
 
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
   if (wireframe) {
+    wireshader.use();
+    wireshader.set_mvp(mvp);
+    Color white = Color(1.0f,1.0f,1.0f,1.0f);
+    wireshader.set_color_tint(white);
+  
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    glUseProgram(wireShaderProg);
-    glUniform4f(colorUniform, 1, 1, 1, 1);
-    glUniformMatrix4fv(mvpUniform, 1, GL_FALSE, &mvp[0][0]);
     glBindVertexArray(spriteVertArrayId);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
@@ -360,11 +364,8 @@ void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, flo
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
   }
-
   glDisableVertexAttribArray(0);
-  glDisableVertexAttribArray(1);
-
-  
+  glDisableVertexAttribArray(1);  
 }
 
 void Renderer::Clear() {

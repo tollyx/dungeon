@@ -12,7 +12,7 @@ class Gamestate {
 protected:
   App* app;
 public:
-  //virtual ~Gamestate() {};
+  virtual ~Gamestate() = default;
   void init(App* app);
   virtual void load() = 0;
   virtual Gamestate* update(double delta) = 0;
