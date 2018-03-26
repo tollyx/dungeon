@@ -116,6 +116,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\LuaHandler.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Actor.cpp" />
     <ClCompile Include="src\App.cpp" />
@@ -160,6 +161,8 @@
     <ClCompile Include="src\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Item.h" />
+    <ClInclude Include="src\LuaHandler.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Actor.h" />
     <ClInclude Include="src\App.h" />

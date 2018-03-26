@@ -3,17 +3,20 @@
 #include "Gamestate.h"
 #include "Tilemap.h"
 #include "FieldOfView.h"
+#include "World.h"
 
 class SpriteAtlas;
 class Actor;
 
 class PlayState : public Gamestate {
   SpriteAtlas* ascii;
-  Tilemap tilemap;
+  World world;
+  Tilemap* tilemap;
   Actor * player_actor;
   FieldOfView fov;
   unsigned int current_entity_index;
   bool is_player_turn;
+  unsigned int current_level;
 
   vec2i camera_pos;
 

@@ -13,13 +13,14 @@
 #include "Input.h"
 #include "Gamestate.h"
 #include "PlayState.h"
+#include "LuaHandler.h"
 
 Uint64 perfFreq;
 double currTime() {
   return SDL_GetPerformanceCounter() / (double)perfFreq;
 }
 
-struct {
+struct Config {
   struct {
     bool fullscreen = false;
     int width = 792;

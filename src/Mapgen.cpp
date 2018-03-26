@@ -64,14 +64,18 @@ void maze_fill(Tilemap& map, int x, int y, std::string wall, std::string floor, 
 
 }
 
-Tilemap generate_dungeon(int width, int height, TileSet tileset) {
+Tilemap generate_dungeon(int width, int height, TileSet& tileset) {
   return generate_dungeon(Rng::get_random_seed(), width, height, tileset);
 }
 
-Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet tileset) {
+Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tileset) {
   Rng rng = Rng(seed);
 
   Tilemap map = Tilemap(tileset, width, height);
+
+#ifdef _DEBUG
+  assert(tileset.count() > 0);
+#endif
 
   std::vector<std::string> wall_tiles = tileset.find_tiles(false, true, true, { "dungeon", "wall" }, {});
   std::vector<std::string> floor_tiles = tileset.find_tiles(true, false, false, { "dungeon", "floor" }, {});

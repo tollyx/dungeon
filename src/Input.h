@@ -17,6 +17,8 @@ enum InputAction {
   ACTION_MOVE_SOUTH,
   ACTION_MOVE_SOUTHWEST,
   ACTION_MOVE_SOUTHEAST,
+  ACTION_MOVE_DOWN,
+  ACTION_MOVE_UP,
   ACTION_WAIT,
   INPUTACTION_END // Used to get the length of the enum. Must be the final entry.
 };
