@@ -2,7 +2,7 @@
 
 A work-in-progress, cross-platform roguelike written in C++ using SDL2 and OpenGL.  
 
-![Screenshot](https://i.imgur.com/apzKOmm.png)
+![Screenshot](https://i.imgur.com/aKUhgCz.png)
 
 ## Compiling
 
@@ -26,8 +26,8 @@ I heavily recommend you to use [vcpkg](https://github.com/Microsoft/vcpkg) to in
   * [ ] Data editors?
 * [ ] Dungeon generation
   * [x] Generate rooms & corridors
-  * [ ] Place entrance & exit
-  * [ ] Place enemies
+  * [x] Place entrance & exit
+  * [x] Place enemies
   * [ ] Prefabs
 * [ ] Items
   * [ ] Inventory

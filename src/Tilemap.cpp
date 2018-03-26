@@ -158,10 +158,12 @@ void Tilemap::draw(Renderer *renderer, SpriteAtlas* sprites, int x, int y, int t
 }
 
 void Tilemap::debug_print() {
+  /*
   for (int y = 0; y < height; ++y) {
     for (int x = 0; x < width; ++x) {
       printf("\t%d", get_tile(x, y));
     }
     printf("\n");
   }
+  */
 }

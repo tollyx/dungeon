@@ -1,7 +1,7 @@
 #include "Shader.h"
-#include <SDL2\SDL_log.h>
-#include <glbinding\gl\gl.h>
-#include <glm\mat4x4.hpp>
+#include <SDL2/SDL_log.h>
+#include <glbinding/gl/gl.h>
+#include <glm/mat4x4.hpp>
 #include <fstream>
 #include <string>
 #include <map>

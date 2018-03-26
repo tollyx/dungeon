@@ -1,6 +1,6 @@
 #include "TileSet.h"
-#include <kaguya\kaguya.hpp>
-#include <SDL2\SDL_log.h>
+#include <kaguya/kaguya.hpp>
+#include <SDL2/SDL_log.h>
 
 Tile null = Tile();
 
@@ -14,7 +14,7 @@ int TileSet::count() const {
 }
 
 void TileSet::add_tile(std::string name, Tile tile) {
-  tiles.insert_or_assign(name, tile);
+  tiles[name] = tile;
 }
 
 Tile const& TileSet::get_tile(std::string name) {

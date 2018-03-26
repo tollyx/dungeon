@@ -3,8 +3,8 @@
 #include <string>
 #include <map>
 #include <fstream>
-#include <glbinding\gl\types.h>
-#include <glm\common.hpp>
+#include <glbinding/gl/types.h>
+#include <glm/common.hpp>
 #include "Renderer.h"
 
 class Shader {

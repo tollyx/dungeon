@@ -17,7 +17,7 @@
 #include "Rng.h"
 #include "TileSet.h"
 #include "LuaHandler.h"
-#include <kaguya\kaguya.hpp>
+#include <kaguya/kaguya.hpp>
 
 InputAction player_action;
 TileSet tileset;
@@ -203,6 +203,7 @@ void PlayState::draw(double delta) {
 
       ImGui::End();
     }
+    /*
     if (debug_actors) {
       ImGui::Begin("Actors", &debug_actors);
 
@@ -225,6 +226,7 @@ void PlayState::draw(double delta) {
 
       ImGui::End();
     }
+    */
   }
 
   const vec2i asciisize = {
@@ -258,7 +260,8 @@ void PlayState::draw(double delta) {
       int sprite = var->get_sprite_id();
 
       Color fg = var->get_sprite_color()*0.35f;
-      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, black, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
+      Color bg = tilemap->get_tile(pos.x, pos.y).bg;
+      app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, bg, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
 

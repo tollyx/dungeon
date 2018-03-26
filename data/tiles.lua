@@ -49,6 +49,26 @@ local tiles = {
         description = "A stone floor",
         tags = { "dungeon", "stone", "floor" }
     },
+    -- dungeon_floor2 = {
+    --     glyph = '.',
+    --     fg = {.85,.85,.9,1},
+    --     bg = {.15,.15,.25,1},
+    --     passable = true,
+    --     opaque = false,
+    --     wall = false,
+    --     description = "A stone floor",
+    --     tags = { "dungeon", "stone", "floor" }
+    -- },
+    -- dungeon_floor3 = {
+    --     glyph = '.',
+    --     fg = {.75,.75,.95,1},
+    --     bg = {.1,.1,.25,1},
+    --     passable = true,
+    --     opaque = false,
+    --     wall = false,
+    --     description = "A stone floor",
+    --     tags = { "dungeon", "stone", "floor" }
+    -- },
     dungeon_entrance = {
         glyph = '>',
         fg = {0.8,0.8,1.0,1.0},
@@ -69,6 +89,26 @@ local tiles = {
         description = "Stone stairs going downwards",
         tags = { "dungeon", "stone", "exit" }
     },
+    -- grass = {
+    --     glyph = '"',
+    --     fg = {.4,.95,.4,1},
+    --     bg = {.1,.15,.2,1},
+    --     passable = true,
+    --     opaque = false,
+    --     wall = false,
+    --     description = "A patch of grass",
+    --     tags = { "dungeon", "floor", "grass" }
+    -- },
+    -- moss = {
+    --     glyph = '.',
+    --     fg = {.4,.95,.4,1},
+    --     bg = {.1,.15,.2,1},
+    --     passable = true,
+    --     opaque = false,
+    --     wall = false,
+    --     description = "A patch of moss",
+    --     tags = { "dungeon", "floor", "moss" }
+    -- },
 }
 
 local dijkstra_debug_amount = 100

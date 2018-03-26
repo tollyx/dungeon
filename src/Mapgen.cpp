@@ -20,6 +20,10 @@ bool aabb(Room &a, Room &b) {
          a.pos.y <= b.pos.y + b.size.y && a.pos.y + a.size.y >= b.pos.y;
 }
 
+template<class T> T rand_entry(std::vector<T> &vec, Rng  &rng) {
+  return vec[rng.get_int(vec.size()-1)];
+}
+
 void maze_fill(Tilemap& map, int x, int y, std::string wall, std::string floor, Rng &rng) {
   if (!map.get_tile(x, y).wall) return;
 
@@ -55,7 +59,7 @@ void maze_fill(Tilemap& map, int x, int y, std::string wall, std::string floor, 
       }
     }
     if (!options.empty()) {
-      stack.emplace(options.at(rng.get_int(options.size() - 1)));
+      stack.emplace(rand_entry<vec2i>(options,rng));
     }
     else {
       stack.pop();
@@ -91,7 +95,7 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
   // Set the whole map to walls
   for (int y = 0; y < height; ++y) {
     for (int x = 0; x < width; ++x) {
-      map.set_tile(x, y, wall_tiles[rng.get_int(0, wall_tiles.size()-1)]);
+      map.set_tile(x, y, rand_entry<std::string>(wall_tiles, rng));
     }
   }
 
@@ -119,7 +123,7 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
   for (Room r : rooms) {
     for (int x = r.pos.x+1; x < r.pos.x + r.size.x-1; x++) {
       for (int y = r.pos.y+1; y < r.pos.y + r.size.y-1; y++) {
-        map.set_tile(x, y, floor_tiles[rng.get_int(0, floor_tiles.size() - 1)]);
+        map.set_tile(x, y, rand_entry<std::string>(floor_tiles, rng));
       }
     }
   }
@@ -137,7 +141,7 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
       }
       // If this tile is a wall and is completely surrounded by other walls, start generating a maze here.
       if (count >= 8) {
-        maze_fill(map, x, y, wall_tiles[rng.get_int(0, wall_tiles.size() - 1)], floor_tiles[rng.get_int(0, floor_tiles.size() - 1)], rng);
+        maze_fill(map, x, y, rand_entry<std::string>(wall_tiles, rng), floor_tiles[rng.get_int(0, floor_tiles.size() - 1)], rng);
         maze_start_points.emplace_back(vec2i(x, y));
       }
     }
@@ -190,7 +194,7 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
 
       int r = rng.get_int(potential_doors.size()-1);
       vec2i pos = potential_doors.at(r);
-      map.set_tile(pos.x, pos.y, door_tiles[rng.get_int(0, door_tiles.size() - 1)]);
+      map.set_tile(pos.x, pos.y, rand_entry<std::string>(door_tiles, rng));
       potential_doors.erase(r + potential_doors.begin());
       for (int j = potential_doors.size() - 1; j >= 0; j--) {
         if ((pos - potential_doors[j]).dist() <= 4) {
@@ -235,11 +239,11 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
         }
       }
       if (count == 1) {
-        map.set_tile(pos.x, pos.y, wall_tiles[rng.get_int(0, wall_tiles.size() - 1)]);
+        map.set_tile(pos.x, pos.y, rand_entry<std::string>(wall_tiles, rng));
         new_dead_ends.emplace_back(next);
       }
       else if (count == 0) {
-        map.set_tile(pos.x, pos.y, wall_tiles[rng.get_int(0, wall_tiles.size() - 1)]);
+        map.set_tile(pos.x, pos.y, rand_entry<std::string>(wall_tiles, rng));
       }
     }
     dead_ends = new_dead_ends;
@@ -255,7 +259,8 @@ Tilemap generate_dungeon(unsigned int seed, int width, int height, TileSet& tile
   // Find the room furthest away from the entrance and make it the exit
   Pathfinder::DijkstraMap dijk;
   const float maxv = width+height;
-  Pathfinder::calc_dijkstra_map(map, std::vector<vec2i>{ startpos }, dijk, maxv);
+  std::vector<vec2i> goals = { startpos };
+  Pathfinder::calc_dijkstra_map(map, goals, dijk, maxv);
   
   float exitroomval = 0;
   Room* exitroom = &startroom;
