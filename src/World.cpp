@@ -1,48 +1,27 @@
 #include "World.h"
 #include <time.h>
 #include <cstdlib>
-
-World::World() {
-  World(0);
-}
+#include "Mapgen.h"
+#include "TileSet.h"
 
 World::World(unsigned int seed) {
   worldseed = seed;
-}
-
-void World::Init() {
-  if (seeds.size() != 0) {
-    return;
-  }
   srand(worldseed);
   rand(); rand(); rand();
   for (int i = 0; i < 10; i++) {
     seeds.push_back(rand());
-    maps.push_back(nullptr);
+    maps.push_back(Tilemap());
   }
 }
 
-Tilemap* World::GetMap(unsigned int level) {
-  if (level < seeds.size()) {
-    if (maps[level] != nullptr) {
-      return maps[level];
-    }
-    else {
-      Tilemap* map = new Tilemap(TileSet(),64, 64);
-      // TODO: generate map
-      maps[level] = map;
-      return map;
-    }
+Tilemap& World::GetMap(unsigned int level, TileSet& tileset) {
+  if (maps[level].get_height() > 1) {
+    return maps[level];
   }
-  return nullptr;
+  else {
+    maps[level] = generate_dungeon(seeds[level], 64, 64, tileset);
+    return maps[level];
+  }
 }
 
-World::~World() {
-  seeds.clear();
-  for (Tilemap* map : maps) {
-    if (map != nullptr) {
-      delete map;
-    }
-  }
-  maps.clear();
-}
+World::~World() {}

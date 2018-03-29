@@ -108,10 +108,10 @@ Actor * Tilemap::get_actor(int x, int y) {
   return nullptr;
 }
 
-std::vector<Actor*> Tilemap::get_actors(int x, int y, int range) {
+std::vector<Actor*> Tilemap::get_actors(int x, int y, int range = 0) {
   std::vector<Actor*> found;
   std::vector<vec2i> neigh = get_neighbours(x, y, range);
-  neigh.emplace_back(vec2i(x,y));
+  neigh.emplace_back(vec2i(x, y));
   for (Actor* ent : actors) {
     for (vec2i pos : neigh) {
       vec2i apos = ent->get_position();

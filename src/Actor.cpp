@@ -35,6 +35,7 @@ void Actor::update(Tilemap* map) {
 
 void Actor::damage(int str) {
   health -= str;
+  healcounter = 4;
   if (health <= 0) {
     kill();
   }
@@ -65,6 +66,7 @@ void Actor::attack(vec2i dpos, Tilemap* map) {
 
 void Actor::heal(int amount) {
   health += amount;
+  healcounter = 4;
   if (health > health_max) {
     health = health_max;
   }

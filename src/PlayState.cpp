@@ -16,25 +16,21 @@
 #include "Shaman.h"
 #include "Rng.h"
 #include "TileSet.h"
+#include "LuaHandler.h"
 #include <kaguya/kaguya.hpp>
 
 InputAction player_action;
 TileSet tileset;
+LuaHandler handler;
 
 void PlayState::load() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating ascii tileset...\n");
   ascii = new SpriteAtlas(app->renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Created ascii tileset.\n");
 
-  app->input->bind_key(SDLK_ESCAPE, ACTION_ESCAPE_MENU);
+  handler.load_module("data", &tileset);
 
-  kaguya::State lua;
-  lua["tiles"] = kaguya::NewTable();
-  lua(R"LUA(
-actors = dofile('data/actors.lua')
-tiles = dofile('data/tiles.lua')
-)LUA");
-  tileset.load_from_table(lua.globalTable().getField("tiles"));
+  app->input->bind_key(SDLK_ESCAPE, ACTION_ESCAPE_MENU);
 
   // Movement: keypad
   app->input->bind_key(SDLK_KP_8, ACTION_MOVE_NORTH);
@@ -65,6 +61,7 @@ tiles = dofile('data/tiles.lua')
 
   // General
   app->input->bind_key(SDLK_PERIOD, ACTION_WAIT);
+  app->input->bind_key(SDLK_LESS, ACTION_MOVE_DOWN);
 
   // debug
   app->input->bind_key(SDLK_F1, ACTION_TOGGLE_DEBUG);
@@ -77,27 +74,29 @@ tiles = dofile('data/tiles.lua')
 void PlayState::new_game() {
   player_action = ACTION_NONE;
 
-  tilemap.delete_actors();
+  tilemap = nullptr;
   player_actor = nullptr;
 
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating tilemap...\n");
 
   Rng rng;
-  tilemap = generate_dungeon(48, 48, tileset);
+  world = World(rng.get_random_seed());
+  current_level = 0;
+  tilemap = &world.GetMap(current_level, tileset);
   vec2i heropos;
   Tile t;
   do {
-    heropos.x = rng.get_int(1, tilemap.get_width() - 1);
-    heropos.y = rng.get_int(1, tilemap.get_width() - 1);
-    t = tilemap.get_tile(heropos.x, heropos.y);
+    heropos.x = rng.get_int(1, tilemap->get_width() - 1);
+    heropos.y = rng.get_int(1, tilemap->get_width() - 1);
+    t = tilemap->get_tile(heropos.x, heropos.y);
   } while (!t.passable);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Calculating initial FOV...\n");
-  fov = FieldOfView(&tilemap);
+  fov = FieldOfView(tilemap);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Done.\n");
 
   current_entity_index = 0;
-  Actor* actor = tilemap.get_actor_list()->at(current_entity_index);
+  Actor* actor = tilemap->get_actor_list()->at(current_entity_index);
   is_player_turn = actor->player_controlled;
   if (is_player_turn) { 
     camera_pos = actor->get_position();
@@ -107,7 +106,7 @@ void PlayState::new_game() {
 
 Gamestate *PlayState::update(double delta) {
   while (!is_player_turn || player_action != ACTION_NONE) {
-    std::vector<Actor*>* actors = tilemap.get_actor_list();
+    std::vector<Actor*>* actors = tilemap->get_actor_list();
     Actor* actor = actors->at(current_entity_index);
 
     if (is_player_turn && actor->is_alive()) {
@@ -122,21 +121,38 @@ Gamestate *PlayState::update(double delta) {
         case ACTION_MOVE_SOUTHWEST: dir = {-1, 1}; break;
         case ACTION_MOVE_SOUTHEAST: dir = {1, 1}; break;
         case ACTION_WAIT: dir = {0, 0}; break;
+        case ACTION_MOVE_DOWN:
+        {
+          vec2i pos = actor->get_position();
+          
+          if (tilemap->get_tile(pos.x, pos.y).has_tag("exit")) {
+            current_level++;
+            tilemap = &world.GetMap(current_level, tileset);
+            return nullptr;
+          }
+          else {
+            return nullptr;
+          }
+          break;
+        }
         default: player_action = ACTION_NONE; SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: no player action.\n"); return nullptr; // abort turn
       }
       if (dir != vec2i(0,0)) {
-        if (!actor->move(dir.x, dir.y, &tilemap)) {
-          vec2i pos = actor->get_position();
-          auto acts = tilemap.get_actors(pos.x + dir.x, pos.y + dir.y, 0);
-          if(acts.empty()) {
+        if (!actor->move(dir.x, dir.y, tilemap)) {
+          vec2i heropos = actor->get_position();
+          std::vector<Actor*> actors = tilemap->get_actors(heropos.x + dir.x, heropos.y + dir.y, 0);
+          bool attacked = false;
+          for (Actor* act : actors) {
+            if (act->is_alive() && act->get_actor_faction() != actor->get_actor_faction()) {
+              actor->attack(act);
+              attacked = true;
+              break;
+            }
+          }
+          if(!attacked) {
             SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: invalid player action.\n");
             player_action = ACTION_NONE;
             return nullptr; // unable to move and nothing to attack == abort turn
-          }
-          for (Actor* a : acts) {
-            if (a->is_alive() && a->get_actor_faction() != actor->get_actor_faction()) {
-              actor->attack(a);
-            }  
           }
         }
       }
@@ -144,7 +160,7 @@ Gamestate *PlayState::update(double delta) {
       fov.calc(pos, 6);
       camera_pos = pos;
     }
-    actor->update(&tilemap);
+    actor->update(tilemap);
 
     player_action = ACTION_NONE;
 
@@ -187,10 +203,11 @@ void PlayState::draw(double delta) {
 
       ImGui::End();
     }
+    /*
     if (debug_actors) {
       ImGui::Begin("Actors", &debug_actors);
 
-      auto actors = tilemap.get_actor_list();
+      auto actors = tilemap->get_actor_list();
       const char* headers[] {
           "id", "name", "health", "strength"
       };
@@ -209,6 +226,7 @@ void PlayState::draw(double delta) {
 
       ImGui::End();
     }
+    */
   }
 
   const vec2i asciisize = {
@@ -227,9 +245,9 @@ void PlayState::draw(double delta) {
       (tilesize.x/2-camera_pos.x),
       (tilesize.y/2- camera_pos.y),
   };
-  tilemap.draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, debug_disable_fov ? nullptr : &fov);
+  tilemap->draw(app->renderer, ascii, margin.x, margin.y, -offset.x, -offset.y, tilesize.x, tilesize.y, debug_disable_fov ? nullptr : &fov);
 
-  auto entities = tilemap.get_actor_list();
+  auto entities = tilemap->get_actor_list();
 
   const Color black = Color(0, 0, 0, 1);
 
@@ -242,7 +260,7 @@ void PlayState::draw(double delta) {
       int sprite = var->get_sprite_id();
 
       Color fg = var->get_sprite_color()*0.35f;
-      Color bg = tilemap.get_tile(pos.x, pos.y).bg;
+      Color bg = tilemap->get_tile(pos.x, pos.y).bg;
       app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, bg, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }
@@ -256,7 +274,7 @@ void PlayState::draw(double delta) {
     
       int sprite = var->get_sprite_id();
       Color fg = var->get_sprite_color();
-      Color bg = tilemap.get_tile(pos.x, pos.y).bg;
+      Color bg = tilemap->get_tile(pos.x, pos.y).bg;
       app->renderer->draw_sprite(ascii->get_sprite(sprite), fg, bg, margin.x + (offset.x + pos.x) * asciisize.x, margin.y + (offset.y + pos.y) * asciisize.y);
     }
   }

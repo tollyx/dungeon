@@ -87,7 +87,6 @@ Renderer::Renderer() {
   window = nullptr;
 }
 
-
 Renderer::~Renderer() {
   ImGui_ImplSdlGL3_Shutdown();
 
@@ -150,7 +149,7 @@ bool Renderer::Init(std::string title, int width, int height) {
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-  window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL /* | SDL_WINDOW_RESIZABLE */);
+  window = SDL_CreateWindow(title.data(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
   if (window == NULL) {
     SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,"Failed to create a window!\n");
     return false;
@@ -194,6 +193,18 @@ void Renderer::set_title(const char *title) {
 
 void Renderer::set_window_size(int width, int height) {
   SDL_SetWindowSize(window, width, height);
+  // temp fix for sprites looking ugly af with an odd window resolution
+  // but we're doing it after setting the actual window size, 
+  // to prevent the game from locking if it was just maximized
+  // TODO: Figure this out.
+  if (width % 2 == 1) {
+    width++;
+  }
+  if (height % 2 == 1) {
+    height++;
+  }
+
+  glViewport(0, 0, width, height);
 
   windowwidth = width;
   windowheight = height;
@@ -243,6 +254,7 @@ int Renderer::get_renderer_height() {
 bool Renderer::ImguiProcessEvents(SDL_Event *e) {
   return ImGui_ImplSdlGL3_ProcessEvent(e);
 }
+
 void Renderer::ImguiNewFrame() {
   ImGui_ImplSdlGL3_NewFrame(window);
 }
@@ -294,7 +306,6 @@ Texture * Renderer::LoadTexture(std::string path) {
   }
 }
 
-
 Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
   Sprite sprite;
   sprite.region.x = x;
@@ -318,7 +329,6 @@ Sprite Renderer::CreateSprite(std::string path, int x, int y, int w, int h) {
   }
   return sprite;
 }
-
 
 void Renderer::draw_sprite(Sprite *sprite, Color fg, Color bg, int x, int y, float sx, float sy) {
 

@@ -13,7 +13,7 @@ struct Tile {
   bool passable = false;
   bool opaque = false;
   bool wall = true;
-  std::string desc = "";
+  std::string desc = "?";
   std::vector<std::string> tags;
 
   bool has_tag(std::string tag) const {
@@ -31,7 +31,7 @@ class TileSet {
 public:
   TileSet();
   ~TileSet();
-  void load_from_table(kaguya::LuaStackRef table);
+  int count() const;
   void add_tile(std::string name, Tile tile);
   Tile const& get_tile(std::string name);
   std::vector<std::string> find_tiles(bool passable, bool opaque, bool wall, std::vector<std::string> include_tags = {}, std::vector<std::string> exclude_tags = {});
