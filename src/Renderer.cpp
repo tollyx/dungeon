@@ -6,8 +6,8 @@
 
 #include <fstream>
 #include <SDL2/SDL.h>
-#include "imgui.h"
-#include "imgui_impl_sdl_gl3.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_sdl_gl3.h"
 #include <glm/gtx/transform.hpp>
 #include <glm/matrix.hpp>
 #include <utility>

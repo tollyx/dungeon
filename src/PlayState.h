@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Gamestate.h"
+#include "statemachine/StateStack.h"
 #include "Tilemap.h"
 #include "FieldOfView.h"
 #include "World.h"
 
 class SpriteAtlas;
 class Actor;
+class App;
 
-class PlayState : public Gamestate {
+class PlayState : public IState {
   SpriteAtlas* ascii;
   World world;
   Tilemap* tilemap;
@@ -25,11 +26,14 @@ class PlayState : public Gamestate {
   bool debug_settings = false;
   bool debug_disable_fov = false;
 
+  App* app;
+
 public:
+  PlayState(App* app);
   void new_game();
-  void load() override;
-  Gamestate* update(double delta) override;
-  void draw(double delta) override;
-  void quit() override;
-  void inputevent(InputEvent* event) override;
+  void enter() override;
+  StateResult update(float delta) override;
+  void draw() override;
+  void exit() override;
+  void input(InputEvent& event) override;
 };

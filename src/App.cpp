@@ -9,11 +9,12 @@
 #include <string>
 #include <kaguya/kaguya.hpp>
 #include "Renderer.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include "Input.h"
-#include "Gamestate.h"
 #include "PlayState.h"
 #include "LuaHandler.h"
+#include "Time.h"
+#include <memory>
 
 Uint64 perfFreq;
 double currTime() {
@@ -108,12 +109,8 @@ int App::start() {
   double accumulator = dt;
 
   bool show_log = false;
-  bool running = true;
-  Gamestate* nextstate = nullptr;
-
-  current = new PlayState();
-  current->init(this);
-  current->load();
+  running = true;
+  statestack.push(std::unique_ptr<IState>(new PlayState(this)));
 
   while (running) {
     double newTime = currTime();
@@ -122,19 +119,12 @@ int App::start() {
       frametime = 1.0/30;
     }
 
-    if (nextstate != nullptr) {
-      current->quit();
-      delete current;
-      current = nextstate;
-      current->init(this);
-      current->load();
-    }
-
     currentTime = newTime;
     accumulator += frametime;
 
     SDL_Event ev{};
     ImGuiIO &io = ImGui::GetIO();
+
     renderer->ImguiNewFrame();
     while (SDL_PollEvent(&ev)) {
       //renderer->ImguiProcessEvents(&ev);
@@ -154,31 +144,31 @@ int App::start() {
         case SDL_MOUSEMOTION:
           if (!io.WantCaptureMouse) {
             InputEvent inputEvent = input->set_mouse_pos(ev.motion.x, ev.motion.y, ev.motion.xrel, ev.motion.yrel);
-            current->inputevent(&inputEvent);
+            statestack.input(inputEvent);
           }
           break;
         case SDL_MOUSEBUTTONDOWN:
           if (!io.WantCaptureMouse) {
             InputEvent inputEvent = input->set_mouse_button(ev.button.button, ev.button.x, ev.button.y, true);
-            current->inputevent(&inputEvent);
+            statestack.input(inputEvent);
           }
           break;
         case SDL_MOUSEBUTTONUP:
           if (!io.WantCaptureMouse) {
             InputEvent inputEvent = input->set_mouse_button(ev.button.button, ev.button.x, ev.button.y, false);
-            current->inputevent(&inputEvent);
+            statestack.input(inputEvent);
           }
           break;
         case SDL_KEYDOWN:
           if (!io.WantCaptureKeyboard) {
             InputEvent inputEvent = input->set_key(ev.key.keysym.sym, (SDL_Keymod) ev.key.keysym.mod, true);
-            current->inputevent(&inputEvent);
+            statestack.input(inputEvent);
           }
           break;
         case SDL_KEYUP:
           if (!io.WantCaptureKeyboard){
             InputEvent inputEvent = input->set_key(ev.key.keysym.sym, (SDL_Keymod) ev.key.keysym.mod, false);
-            current->inputevent(&inputEvent);
+            statestack.input(inputEvent);
           }
           break;
         case SDL_QUIT:
@@ -189,13 +179,13 @@ int App::start() {
       }
     }
     while (running && accumulator >= dt) {
-      nextstate = current->update(dt);
+      statestack.update(dt);
       input->new_frame();
-
+      Time::tick_timers(dt);
       accumulator -= dt;
     }
     renderer->Clear();
-    current->draw(accumulator / dt);
+    statestack.draw();
     renderer->Present();
     SDL_Delay(1);
   }
