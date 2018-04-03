@@ -10,7 +10,7 @@
 #include "SpriteAtlas.h"
 #include "Mapgen.h"
 #include "FieldOfView.h"
-#include "imgui.h"
+#include "imgui/imgui.h"
 #include "Hero.h"
 #include "Goblin.h"
 #include "Shaman.h"
@@ -23,13 +23,14 @@ InputAction player_action;
 TileSet tileset;
 LuaHandler handler;
 
-void PlayState::load() {
+void PlayState::enter() {
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Creating ascii tileset...\n");
   ascii = new SpriteAtlas(app->renderer, "./assets/12x12.bmp", 192, 192, 12, 12);
   SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Created ascii tileset.\n");
 
   handler.load_module("data", &tileset);
 
+  // TODO: Load all this from Lua
   app->input->bind_key(SDLK_ESCAPE, ACTION_ESCAPE_MENU);
 
   // Movement: keypad
@@ -71,6 +72,10 @@ void PlayState::load() {
   new_game();
 }
 
+PlayState::PlayState(App * app) {
+  this->app = app;
+}
+
 void PlayState::new_game() {
   player_action = ACTION_NONE;
 
@@ -104,7 +109,7 @@ void PlayState::new_game() {
   }
 }
 
-Gamestate *PlayState::update(double delta) {
+StateResult PlayState::update(float delta) {
   while (!is_player_turn || player_action != ACTION_NONE) {
     std::vector<Actor*>* actors = tilemap->get_actor_list();
     Actor* actor = actors->at(current_entity_index);
@@ -128,14 +133,17 @@ Gamestate *PlayState::update(double delta) {
           if (tilemap->get_tile(pos.x, pos.y).has_tag("exit")) {
             current_level++;
             tilemap = &world.GetMap(current_level, tileset);
-            return nullptr;
+            return StateResult::None();
           }
           else {
-            return nullptr;
+            return StateResult::None();
           }
           break;
         }
-        default: player_action = ACTION_NONE; SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: no player action.\n"); return nullptr; // abort turn
+        default: 
+          player_action = ACTION_NONE; 
+          SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: no player action.\n"); 
+          return StateResult::None(); // abort turn
       }
       if (dir != vec2i(0,0)) {
         if (!actor->move(dir.x, dir.y, tilemap)) {
@@ -152,7 +160,7 @@ Gamestate *PlayState::update(double delta) {
           if(!attacked) {
             SDL_LogVerbose(SDL_LOG_CATEGORY_SYSTEM, "Turn aborted: invalid player action.\n");
             player_action = ACTION_NONE;
-            return nullptr; // unable to move and nothing to attack == abort turn
+            return StateResult::None(); // unable to move and nothing to attack == abort turn
           }
         }
       }
@@ -173,10 +181,10 @@ Gamestate *PlayState::update(double delta) {
       fov.calc(player_actor->get_position(), 6);
     }
   }
-  return nullptr;
+  return StateResult::None();
 }
 
-void PlayState::draw(double delta) {
+void PlayState::draw() {
   if (debug) {
     {
       ImGui::BeginMainMenuBar();
@@ -286,17 +294,17 @@ void PlayState::draw(double delta) {
   }
 }
 
-void PlayState::quit() {
+void PlayState::exit() {
 }
 
-void PlayState::inputevent(InputEvent *event) {
-  if (event->type == INPUT_KEY_EVENT && event->pressed) {
-    switch (event->action) {
+void PlayState::input(InputEvent &event) {
+  if (event.type == INPUT_KEY_EVENT && event.pressed) {
+    switch (event.action) {
       case ACTION_TOGGLE_DEBUG: debug = !debug; break;
       case ACTION_RESET: new_game(); break;
       case ACTION_ESCAPE_MENU: break; // TODO
       case ACTION_NONE: break;
-      default: player_action = event->action; break;
+      default: player_action = event.action; break;
     }
   }
 }

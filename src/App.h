@@ -5,7 +5,8 @@
 #ifndef DUNGEON_APP_H
 #define DUNGEON_APP_H
 
-class Gamestate;
+#include "statemachine/StateStack.h"
+
 class Renderer;
 class Input;
 
@@ -14,9 +15,10 @@ class Input;
 #define ADD_QUOTES(s) ADD_QUOTES_HELPER(s)
 
 class App {
+  bool running = true;
 public:
   const char* version = ADD_QUOTES(GIT_CUR_COMMIT);
-  Gamestate* current;
+  StateStack statestack;
   Renderer* renderer;
   Input* input;
   bool init();

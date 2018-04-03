@@ -116,6 +116,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\LuaHandler.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Actor.cpp" />
@@ -131,7 +132,6 @@
     <ClCompile Include="src\ExploreNode.cpp" />
     <ClCompile Include="src\FieldOfView.cpp" />
     <ClCompile Include="src\FleeNode.cpp" />
-    <ClCompile Include="src\Gamestate.cpp" />
     <ClCompile Include="src\Goblin.cpp" />
     <ClCompile Include="src\HealFriendNode.cpp" />
     <ClCompile Include="src\Hero.cpp" />
@@ -139,11 +139,11 @@
     <ClCompile Include="src\IfNotSeeEnemyNode.cpp" />
     <ClCompile Include="src\IfSeeEnemyNode.cpp" />
     <ClCompile Include="src\IfSeeFriendNode.cpp" />
-    <ClCompile Include="src\imgui.cpp" />
-    <ClCompile Include="src\imgui_demo.cpp" />
-    <ClCompile Include="src\imgui_draw.cpp" />
-    <ClCompile Include="src\imgui_impl_sdl_gl3.cpp" />
-    <ClCompile Include="src\imgui_user.cpp" />
+    <ClCompile Include="src\imgui\imgui.cpp" />
+    <ClCompile Include="src\imgui\imgui_demo.cpp" />
+    <ClCompile Include="src\imgui\imgui_draw.cpp" />
+    <ClCompile Include="src\imgui\imgui_impl_sdl_gl3.cpp" />
+    <ClCompile Include="src\imgui\imgui_user.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Mapgen.cpp" />
@@ -156,9 +156,11 @@
     <ClCompile Include="src\Shaman.cpp" />
     <ClCompile Include="src\Tilemap.cpp" />
     <ClCompile Include="src\SpriteAtlas.cpp" />
+    <ClCompile Include="src\Time.cpp" />
     <ClCompile Include="src\WanderNode.cpp" />
     <ClCompile Include="src\World.cpp" />
     <ClCompile Include="src\TileSet.cpp" />
+    <ClCompile Include="src\statemachine\StateStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Item.h" />
@@ -178,7 +180,6 @@
     <ClInclude Include="src\ExploreNode.h" />
     <ClInclude Include="src\FieldOfView.h" />
     <ClInclude Include="src\FleeNode.h" />
-    <ClInclude Include="src\Gamestate.h" />
     <ClInclude Include="src\gitparams.h" />
     <ClInclude Include="src\Goblin.h" />
     <ClInclude Include="src\HealFriendNode.h" />
@@ -187,11 +188,11 @@
     <ClInclude Include="src\IfNotSeeEnemyNode.h" />
     <ClInclude Include="src\IfSeeEnemyNode.h" />
     <ClInclude Include="src\IfSeeFriendNode.h" />
-    <ClInclude Include="src\imconfig.h" />
-    <ClInclude Include="src\imgui.h" />
-    <ClInclude Include="src\imgui_impl_sdl_gl3.h" />
-    <ClInclude Include="src\imgui_internal.h" />
-    <ClInclude Include="src\imgui_user.h" />
+    <ClInclude Include="src\imgui\imconfig.h" />
+    <ClInclude Include="src\imgui\imgui.h" />
+    <ClInclude Include="src\imgui\imgui_impl_sdl_gl3.h" />
+    <ClInclude Include="src\imgui\imgui_internal.h" />
+    <ClInclude Include="src\imgui\imgui_user.h" />
     <ClInclude Include="src\Input.h" />
     <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\Mapgen.h" />
@@ -203,16 +204,18 @@
     <ClInclude Include="src\Rng.h" />
     <ClInclude Include="src\Shaman.h" />
     <ClInclude Include="src\Stats.h" />
-    <ClInclude Include="src\stb_rect_pack.h" />
-    <ClInclude Include="src\stb_textedit.h" />
-    <ClInclude Include="src\stb_truetype.h" />
+    <ClInclude Include="src\imgui\stb_rect_pack.h" />
+    <ClInclude Include="src\imgui\stb_textedit.h" />
+    <ClInclude Include="src\imgui\stb_truetype.h" />
     <ClInclude Include="src\Tilemap.h" />
     <ClInclude Include="src\SpriteAtlas.h" />
+    <ClInclude Include="src\Time.h" />
     <ClInclude Include="src\vec2i.h" />
     <ClInclude Include="src\WanderNode.h" />
     <ClInclude Include="src\wglew.h" />
     <ClInclude Include="src\World.h" />
     <ClInclude Include="src\TileSet.h" />
+    <ClInclude Include="src\statemachine\StateStack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
